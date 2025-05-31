@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SENSORY RESIDENCE GUARD HOUSE REGISTRATION 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Tambah pautan ke Tesseract.js untuk OCR secara terus di pelayar -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@v4.0.2/dist/tesseract.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e9f5e9;
+      padding: 20px;
+      text-transform: uppercase;
+    }
+    h2 {
+      color: #2b7a2b;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      color: #2b7a2b;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #2b7a2b;
+      border-radius: 4px;
+      text-transform: uppercase;
+      background-color: #ffffff;
+    }
+    button {
+      background-color: #2b7a2b;
+      color: white;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .call-link {
+      display: none;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      color: #ffffff;
+      background-color: #4caf50;
+      padding: 10px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+    .image-container {
+      position: relative;
+      display: none;
+      margin-bottom: 10px;
+    }
+    .image-container img {
+      max-width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      cursor: pointer;
+    }
+    .watermark {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 3px 8px;
+      font-size: 12px;
+      border-radius: 4px;
+    }
+    .custom-file-upload {
+      display: inline-block;
+      padding: 10px;
+      width: 100%;
+      background-color: #d4edd4;
+      border: 1px solid #2b7a2b;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: center;
+      color: #2b7a2b;
+      font-weight: bold;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 10px;
+      color: #888888;
+    }
+  </style>
+</head>
+<body>
+  <h2>SENSORY RESIDENCE GUARD HOUSE REGISTRATION 2025</h2>
+  <form id="registrationForm" method="POST" enctype="multipart/form-data">
+
+    <!-- Bahagian gambar MyKad/lesen -->
+    <label for="image">TAKE PHOTO OF MYKAD/LICENSE:</label>
+    <label for="image" class="custom-file-upload">TAKE PHOTO</label>
+    <input type="file" accept="image/*" capture="environment" id="image" name="image" required>
+
+    <div class="image-container" id="imageContainer">
+      <img id="preview" src="#" alt="IMAGE PREVIEW" onclick="zoomImage(this)"/>
+      <div class="watermark">MAHSING USE ONLY</div>
+    </div>
+
+    <!-- Field baru untuk NAMA pengguna (autofill lewat OCR) -->
+    <label for="name">NAME (AUTO-FILLED):</label>
+    <input type="text" id="name" name="name" readonly placeholder="MENUNGGU AUTOFILL...">
+
+    <!-- Field baru untuk NOMBOR MYKAD (autofill lewat OCR) -->
+    <label for="mykad">NO. MYKAD (AUTO-FILLED):</label>
+    <input type="text" id="mykad" name="mykad" readonly placeholder="MENUNGGU AUTOFILL...">
+
+    <!-- Timestamp sedia ada -->
+    <label for="timestamp">TIMESTAMP (AUTO-FILLED):</label>
+    <input type="text" id="timestamp" name="timestamp" readonly>
+
+    <!-- Seterusnya field asal -->
+    <label for="regnum">REGISTRATION NUMBER:</label>
+    <input type="text" id="regnum" name="regnum" required>
+
+    <label for="contact">CONTACT NUMBER:</label>
+    <input type="text" id="contact" name="contact" required oninput="updateCallLink()">
+    <a href="#" id="callLink" class="call-link" target="_blank">CALL THIS NUMBER</a>
+
+    <label for="remark">CATEGORY:</label>
+    <select id="remark" name="remark" required>
+      <option value="DROP OFF/PICK UP">DROP OFF/PICK UP</option>
+      <option value="E-HAILING">E-HAILING</option>
+      <option value="FLASH EXPRESS">FLASH EXPRESS</option>
+      <option value="FOOD PANDA">FOOD PANDA</option>
+      <option value="GDEX">GDEX</option>
+      <option value="GRAB FOOD">GRAB FOOD</option>
+      <option value="J&T EXPRESS">J&T EXPRESS</option>
+      <option value="LALAMOVE">LALAMOVE</option>
+      <option value="LAZADA">LAZADA</option>
+      <option value="MCD FOOD DELIVERY">MCD FOOD DELIVERY</option>
+      <option value="OWNER">OWNER</option>
+      <option value="SHOPEE EXPRESS">SHOPEE EXPRESS</option>
+      <option value="SHOPEE FOOD">SHOPEE FOOD</option>
+      <option value="TENANT">TENANT</option>
+      <option value="OTHER">OTHER</option>
+    </select>
+    <input type="text" id="unitNumber" name="unitNumber" placeholder="UNIT NUMBER" style="display:none; margin-top:10px;">
+    <input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;">
+
+    <label for="tower">TOWER:</label>
+    <select id="tower" name="tower" required>
+      <option value="TOWER A">TOWER A</option>
+      <option value="TOWER B">TOWER B</option>
+    </select>
+
+    <button type="submit">SUBMIT</button>
+  </form>
+
+  <div class="footer">Powered By Mred Tech</div>
+
+  <script>
+    // Fungsi untuk memaparkan pratonton gambar dan memulakan proses OCR
+    document.getElementById('image').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function() {
+        // Papar gambar di <img id="preview">
+        const preview = document.getElementById('preview');
+        preview.src = reader.result;
+        document.getElementById('imageContainer').style.display = 'block';
+
+        // Selepas gambar dipaparkan, jalankan OCR dengan Tesseract.js
+        performOCR(reader.result);
+      }
+      reader.readAsDataURL(file);
+    });
+
+    // Fungsi untuk buka gambar dalam tab baru apabila diklik
+    function zoomImage(img) {
+      const win = window.open();
+      win.document.write('<img src="' + img.src + '" style="width:100%">');
+    }
+
+    // Isi nilai timestamp (tarikh & masa semasa) secara automatik
+    const timestampInput = document.getElementById('timestamp');
+    const now = new Date();
+    // Format: DD/MM/YYYY HH:MM:SS (dalam huruf besar)
+    const formatted = now.toLocaleDateString().toUpperCase() + " " + now.toLocaleTimeString().toUpperCase();
+    timestampInput.value = formatted;
+
+    // Kod untuk memaparkan atau sembunyikan field tambahan kategori
+    const remarkSelect = document.getElementById('remark');
+    const otherField = document.getElementById('otherCategory');
+    const unitField = document.getElementById('unitNumber');
+
+    remarkSelect.addEventListener('change', function() {
+      const value = this.value;
+      otherField.style.display = (value === 'OTHER') ? 'block' : 'none';
+      unitField.style.display = (value === 'OWNER' || value === 'TENANT') ? 'block' : 'none';
+      if (value !== 'OTHER') otherField.value = '';
+      if (value !== 'OWNER' && value !== 'TENANT') unitField.value = '';
+    });
+
+    // Apabila pengguna menaip nombor telefon, butang "Call This Number" akan muncul jika panjang input >= 9 aksara
+    function updateCallLink() {
+      const phone = document.getElementById('contact').value.trim();
+      const link = document.getElementById('callLink');
+      if (phone.length >= 9) {
+        link.href = 'tel:' + phone;
+        link.style.display = 'block';
+      } else {
+        link.style.display = 'none';
+      }
+    }
+
+    // Validasi sebelum form diserahkan
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      const remark = remarkSelect.value;
+      const other = otherField.value.trim();
+      const unit = unitField.value.trim();
+      if (remark === 'OTHER' && other === '') {
+        alert('Please specify the other category.');
+        e.preventDefault();
+        return;
+      }
+      if ((remark === 'OWNER' || remark === 'TENANT') && unit === '') {
+        alert('Please enter the unit number.');
+        e.preventDefault();
+        return;
+      }
+    });
+
+    // =====================================================================
+    // Fungsi utama untuk melaksanakan OCR pada imej MyKad menggunakan Tesseract.js
+    // =====================================================================
+    function performOCR(dataURL) {
+      // Tetapkan medan yang hendak diisi secara automatik
+      const nameInput = document.getElementById('name');
+      const mykadInput = document.getElementById('mykad');
+
+      // Paparkan teks medan sebagai “Analisis...” sembari tunggu hasil OCR
+      nameInput.value = 'ANALISIS OCR...';
+      mykadInput.value = 'ANALISIS OCR...';
+
+      // Panggil Tesseract untuk kenali teks daripada gambar
+      Tesseract.recognize(
+        dataURL,
+        'eng', // Bahasa: gunakan 'eng' untuk English; anda boleh tambah 'msa' jika mahu sokong Malay (bergantung pada sokongan modelnya)
+        {
+          logger: m => {
+            // Boleh semak progres di konsol (optional)
+            console.log(m);
+          }
+        }
+      ).then(({ data: { text } }) => {
+        // text ialah keseluruhan teks yang dikenal pasti oleh OCR
+        console.log('Hasil OCR:', text);
+
+        // CUBA cari pola nombor MyKad di dalam teks
+        // Format tipikal MyKad: 6 angka – 2 angka – 4 angka (cth: "811008-14-5678")
+        const mykadPattern = /(\d{6}-\d{2}-\d{4})/;
+        const mykadMatch = text.match(mykadPattern);
+
+        if (mykadMatch) {
+          mykadInput.value = mykadMatch[1];
+        } else {
+          mykadInput.value = 'TIDAK DIKESAN';
+        }
+
+        // Untuk nama, umumnya nama di MyKad diletakkan di atas atau bawah nombor kad.
+        // Di sini kita cuba dapatkan baris teks yang terletak sebelum/selepas nombor MyKad.
+        // Pendekatan mudah: Pisahkan teks kepada baris, cari baris yang mengandungi nombor MyKad, lalu ambil baris di atasnya/di bawahnya.
+        const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        let detectedName = '';
+
+        if (mykadMatch) {
+          // Cari indeks baris yang ada nombor MyKad
+          const idx = lines.findIndex(line => line.includes(mykadMatch[1]));
+          // Cuba anggap nama adalah baris sebelum nombor MyKad
+          if (idx > 0) {
+            detectedName = lines[idx - 1];
+          }
+          // Jika tiada, cuba baris selepas nombor
+          if (!detectedName && idx >= 0 && idx < lines.length - 1) {
+            detectedName = lines[idx + 1];
+          }
+        }
+
+        // Jika tiada hasil, tandakan sebagai “TIDAK DIKESAN”
+        if (detectedName) {
+          nameInput.value = detectedName.toUpperCase();
+        } else {
+          nameInput.value = 'TIDAK DIKESAN';
+        }
+      }).catch(err => {
+        console.error('Ralat OCR:', err);
+        nameInput.value = 'RALAT';
+        mykadInput.value = 'RALAT';
+      });
+    }
+  </script>
+</body>
+</html>
