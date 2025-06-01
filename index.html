@@ -32,98 +32,82 @@
       background-color: #2b7a2b;
       color: white;
       cursor: pointer;
+      margin-top: 20px;
     }
-    .camera-preview {
-      width: 100%;
-      aspect-ratio: 4 / 3;
-      background: #ccc;
-      margin-top: 10px;
-      position: relative;
-    }
-    #callNumber {
+    #callBtn {
       display: none;
-      color: blue;
-      font-size: 14px;
-      position: absolute;
-      bottom: -30px;
-      right: 0;
-      text-decoration: underline;
-    }
-    #capturedImage {
-      width: 100%;
       margin-top: 10px;
+      color: blue;
+      text-align: right;
     }
-    #watermark {
+    #preview {
+      max-width: 100%;
+      margin-top: 10px;
+      border: 2px dashed #2b7a2b;
+      padding: 5px;
+      object-fit: contain;
+      transform: rotate(90deg); /* Landscape */
+    }
+    .watermark {
       position: absolute;
-      color: red;
-      font-weight: bold;
-      font-size: 18px;
       top: 10px;
       left: 10px;
-      z-index: 10;
+      color: red;
+      font-size: 18px;
+      font-weight: bold;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-  <h2>SENSORY RESIDENCE GUARD HOUSE REGISTRATION 2025</h2><label for="timestamp">Timestamp</label> <input type="text" id="timestamp" name="timestamp" readonly>
+  <h2>GUARD HOUSE REGISTRATION FORM</h2><label for="photo">TAKE PHOTO (MYKAD / LICENSE)</label> <input type="file" accept="image/*" capture="environment" id="photo" onchange="previewAndExtract(event)">
 
-<label for="name">Name</label> <input type="text" id="name" name="name">
+  <div class="watermark">MAHSING USE ONLY</div>
+  <img id="preview" src="#" alt="Image Preview" /><label for="name">NAME</label> <input type="text" id="name" placeholder="AUTO OR MANUAL">
 
-<label for="mykad">MyKad</label> <input type="text" id="mykad" name="mykad">
+<label for="ic">MYKAD / LICENSE NO.</label> <input type="text" id="ic" placeholder="AUTO OR MANUAL">
 
-<label for="phone">Phone Number</label> <input type="tel" id="phone" name="phone" maxlength="11" oninput="toggleCallButton()"> <a id="callNumber" href="#">CALL THIS NUMBER</a>
+<label for="phone">PHONE NUMBER</label> <input type="tel" id="phone" oninput="toggleCallBtn(this.value)">
 
-  <div class="camera-preview" id="cameraPreview">
-    <span id="watermark">MAHSING USE ONLY</span>
-    <video id="video" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
-  </div>
-  <button onclick="capturePhoto()">Take Photo</button>
-  <canvas id="canvas" style="display:none;"></canvas>
-  <img id="capturedImage" src="" alt="Captured Image">  <script>
-    const video = document.getElementById('video');
-    const canvas = document.getElementById('canvas');
-    const capturedImage = document.getElementById('capturedImage');
-
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-      .then(stream => {
-        video.srcObject = stream;
-      });
-
-    function toggleCallButton() {
-      const phone = document.getElementById("phone").value;
-      const callBtn = document.getElementById("callNumber");
-      if (phone.length === 10 || phone.length === 11) {
-        callBtn.href = `tel:${phone}`;
-        callBtn.style.display = "inline";
+  <div id="callBtn">
+    <a href="#" id="callLink">CALL THIS NUMBER</a>
+  </div>  <script>
+    function toggleCallBtn(value) {
+      const btn = document.getElementById("callBtn");
+      const link = document.getElementById("callLink");
+      if (value.replace(/\D/g, '').length >= 10) {
+        btn.style.display = "block";
+        link.href = `tel:${value}`;
       } else {
-        callBtn.style.display = "none";
+        btn.style.display = "none";
       }
     }
 
-    function capturePhoto() {
-      const context = canvas.getContext('2d');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0);
-      const dataUrl = canvas.toDataURL('image/jpeg');
-      capturedImage.src = dataUrl;
-      sendToAI(dataUrl);
-    }
+    async function previewAndExtract(event) {
+      const file = event.target.files[0];
+      if (!file) return;
 
-    function sendToAI(base64Image) {
-      fetch('https://gpt-autofill-vision.vercel.app/api/parse', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ image: base64Image })
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.name) document.getElementById('name').value = data.name;
-        if (data.mykad) document.getElementById('mykad').value = data.mykad;
-      })
-      .catch(err => alert("Autofill failed. Please try again."));
-    }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById("preview").src = e.target.result;
+      }
+      reader.readAsDataURL(file);
 
-    document.getElementById("timestamp").value = new Date().toLocaleString();
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const res = await fetch("https://ai-edos-mykad-endpoint.vercel.app/api/extract", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await res.json();
+        document.getElementById("name").value = data.name || "";
+        document.getElementById("ic").value = data.ic || "";
+      } catch (err) {
+        console.error("AI Extraction Failed", err);
+      }
+    }
   </script></body>
 </html>
