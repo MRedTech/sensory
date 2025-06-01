@@ -38,33 +38,6 @@
       margin-bottom: 5px;
       display: block;
     }
-    label {
-      display: block;
-      margin-top: 14px;
-      color: #2b7a2b;
-      font-weight: bold;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #2b7a2b;
-      border-radius: 4px;
-      text-transform: uppercase;
-      background-color: #ffffff;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-    }
-    button[type="submit"] {
-      background-color: #2b7a2b;
-      color: white;
-      font-weight: bold;
-      margin-top: 18px;
-      cursor: pointer;
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-    }
     .image-container {
       position: relative;
       display: none;
@@ -97,14 +70,32 @@
       pointer-events: none;
       letter-spacing: 2px;
     }
-    .footer {
-      text-align: center;
-      padding: 10px;
-      font-size: 11px;
-      color: #888888;
-      margin-top: 30px;
-      font-family: Arial, sans-serif;
+    label {
+      display: block;
+      margin-top: 14px;
+      color: #2b7a2b;
       font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #2b7a2b;
+      border-radius: 4px;
+      text-transform: uppercase;
+      background-color: #ffffff;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+    button[type="submit"] {
+      background-color: #2b7a2b;
+      color: white;
+      font-weight: bold;
+      margin-top: 18px;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
     }
     .call-link {
       display: none;
@@ -121,6 +112,15 @@
       position: relative;
       margin-bottom: 30px;
     }
+    .footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 11px;
+      color: #888888;
+      margin-top: 30px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -129,8 +129,11 @@
     <button type="button" id="takePhotoBtn" onclick="openCamera()">TAKE PICTURE</button>
     <span class="photo-label">Take photo of MyKad/Licence</span>
   </div>
+  <div class="image-container" id="imageContainer">
+    <img id="preview" src="#" alt="IMAGE PREVIEW">
+    <div class="watermark">MAHSING USE ONLY</div>
+  </div>
   <form id="registrationForm" autocomplete="off">
-    <!-- Timestamp -->
     <label for="timestamp">TIMESTAMP</label>
     <input type="text" id="timestamp" name="timestamp" readonly>
 
@@ -170,11 +173,6 @@
       <option value="TOWER B">TOWER B</option>
     </select>
 
-    <!-- Camera/image preview (hidden until needed) -->
-    <div class="image-container" id="imageContainer">
-      <img id="preview" src="#" alt="IMAGE PREVIEW">
-      <div class="watermark">MAHSING USE ONLY</div>
-    </div>
     <input type="file" accept="image/*" capture="environment" id="imageInput" style="display:none;">
     <button type="submit">SUBMIT</button>
   </form>
@@ -192,7 +190,7 @@
       document.getElementById('imageInput').click();
     }
 
-    // Compress & preview gambar sebelum dihantar ke AI endpoint
+    // Compress & preview gambar sebelum submit
     document.getElementById('imageInput').addEventListener('change', function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -202,7 +200,7 @@
         const img = new window.Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          // Resize if needed (contoh width max 800px)
+          // Resize if needed (width max 800px)
           const scale = Math.min(1, 800 / img.width);
           canvas.width = img.width * scale;
           canvas.height = img.height * scale;
@@ -214,15 +212,6 @@
           const preview = document.getElementById('preview');
           preview.src = compressed;
           document.getElementById('imageContainer').style.display = 'block';
-          // (Jika perlu hantar ke AI endpoint untuk autofill boleh tambah di sini)
-          // fetch("https://gpt-autofill-vision.vercel.app/api/parse", {
-          //   method: "POST",
-          //   body: JSON.stringify({ image: compressed }),
-          //   headers: { "Content-Type": "application/json" }
-          // })
-          // .then(res => res.json())
-          // .then(data => { /* Autofill jika perlu */ })
-          // .catch(err => { alert("FETCH ERROR: " + err); });
         };
         img.src = reader.result;
       };
