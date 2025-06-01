@@ -162,8 +162,8 @@
 
         fetch("https://script.google.com/macros/s/AKfycbxPF4FYaX8vwBPAoj_7kpdslJijBdoBCvKIicAZyfYO95JQ5NWXthusmIVP42qO0bSv/exec", {
           method: "POST",
-          body: JSON.stringify({ image: reader.result }),
-          headers: { "Content-Type": "application/json" }
+          body: formData({ image: reader.result }),
+          headers: 
         })
         .then(res => res.json())
         .then(data => {
