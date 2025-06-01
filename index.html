@@ -94,7 +94,7 @@
 </head>
 <body>
   <h2>SENSORY RESIDENCE GUARD HOUSE REGISTRATION 2025</h2>
-  <form id="registrationForm" method="POST" enctype="multipart/form-data">
+  <form id="registrationForm">
     <label for="image">TAKE PHOTO OF MYKAD/LICENSE:</label>
     <label for="image" class="custom-file-upload">TAKE PHOTO</label>
     <input type="file" accept="image/*" capture="environment" id="image" name="image" required>
@@ -188,7 +188,7 @@
           nameField.value = detectedName || "NOT FOUND";
         })
         .catch(err => {
-          alert("fecth ERROR: " + err); 
+          alert("fetch ERROR: " + err); 
           console.error("OCR Error:", err);
           document.getElementById("name").value = "ERROR";
           document.getElementById("mykad").value = "ERROR";
