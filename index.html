@@ -152,18 +152,35 @@
 
   <div class="footer">Powered By Mred Tech</div>
 
-  <script>
-    document.getElementById('image').addEventListener('change', function(event) {
-      var reader = new FileReader();
-      reader.onload = function() {
-        var preview = document.getElementById('preview');
-        preview.src = reader.result;
-        document.getElementById('imageContainer').style.display = 'block';
+  <img id="preview" style="width: 100%; display: none;" />
 
-        fetch("https://script.google.com/macros/s/AKfycbxPF4FYaX8vwBPAoj_7kpdslJijBdoBCvKIicAZyfYO95JQ5NWXthusmIVP42qO0bSv/exec", {
-          method: "POST",
-          body: formData({ image: reader.result }),
-          headers: 
+<script>
+document.getElementById('image').addEventListener('change', function(event) {
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var preview = document.getElementById('preview');
+    preview.src = reader.result;
+    preview.style.display = 'block';
+    document.getElementById('imageContainer').style.display = 'block';
+
+    const formData = new FormData();
+    formData.append("image", reader.result);
+
+    fetch("https://script.google.com/macros/s/AKfycbxPF4fYaX8vwBPAoj_7kpds1lijBdoBCv.../exec", {
+      method: "POST",
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      const mykadRegex = /\d{6}-\d{2}-\d{4}/;
+      const mykadMatch = data.text.match(mykadRegex);
+      // auto-fill logik
+    })
+    .catch(err => alert("Fetch Error: " + err);
+  };
+  reader.readAsDataURL(event.target.files[0]);
+});
+</script>
         })
         .then(res => res.json())
         .then(data => {
