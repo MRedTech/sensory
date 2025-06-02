@@ -108,30 +108,41 @@
       flex: 1;
       margin-right: 6px;
     }
+    /* Butang CALL bulat, hijau, 3D, besar */
     .call-btn-3d {
       display: none;
-      background: linear-gradient(145deg, #3bd97b 0%, #2b7a2b 100%);
+      background: linear-gradient(145deg, #40e685 0%, #166b35 100%);
       color: #fff;
       border: none;
       border-radius: 50%;
       width: 56px;
       height: 56px;
-      font-size: 16px;
+      font-size: 17px;
       font-family: Arial, sans-serif;
       font-weight: bold;
-      box-shadow: 0 4px 16px #8ed5a3, 0 1.5px 3px #3333;
+      box-shadow: 0 4px 18px #8ed5a3, 0 1.5px 3px #3333;
       cursor: pointer;
       transition: box-shadow 0.18s, transform 0.1s;
       justify-content: center;
       align-items: center;
       display: flex;
-      position: relative;
       margin-left: 4px;
       letter-spacing: 2px;
+      outline: none;
+      text-decoration: none;
+      position: relative;
+      z-index: 2;
+      border: 3px solid #d3f5d6;
+      /* efek glow hover */
+    }
+    .call-btn-3d:hover {
+      box-shadow: 0 0 20px 4px #62ffb2, 0 4px 18px #8ed5a3;
+      filter: brightness(1.05);
+      transition: box-shadow 0.18s, filter 0.15s;
     }
     .call-btn-3d:active {
       box-shadow: 0 2px 5px #bbb;
-      transform: translateY(2px) scale(0.97);
+      transform: translateY(2px) scale(0.96);
     }
     .footer {
       text-align: center;
@@ -164,7 +175,7 @@
     <label for="contact">CONTACT NUMBER</label>
     <div class="phone-container">
       <input type="text" id="contact" name="contact" required oninput="updateCallLink()">
-      <!-- Butang CALL 3D bulat -->
+      <!-- Butang CALL 3D bulat hijau -->
       <a id="callBtn" class="call-btn-3d" title="Call this number">CALL</a>
     </div>
 
@@ -198,7 +209,7 @@
     <input type="file" accept="image/*" capture="environment" id="imageInput" style="display:none;">
     <button type="submit" class="btn-3d submit-3d">SUBMIT</button>
   </form>
-  <div class="footer">Powered By Mred Tech</div>
+  <div class="footer">POWERED BY MRED TECH</div>
   <script>
     // Set timestamp automatik
     (function setTimestamp() {
