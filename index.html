@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SENSORY RESIDENCE GUARD HOUSE REGISTRATION 2025</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e9f5e9;
+      padding: 20px;
+      text-transform: uppercase;
+    }
+    h2 {
+      color: #2b7a2b;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+    .top-action {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    #takePhotoBtn {
+      background-color: #2b7a2b;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 12px 28px;
+      cursor: pointer;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+    }
+    .photo-label {
+      color: #2b7a2b;
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .image-container {
+      position: relative;
+      display: none;
+      margin-top: 12px;
+      margin-bottom: 15px;
+      width: 100%;
+      max-height: 260px;
+      overflow: hidden;
+      background-color: #f0f0f0;
+      border: 1px solid #2b7a2b;
+      border-radius: 4px;
+    }
+    .image-container img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      transform-origin: center;
+    }
+    .watermark {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      color: red;
+      background: rgba(255,255,255,0.6);
+      padding: 4px 12px;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      border-radius: 4px;
+      pointer-events: none;
+      letter-spacing: 2px;
+    }
+    label {
+      display: block;
+      margin-top: 14px;
+      color: #2b7a2b;
+      font-weight: bold;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #2b7a2b;
+      border-radius: 4px;
+      text-transform: uppercase;
+      background-color: #ffffff;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+    button[type="submit"] {
+      background-color: #2b7a2b;
+      color: white;
+      font-weight: bold;
+      margin-top: 18px;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+    }
+    .phone-container {
+      position: relative;
+      margin-bottom: 30px;
+    }
+    .call-icon {
+      display: none;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+    }
+    .footer {
+      text-align: center;
+      padding: 10px;
+      font-size: 11px;
+      color: #888888;
+      margin-top: 30px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h2>SENSORY RESIDENCE GUARD HOUSE REGISTRATION 2025</h2>
+  <div class="top-action">
+    <button type="button" id="takePhotoBtn" onclick="openCamera()">TAKE PICTURE</button>
+    <span class="photo-label">Take photo of MyKad/Licence</span>
+  </div>
+  <div class="image-container" id="imageContainer">
+    <img id="preview" src="#" alt="IMAGE PREVIEW">
+    <div class="watermark">MAHSING USE ONLY</div>
+  </div>
+  <form id="registrationForm" autocomplete="off">
+    <label for="timestamp">TIMESTAMP</label>
+    <input type="text" id="timestamp" name="timestamp" readonly>
+
+    <label for="regnum">REGISTRATION NUMBER</label>
+    <input type="text" id="regnum" name="regnum" required>
+
+    <label for="contact">CONTACT NUMBER</label>
+    <div class="phone-container">
+      <input type="text" id="contact" name="contact" required oninput="updateCallLink()">
+      <a href="#" id="callIcon" class="call-icon" target="_blank" title="Call this number" style="display:none;">
+        <!-- SVG 3D ikon telefon hijau lembut -->
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="12" fill="#8ee79c"/>
+          <path d="M17.707 15.293l-2-2a1 1 0 0 0-1.414 0l-.586.586a14.051 14.051 0 0 1-6.293-6.293l.586-.586a1 1 0 0 0 0-1.414l-2-2A1 1 0 0 0 4.293 3.293l-1 1A2.993 2.993 0 0 0 2 7c0 8.837 7.163 16 16 16a2.993 2.993 0 0 0 2.707-1.293l1-1a1 1 0 0 0 0-1.414z" fill="#1a6131"/>
+        </svg>
+      </a>
+    </div>
+
+    <label for="remark">CATEGORY</label>
+    <select id="remark" name="remark" required>
+      <option value="DROP OFF/PICK UP">DROP OFF/PICK UP</option>
+      <option value="E-HAILING">E-HAILING</option>
+      <option value="FLASH EXPRESS">FLASH EXPRESS</option>
+      <option value="FOOD PANDA">FOOD PANDA</option>
+      <option value="GDEX">GDEX</option>
+      <option value="GRAB FOOD">GRAB FOOD</option>
+      <option value="J&T EXPRESS">J&T EXPRESS</option>
+      <option value="LALAMOVE">LALAMOVE</option>
+      <option value="LAZADA">LAZADA</option>
+      <option value="MCD FOOD DELIVERY">MCD FOOD DELIVERY</option>
+      <option value="OWNER">OWNER</option>
+      <option value="SHOPEE EXPRESS">SHOPEE EXPRESS</option>
+      <option value="SHOPEE FOOD">SHOPEE FOOD</option>
+      <option value="TENANT">TENANT</option>
+      <option value="OTHER">OTHER</option>
+    </select>
+    <input type="text" id="unitNumber" name="unitNumber" placeholder="UNIT NUMBER" style="display:none; margin-top:10px;">
+    <input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;">
+
+    <label for="tower">TOWER</label>
+    <select id="tower" name="tower" required>
+      <option value="TOWER A">TOWER A</option>
+      <option value="TOWER B">TOWER B</option>
+    </select>
+
+    <input type="file" accept="image/*" capture="environment" id="imageInput" style="display:none;">
+    <button type="submit">SUBMIT</button>
+  </form>
+  <div class="footer">Powered By Mred Tech</div>
+  <script>
+    // Set timestamp automatik
+    (function setTimestamp() {
+      const timestampInput = document.getElementById('timestamp');
+      const now = new Date();
+      timestampInput.value = now.toLocaleDateString().toUpperCase() + " " + now.toLocaleTimeString().toUpperCase();
+    })();
+
+    // Fungsi buka kamera bila tekan button sahaja
+    function openCamera() {
+      document.getElementById('imageInput').click();
+    }
+
+    // Compress & preview gambar sebelum submit
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function() {
+        const img = new window.Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const scale = Math.min(1, 800 / img.width);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const compressed = canvas.toDataURL('image/jpeg', 0.7);
+          const preview = document.getElementById('preview');
+          preview.src = compressed;
+          document.getElementById('imageContainer').style.display = 'block';
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Ganti updateCallLink dengan ikon
+    function updateCallLink() {
+      const phone = document.getElementById('contact').value.trim();
+      const icon = document.getElementById('callIcon');
+      if (phone.length >= 10) {
+        icon.href = 'tel:' + phone;
+        icon.style.display = 'block';
+      } else {
+        icon.style.display = 'none';
+      }
+    }
+
+    // Logic kategori tambahan
+    const remarkSelect = document.getElementById('remark');
+    const otherField = document.getElementById('otherCategory');
+    const unitField = document.getElementById('unitNumber');
+    remarkSelect.addEventListener('change', function() {
+      const value = this.value;
+      otherField.style.display = (value === 'OTHER') ? 'block' : 'none';
+      unitField.style.display = (value === 'OWNER' || value === 'TENANT') ? 'block' : 'none';
+      if (value !== 'OTHER') otherField.value = '';
+      if (value !== 'OWNER' && value !== 'TENANT') unitField.value = '';
+    });
+
+    // Validasi submit
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      const remark = remarkSelect.value;
+      const other = otherField.value.trim();
+      const unit = unitField.value.trim();
+      if (remark === 'OTHER' && other === '') {
+        alert('PLEASE SPECIFY OTHER CATEGORY.');
+        e.preventDefault();
+        return;
+      }
+      if ((remark === 'OWNER' || remark === 'TENANT') && unit === '') {
+        alert('PLEASE ENTER UNIT NUMBER.');
+        e.preventDefault();
+        return;
+      }
+    });
+  </script>
+</body>
+</html>
