@@ -169,7 +169,7 @@
 
     <label for="contact">CONTACT NUMBER</label>
     <div class="phone-container">
-      <input type="text" id="contact" name="contact" required oninput="updateCallLink()" maxlength="15" autocomplete="off">
+      <input type="tel" id="contact" name="contact" required oninput="updateCallLink()" maxlength="15" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
       <!-- Butang CALL, hanya keluar selepas 10 digit -->
       <a id="callBtn" class="call-btn-3d" title="Call this number" style="display:none;" target="_blank"><span>CALL</span></a>
     </div>
