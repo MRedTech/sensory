@@ -110,23 +110,31 @@
     }
     .call-btn-3d {
       display: none;
-      background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
-      color: #fff;
+      background: transparent;
       border: none;
       border-radius: 50%;
-      width: 46px;
-      height: 46px;
-      font-size: 22px;
+      width: 48px;
+      height: 48px;
+      padding: 0;
       box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333;
+      cursor: pointer;
       justify-content: center;
       align-items: center;
-      cursor: pointer;
       transition: box-shadow 0.18s, transform 0.1s;
       position: relative;
     }
     .call-btn-3d:active {
       box-shadow: 0 2px 5px #bbb;
       transform: translateY(2px) scale(0.98);
+    }
+    .call-btn-3d img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: #fff;
+      /* Untuk highlight 3D border */
+      box-shadow: 0 0 10px #b7e3bb;
     }
     .footer {
       text-align: center;
@@ -138,7 +146,6 @@
       font-weight: bold;
     }
   </style>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.370.0/font/lucide.css">
 </head>
 <body>
   <h2>SENSORY RESIDENCE GUARD HOUSE REGISTRATION 2025</h2>
@@ -160,7 +167,10 @@
     <label for="contact">CONTACT NUMBER</label>
     <div class="phone-container">
       <input type="text" id="contact" name="contact" required oninput="updateCallLink()">
-      <a id="callBtn" class="call-btn-3d" title="Call this number"><i class="lucide lucide-phone"></i></a>
+      <!-- Butang call dengan icon 3D yang diberi -->
+      <a id="callBtn" class="call-btn-3d" title="Call this number">
+        <img src="https://chat.openai.com/file-SDmA9qMcqYwT4YfeDGdAZb" alt="Call" draggable="false" />
+      </a>
     </div>
 
     <label for="remark">CATEGORY</label>
