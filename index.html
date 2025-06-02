@@ -108,41 +108,36 @@
       flex: 1;
       margin-right: 6px;
     }
-    /* Butang CALL bulat, hijau, 3D, besar */
     .call-btn-3d {
-      display: none;
-      background: linear-gradient(145deg, #40e685 0%, #166b35 100%);
+      display: none; /* Mula-mula hidden */
+      background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
       color: #fff;
       border: none;
       border-radius: 50%;
       width: 56px;
       height: 56px;
-      font-size: 17px;
-      font-family: Arial, sans-serif;
+      font-size: 19px;
       font-weight: bold;
-      box-shadow: 0 4px 18px #8ed5a3, 0 1.5px 3px #3333;
-      cursor: pointer;
-      transition: box-shadow 0.18s, transform 0.1s;
+      box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333;
       justify-content: center;
       align-items: center;
-      display: flex;
-      margin-left: 4px;
-      letter-spacing: 2px;
+      cursor: pointer;
+      transition: box-shadow 0.18s, transform 0.1s;
+      position: relative;
+      margin-left: 5px;
       outline: none;
       text-decoration: none;
-      position: relative;
-      z-index: 2;
-      border: 3px solid #d3f5d6;
-      /* efek glow hover */
     }
-    .call-btn-3d:hover {
-      box-shadow: 0 0 20px 4px #62ffb2, 0 4px 18px #8ed5a3;
-      filter: brightness(1.05);
-      transition: box-shadow 0.18s, filter 0.15s;
+    .call-btn-3d span {
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      color: #fff;
     }
     .call-btn-3d:active {
       box-shadow: 0 2px 5px #bbb;
-      transform: translateY(2px) scale(0.96);
+      transform: translateY(2px) scale(0.98);
     }
     .footer {
       text-align: center;
@@ -174,9 +169,9 @@
 
     <label for="contact">CONTACT NUMBER</label>
     <div class="phone-container">
-      <input type="text" id="contact" name="contact" required oninput="updateCallLink()">
-      <!-- Butang CALL 3D bulat hijau -->
-      <a id="callBtn" class="call-btn-3d" title="Call this number">CALL</a>
+      <input type="text" id="contact" name="contact" required oninput="updateCallLink()" maxlength="15" autocomplete="off">
+      <!-- Butang CALL, hanya keluar selepas 10 digit -->
+      <a id="callBtn" class="call-btn-3d" title="Call this number" style="display:none;" target="_blank"><span>CALL</span></a>
     </div>
 
     <label for="remark">CATEGORY</label>
@@ -251,7 +246,7 @@
       reader.readAsDataURL(file);
     });
 
-    // Call this number (10 digit, button 3D right)
+    // Butang CALL (10 digit, muncul kanan, 3D)
     function updateCallLink() {
       const phone = document.getElementById('contact').value.trim();
       const callBtn = document.getElementById('callBtn');
