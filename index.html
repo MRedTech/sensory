@@ -288,6 +288,19 @@
         alert('PLEASE ENTER UNIT NUMBER.');
         e.preventDefault();
         return;
+        // Tukar space jadi '-' automatik pada UNIT NUMBER
+document.getElementById('unitNumber').addEventListener('keydown', function(e) {
+  // Pastikan hanya trigger bila tekan space
+  if (e.key === ' ') {
+    e.preventDefault();
+    const pos = this.selectionStart;
+    const value = this.value;
+    // Insert "-" di posisi kursor
+    this.value = value.slice(0, pos) + '-' + value.slice(pos);
+    // Gerakkan kursor selepas "-"
+    this.selectionStart = this.selectionEnd = pos + 1;
+  }
+});
       }
     });
   </script>
