@@ -11,25 +11,47 @@
       text-transform: uppercase;
     }
     h2 {
-      color: #2b7a2b;
+      background: linear-gradient(90deg, #a8ff78 0%, #78ffd6 100%);
+      color: #226e31;
       text-align: center;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
+      padding: 16px 0 12px 0;
+      border-radius: 18px;
+      font-size: 1.6em;
+      letter-spacing: 2px;
+      box-shadow: 0 6px 24px #2b7a2b22;
+      font-weight: bold;
+      text-shadow: 0 2px 6px #f2fff866;
     }
     .top-action {
       text-align: center;
       margin-bottom: 18px;
     }
     #takePhotoBtn {
-      background-color: #2b7a2b;
-      color: white;
+      background: linear-gradient(90deg, #76f390 0%, #5ed1a2 100%);
+      color: #134c23;
       border: none;
-      border-radius: 4px;
-      font-size: 16px;
+      border-radius: 26px;
+      font-size: 17px;
       font-weight: bold;
-      padding: 12px 28px;
+      padding: 13px 36px;
       cursor: pointer;
       letter-spacing: 2px;
-      margin-bottom: 5px;
+      margin-bottom: 7px;
+      box-shadow: 0 4px 18px #79dcb344;
+      position: relative;
+      transition: box-shadow 0.3s, transform 0.16s;
+      outline: none;
+      animation: pulse-glow 1.8s infinite;
+    }
+    #takePhotoBtn:active, #takePhotoBtn:focus, #takePhotoBtn:hover {
+      box-shadow: 0 0 18px 6px #79dcb3bb;
+      transform: scale(1.04);
+    }
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 12px 1px #4ded7c66; }
+      70% { box-shadow: 0 0 30px 5px #6bfa9880; }
+      100% { box-shadow: 0 0 12px 1px #4ded7c66; }
     }
     .photo-label {
       color: #2b7a2b;
@@ -48,7 +70,8 @@
       overflow: hidden;
       background-color: #f0f0f0;
       border: 1px solid #2b7a2b;
-      border-radius: 4px;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px #4ded7c22;
     }
     .image-container img {
       width: 100%;
@@ -61,7 +84,7 @@
       bottom: 8px;
       right: 8px;
       color: red;
-      background: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.7);
       padding: 4px 12px;
       font-size: 14px;
       font-family: Arial, sans-serif;
@@ -69,33 +92,63 @@
       border-radius: 4px;
       pointer-events: none;
       letter-spacing: 2px;
+      box-shadow: 0 2px 8px #eee;
+    }
+    form {
+      max-width: 440px;
+      margin: 0 auto;
+      background: #f9fff9;
+      border-radius: 16px;
+      padding: 22px 16px 16px 16px;
+      box-shadow: 0 4px 24px #aadbb966;
     }
     label {
       display: block;
       margin-top: 14px;
-      color: #2b7a2b;
+      color: #226e31;
       font-weight: bold;
+      letter-spacing: 1px;
+      font-size: 15px;
     }
-    input, select, button {
+    input, select {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #2b7a2b;
-      border-radius: 4px;
-      text-transform: uppercase;
+      padding: 13px;
+      margin-top: 6px;
+      border: 1.5px solid #71d1b3;
+      border-radius: 10px;
       background-color: #ffffff;
       box-sizing: border-box;
       font-family: Arial, sans-serif;
-      font-size: 14px;
+      font-size: 15px;
+      letter-spacing: 1px;
+      transition: border-color 0.25s, box-shadow 0.15s;
+      outline: none;
+    }
+    input:focus, select:focus {
+      border-color: #3fd99f;
+      box-shadow: 0 0 0 2px #e2fff4cc;
     }
     button[type="submit"] {
-      background-color: #2b7a2b;
+      background: linear-gradient(90deg, #2b7a2b 30%, #8ee79c 100%);
       color: white;
       font-weight: bold;
       margin-top: 18px;
       cursor: pointer;
       font-family: Arial, sans-serif;
-      font-size: 16px;
+      font-size: 17px;
+      border-radius: 22px;
+      box-shadow: 0 2px 18px #2b7a2b1a;
+      padding: 13px 0;
+      letter-spacing: 2px;
+      outline: none;
+      border: none;
+      width: 100%;
+      transition: box-shadow 0.3s, transform 0.15s;
+      animation: pulse-glow 2.2s infinite;
+    }
+    button[type="submit"]:hover, button[type="submit"]:focus {
+      box-shadow: 0 0 20px 5px #58e0957c;
+      transform: scale(1.04);
     }
     .phone-container {
       position: relative;
@@ -112,7 +165,7 @@
       border-radius: 50%;
       width: 44px;
       height: 44px;
-      box-shadow: 0 2px 8px rgba(33, 107, 48, 0.12);
+      box-shadow: 0 2px 8px rgba(33, 107, 48, 0.13);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -126,8 +179,8 @@
       display: block;
     }
     .call-icon:hover {
-      box-shadow: 0 4px 16px rgba(33, 107, 48, 0.25);
-      transform: translateY(-50%) scale(1.10);
+      box-shadow: 0 4px 16px rgba(33, 107, 48, 0.19);
+      transform: translateY(-50%) scale(1.12);
     }
     @keyframes pulse {
       0% { box-shadow: 0 0 0 0 #8ee79c88; }
@@ -171,6 +224,45 @@
       margin-top: 30px;
       font-family: Arial, sans-serif;
       font-weight: bold;
+    }
+    /* Popup Success */
+    #successPopup {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; right: 0; top: 0; bottom: 0;
+      background: rgba(62, 180, 120, 0.22);
+      align-items: center;
+      justify-content: center;
+    }
+    #successPopup .popup-content {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px #2b7a2b33;
+      padding: 36px 32px 28px 32px;
+      text-align: center;
+      max-width: 320px;
+      margin: auto;
+      animation: popup-in 0.5s;
+    }
+    @keyframes popup-in {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .popup-emoji {
+      font-size: 44px;
+      margin-bottom: 12px;
+    }
+    .popup-text {
+      font-size: 20px;
+      font-weight: bold;
+      color: #226e31;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .popup-desc {
+      font-size: 14px;
+      color: #267453;
     }
   </style>
 </head>
@@ -235,6 +327,15 @@
     <button type="submit">SUBMIT</button>
   </form>
   <div class="footer">Powered By Mred Tech</div>
+
+  <!-- Popup Success -->
+  <div id="successPopup">
+    <div class="popup-content">
+      <div class="popup-emoji">👮‍♂️✅</div>
+      <div class="popup-text">SUCCESS!</div>
+      <div class="popup-desc">Data telah direkod. Terima kasih.</div>
+    </div>
+  </div>
   <script>
     // Set timestamp automatik
     (function setTimestamp() {
@@ -298,7 +399,7 @@
       if (value !== 'OWNER' && value !== 'TENANT') unitField.value = '';
     });
 
-    // Validasi submit
+    // Validasi & feedback submit
     document.getElementById('registrationForm').addEventListener('submit', function(e) {
       const remark = remarkSelect.value;
       const other = otherField.value.trim();
@@ -313,7 +414,5 @@
         e.preventDefault();
         return;
       }
-    });
-  </script>
-</body>
-</html>
+      // Popup feedback
+      e.preventDefault();
