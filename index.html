@@ -4,7 +4,238 @@
   <title>SENSORY RESIDENCE GUARD HOUSE REGISTRATION 2025</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* ... (semua CSS dari mesej sebelum ni, jangan ubah, teruskan dari sini) ... */
+    body {
+      background: linear-gradient(135deg, #f0fff0 0%, #e9fbe9 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    h2 {
+      margin: 0;
+      padding: 30px 10px 16px 10px;
+      text-align: center;
+      background: linear-gradient(90deg,#b4ffb0 40%, #a0ffc7 100%);
+      border-radius: 36px;
+      color: #176c35;
+      font-size: 2.3em;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-top: 34px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 32px #b3ffc377;
+      max-width: 96vw;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .top-action {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 4px;
+    }
+    #takePhotoBtn {
+      font-size: 1.4em;
+      background: linear-gradient(90deg, #46e368 70%, #4cebaf 100%);
+      color: #184f26;
+      border: none;
+      padding: 18px 50px;
+      border-radius: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 5px;
+      margin-top: 0;
+      box-shadow: 0 3px 20px #a6e6ba90;
+      transition: transform 0.12s, box-shadow 0.2s;
+      outline: none;
+      position: relative;
+    }
+    #takePhotoBtn:active {
+      transform: scale(0.96);
+      box-shadow: 0 2px 10px #5df88c90;
+    }
+    #takePhotoBtn.pulse {
+      animation: pulseGlow 1.2s infinite;
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 #6debaa88; }
+      60% { box-shadow: 0 0 32px 4px #38f5a577; }
+      100% { box-shadow: 0 0 0 0 #6debaa00; }
+    }
+    .photo-label {
+      color: #176c35;
+      font-size: 1.1em;
+      font-weight: 600;
+      margin-top: 5px;
+      margin-bottom: 9px;
+      letter-spacing: 0.5px;
+    }
+    .image-container {
+      position: relative;
+      max-width: 410px;
+      margin: 8px auto 8px auto;
+      display: none;
+    }
+    #preview {
+      width: 100%;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #55dfb288;
+      background: #d5ffe0;
+      min-height: 120px;
+      object-fit: contain;
+      display: block;
+    }
+    .watermark {
+      position: absolute;
+      bottom: 15px;
+      right: 12px;
+      font-size: 1.1em;
+      color: #e94343;
+      font-weight: bold;
+      background: #fff7;
+      padding: 2px 13px;
+      border-radius: 9px;
+      pointer-events: none;
+      user-select: none;
+      font-family: inherit;
+      letter-spacing: 1.2px;
+    }
+    form {
+      background: #f7fff7;
+      border-radius: 26px;
+      box-shadow: 0 3px 36px #d3f8d577;
+      max-width: 470px;
+      margin: 0 auto 14px auto;
+      padding: 24px 14px 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    label {
+      font-weight: bold;
+      color: #28753c;
+      font-size: 1.12em;
+      margin-top: 9px;
+      margin-bottom: 2px;
+      letter-spacing: 1px;
+    }
+    input[type="text"], select {
+      font-size: 1.13em;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1.7px solid #4ed488;
+      margin-bottom: 4px;
+      background: #fff;
+      color: #1e4822;
+      box-shadow: 0 1.5px 0 #f4fff7;
+      transition: border 0.19s, box-shadow 0.19s;
+      outline: none;
+    }
+    input[type="text"]:focus, select:focus {
+      border: 1.7px solid #45c17c;
+      box-shadow: 0 0 0 2.5px #65eea045;
+    }
+    .regnum-input {
+      font-family: "Courier New", monospace;
+      letter-spacing: 2.3px;
+      font-size: 1.14em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+    .phone-container {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .call-icon {
+      display: none;
+      margin-left: -33px;
+      align-items: center;
+      cursor: pointer;
+      text-decoration: none;
+      padding: 2px 0 2px 2px;
+      border-radius: 18px;
+      position: relative;
+      transition: background 0.12s;
+      outline: none;
+    }
+    .call-icon svg {
+      vertical-align: middle;
+      display: block;
+      width: 29px; height: 29px;
+      filter: drop-shadow(0 2px 8px #8ffac3b9);
+    }
+    .call-icon:active {
+      background: #d8fff6;
+    }
+    .call-tooltip {
+      visibility: hidden;
+      opacity: 0;
+      background: #184f26;
+      color: #fff;
+      border-radius: 7px;
+      padding: 2.5px 9px;
+      position: absolute;
+      left: 108%;
+      top: 38%;
+      z-index: 10;
+      font-size: 0.96em;
+      font-weight: 600;
+      pointer-events: none;
+      transition: opacity 0.17s;
+      white-space: nowrap;
+    }
+    .call-icon:hover .call-tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+    .call-icon.pulse {
+      animation: pulseGlow 1.3s infinite;
+    }
+    button[type="submit"], #takePhotoBtn {
+      margin-top: 17px;
+      font-size: 1.2em;
+      font-weight: bold;
+      letter-spacing: 1.2px;
+      background: linear-gradient(90deg, #33e073 60%, #55ebbe 100%);
+      color: #184f26;
+      border: none;
+      padding: 15px 35px;
+      border-radius: 23px;
+      box-shadow: 0 3px 20px #a6e6ba90;
+      cursor: pointer;
+      outline: none;
+      transition: background 0.12s, box-shadow 0.16s, transform 0.13s;
+    }
+    button[type="submit"]:active, #takePhotoBtn:active {
+      background: linear-gradient(90deg, #36cf77 60%, #6fdcae 100%);
+      box-shadow: 0 2px 8px #7ae68b55;
+      transform: scale(0.98);
+    }
+    button.pulse {
+      animation: pulseGlow 1.13s infinite;
+    }
+    .footer {
+      margin: 30px 0 13px 0;
+      color: #419763;
+      text-align: center;
+      font-size: 1.09em;
+      font-weight: 700;
+      letter-spacing: 1px;
+      opacity: 0.9;
+      font-family: inherit;
+    }
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 1.28em;
+        padding: 19px 6px 12px 6px;
+      }
+      form {
+        padding: 12px 3.5vw 10px 3.5vw;
+      }
+      .image-container { max-width: 97vw; }
+    }
   </style>
 </head>
 <body>
