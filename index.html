@@ -288,13 +288,14 @@
         alert('PLEASE ENTER UNIT NUMBER.');
         e.preventDefault();
         return;
-        // Tukar space jadi '-' automatik pada UNIT NUMBER
-// Tukar SPACE ke "-" & auto UPPERCASE untuk UNIT NUMBER
-document.getElementById('unitNumber').addEventListener('input', function() {
-  this.value = this.value.replace(/ /g, "-").toUpperCase();
-});
       }
     });
+
+    // Tukar SPACE ke "-" & auto UPPERCASE untuk UNIT NUMBER
+    document.getElementById('unitNumber').addEventListener('input', function(e) {
+      this.value = this.value.replace(/ /g, "-").toUpperCase();
+    });
+    
   </script>
 </body>
 </html>
