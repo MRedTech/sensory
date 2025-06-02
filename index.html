@@ -6,17 +6,18 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #e9f5e9;
-      padding: 20px;
+      background: #e9f5e9;
+      padding: 0;
+      margin: 0;
       text-transform: uppercase;
     }
     h2 {
       background: linear-gradient(90deg, #a8ff78 0%, #78ffd6 100%);
       color: #226e31;
       text-align: center;
-      margin-bottom: 16px;
-      padding: 16px 0 12px 0;
-      border-radius: 18px;
+      margin: 0;
+      padding: 36px 0 18px 0;
+      border-radius: 32px 32px 28px 28px;
       font-size: 1.6em;
       letter-spacing: 2px;
       box-shadow: 0 6px 24px #2b7a2b22;
@@ -26,18 +27,19 @@
     .top-action {
       text-align: center;
       margin-bottom: 18px;
+      margin-top: -22px;
     }
     #takePhotoBtn {
       background: linear-gradient(90deg, #76f390 0%, #5ed1a2 100%);
       color: #134c23;
       border: none;
       border-radius: 26px;
-      font-size: 17px;
+      font-size: 20px;
       font-weight: bold;
-      padding: 13px 36px;
+      padding: 16px 38px;
       cursor: pointer;
       letter-spacing: 2px;
-      margin-bottom: 7px;
+      margin-bottom: 8px;
       box-shadow: 0 4px 18px #79dcb344;
       position: relative;
       transition: box-shadow 0.3s, transform 0.16s;
@@ -57,54 +59,20 @@
       color: #2b7a2b;
       font-weight: bold;
       font-size: 15px;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
       display: block;
-    }
-    .image-container {
-      position: relative;
-      display: none;
-      margin-top: 12px;
-      margin-bottom: 15px;
-      width: 100%;
-      max-height: 260px;
-      overflow: hidden;
-      background-color: #f0f0f0;
-      border: 1px solid #2b7a2b;
-      border-radius: 10px;
-      box-shadow: 0 4px 16px #4ded7c22;
-    }
-    .image-container img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      transform-origin: center;
-    }
-    .watermark {
-      position: absolute;
-      bottom: 8px;
-      right: 8px;
-      color: red;
-      background: rgba(255,255,255,0.7);
-      padding: 4px 12px;
-      font-size: 14px;
-      font-family: Arial, sans-serif;
-      font-weight: bold;
-      border-radius: 4px;
-      pointer-events: none;
-      letter-spacing: 2px;
-      box-shadow: 0 2px 8px #eee;
     }
     form {
       max-width: 440px;
-      margin: 0 auto;
+      margin: 30px auto 0 auto;
       background: #f9fff9;
-      border-radius: 16px;
-      padding: 22px 16px 16px 16px;
-      box-shadow: 0 4px 24px #aadbb966;
+      border-radius: 24px;
+      padding: 22px 14px 22px 14px;
+      box-shadow: 0 4px 32px #aadbb966;
     }
     label {
       display: block;
-      margin-top: 14px;
+      margin-top: 18px;
       color: #226e31;
       font-weight: bold;
       letter-spacing: 1px;
@@ -115,11 +83,11 @@
       padding: 13px;
       margin-top: 6px;
       border: 1.5px solid #71d1b3;
-      border-radius: 10px;
+      border-radius: 13px;
       background-color: #ffffff;
       box-sizing: border-box;
       font-family: Arial, sans-serif;
-      font-size: 15px;
+      font-size: 16px;
       letter-spacing: 1px;
       transition: border-color 0.25s, box-shadow 0.15s;
       outline: none;
@@ -128,37 +96,15 @@
       border-color: #3fd99f;
       box-shadow: 0 0 0 2px #e2fff4cc;
     }
-    button[type="submit"] {
-      background: linear-gradient(90deg, #2b7a2b 30%, #8ee79c 100%);
-      color: white;
-      font-weight: bold;
-      margin-top: 18px;
-      cursor: pointer;
-      font-family: Arial, sans-serif;
-      font-size: 17px;
-      border-radius: 22px;
-      box-shadow: 0 2px 18px #2b7a2b1a;
-      padding: 13px 0;
-      letter-spacing: 2px;
-      outline: none;
-      border: none;
-      width: 100%;
-      transition: box-shadow 0.3s, transform 0.15s;
-      animation: pulse-glow 2.2s infinite;
-    }
-    button[type="submit"]:hover, button[type="submit"]:focus {
-      box-shadow: 0 0 20px 5px #58e0957c;
-      transform: scale(1.04);
-    }
     .phone-container {
       position: relative;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
     }
     .call-icon {
       display: none;
       position: absolute;
       top: 50%;
-      right: 10px;
+      right: 8px;
       transform: translateY(-50%);
       cursor: pointer;
       background: #8ee79c;
@@ -174,21 +120,17 @@
       transition: box-shadow 0.3s, transform 0.2s;
     }
     .call-icon svg {
-      width: 24px;
-      height: 24px;
+      width: 26px;
+      height: 26px;
       display: block;
     }
-    .call-icon:hover {
-      box-shadow: 0 4px 16px rgba(33, 107, 48, 0.19);
-      transform: translateY(-50%) scale(1.12);
+    .call-icon.pulse {
+      animation: pulse 1.5s infinite;
     }
     @keyframes pulse {
       0% { box-shadow: 0 0 0 0 #8ee79c88; }
       70% { box-shadow: 0 0 0 14px #8ee79c00; }
       100% { box-shadow: 0 0 0 0 #8ee79c00; }
-    }
-    .call-icon.pulse {
-      animation: pulse 1.5s infinite;
     }
     .call-tooltip {
       visibility: hidden;
@@ -216,6 +158,62 @@
       visibility: visible;
       opacity: 1;
     }
+    .image-container {
+      position: relative;
+      display: none;
+      margin-top: 10px;
+      margin-bottom: 15px;
+      width: 100%;
+      max-height: 240px;
+      overflow: hidden;
+      background-color: #f0f0f0;
+      border: 1px solid #2b7a2b;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px #4ded7c22;
+    }
+    .image-container img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      transform-origin: center;
+    }
+    .watermark {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      color: red;
+      background: rgba(255,255,255,0.85);
+      padding: 4px 12px;
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      border-radius: 4px;
+      pointer-events: none;
+      letter-spacing: 2px;
+      box-shadow: 0 2px 8px #eee;
+    }
+    button[type="submit"] {
+      background: linear-gradient(90deg, #2b7a2b 30%, #8ee79c 100%);
+      color: white;
+      font-weight: bold;
+      margin-top: 18px;
+      cursor: pointer;
+      font-family: Arial, sans-serif;
+      font-size: 17px;
+      border-radius: 22px;
+      box-shadow: 0 2px 18px #2b7a2b1a;
+      padding: 13px 0;
+      letter-spacing: 2px;
+      outline: none;
+      border: none;
+      width: 100%;
+      transition: box-shadow 0.3s, transform 0.15s;
+      animation: pulse-glow 2.2s infinite;
+    }
+    button[type="submit"]:hover, button[type="submit"]:focus {
+      box-shadow: 0 0 20px 5px #58e0957c;
+      transform: scale(1.04);
+    }
     .footer {
       text-align: center;
       padding: 10px;
@@ -225,44 +223,9 @@
       font-family: Arial, sans-serif;
       font-weight: bold;
     }
-    /* Popup Success */
-    #successPopup {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      left: 0; right: 0; top: 0; bottom: 0;
-      background: rgba(62, 180, 120, 0.22);
-      align-items: center;
-      justify-content: center;
-    }
-    #successPopup .popup-content {
-      background: #fff;
-      border-radius: 18px;
-      box-shadow: 0 8px 32px #2b7a2b33;
-      padding: 36px 32px 28px 32px;
-      text-align: center;
-      max-width: 320px;
-      margin: auto;
-      animation: popup-in 0.5s;
-    }
-    @keyframes popup-in {
-      0% { transform: scale(0.9); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .popup-emoji {
-      font-size: 44px;
-      margin-bottom: 12px;
-    }
-    .popup-text {
-      font-size: 20px;
-      font-weight: bold;
-      color: #226e31;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-    .popup-desc {
-      font-size: 14px;
-      color: #267453;
+    @media (max-width: 600px) {
+      h2 { font-size: 1.15em; padding: 22px 0 12px 0; }
+      form { padding: 10px 5px 14px 5px; }
     }
   </style>
 </head>
@@ -270,7 +233,7 @@
   <h2>SENSORY RESIDENCE GUARD HOUSE REGISTRATION 2025</h2>
   <div class="top-action">
     <button type="button" id="takePhotoBtn" onclick="openCamera()">TAKE PICTURE</button>
-    <span class="photo-label">Take photo of MyKad/Licence</span>
+    <span class="photo-label">TAKE PHOTO OF MYKAD/LICENCE</span>
   </div>
   <div class="image-container" id="imageContainer">
     <img id="preview" src="#" alt="IMAGE PREVIEW">
@@ -279,10 +242,8 @@
   <form id="registrationForm" autocomplete="off">
     <label for="timestamp">TIMESTAMP</label>
     <input type="text" id="timestamp" name="timestamp" readonly>
-
     <label for="regnum">REGISTRATION NUMBER</label>
     <input type="text" id="regnum" name="regnum" required>
-
     <label for="contact">CONTACT NUMBER</label>
     <div class="phone-container">
       <input type="text" id="contact" name="contact" required oninput="updateCallLink()">
@@ -295,7 +256,6 @@
         <span class="call-tooltip">Call this number</span>
       </a>
     </div>
-
     <label for="remark">CATEGORY</label>
     <select id="remark" name="remark" required>
       <option value="DROP OFF/PICK UP">DROP OFF/PICK UP</option>
@@ -316,40 +276,29 @@
     </select>
     <input type="text" id="unitNumber" name="unitNumber" placeholder="UNIT NUMBER" style="display:none; margin-top:10px;">
     <input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;">
-
     <label for="tower">TOWER</label>
     <select id="tower" name="tower" required>
       <option value="TOWER A">TOWER A</option>
       <option value="TOWER B">TOWER B</option>
     </select>
-
     <input type="file" accept="image/*" capture="environment" id="imageInput" style="display:none;">
     <button type="submit">SUBMIT</button>
   </form>
   <div class="footer">Powered By Mred Tech</div>
-
-  <!-- Popup Success -->
-  <div id="successPopup">
-    <div class="popup-content">
-      <div class="popup-emoji">👮‍♂️✅</div>
-      <div class="popup-text">SUCCESS!</div>
-      <div class="popup-desc">Data telah direkod. Terima kasih.</div>
-    </div>
-  </div>
   <script>
-    // Set timestamp automatik
+    // Timestamp
     (function setTimestamp() {
       const timestampInput = document.getElementById('timestamp');
       const now = new Date();
       timestampInput.value = now.toLocaleDateString().toUpperCase() + " " + now.toLocaleTimeString().toUpperCase();
     })();
 
-    // Fungsi buka kamera bila tekan button sahaja
+    // Buka kamera bila tekan butang sahaja
     function openCamera() {
       document.getElementById('imageInput').click();
     }
 
-    // Compress & preview gambar sebelum submit
+    // Compress & preview gambar
     document.getElementById('imageInput').addEventListener('change', function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -373,7 +322,7 @@
       reader.readAsDataURL(file);
     });
 
-    // Ganti updateCallLink dengan ikon pulse
+    // Call icon logic
     function updateCallLink() {
       const phone = document.getElementById('contact').value.trim();
       const icon = document.getElementById('callIcon');
@@ -387,7 +336,7 @@
       }
     }
 
-    // Logic kategori tambahan
+    // Kategori extra logic
     const remarkSelect = document.getElementById('remark');
     const otherField = document.getElementById('otherCategory');
     const unitField = document.getElementById('unitNumber');
@@ -399,7 +348,7 @@
       if (value !== 'OWNER' && value !== 'TENANT') unitField.value = '';
     });
 
-    // Validasi & feedback submit
+    // Validasi & feedback submit (boleh tambah sambungan ke Google Sheet, Apps Script, dsb)
     document.getElementById('registrationForm').addEventListener('submit', function(e) {
       const remark = remarkSelect.value;
       const other = otherField.value.trim();
@@ -414,5 +363,10 @@
         e.preventDefault();
         return;
       }
-      // Popup feedback
+      // Popup feedback, demo
       e.preventDefault();
+      alert('Form submitted! (Demo only, belum sambung backend)');
+    });
+  </script>
+</body>
+</html>
