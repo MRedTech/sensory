@@ -19,17 +19,27 @@
       text-align: center;
       margin-bottom: 18px;
     }
-    #takePhotoBtn {
-      background-color: #2b7a2b;
-      color: white;
+    .btn-3d {
+      background: linear-gradient(145deg, #3bd97b 0%, #2b7a2b 100%);
+      color: #fff;
       border: none;
-      border-radius: 4px;
+      border-radius: 12px;
       font-size: 16px;
       font-weight: bold;
-      padding: 12px 28px;
-      cursor: pointer;
+      padding: 13px 30px;
+      box-shadow: 0 4px 16px 0 #bbdfbb, 0 1.5px 3px #3333;
       letter-spacing: 2px;
+      cursor: pointer;
       margin-bottom: 5px;
+      transition: box-shadow 0.18s, transform 0.1s;
+    }
+    .btn-3d:active {
+      box-shadow: 0 2px 5px #bbb;
+      transform: translateY(2px);
+    }
+    .submit-3d {
+      margin-top: 18px;
+      width: 100%;
     }
     .photo-label {
       color: #2b7a2b;
@@ -76,7 +86,7 @@
       color: #2b7a2b;
       font-weight: bold;
     }
-    input, select, button {
+    input, select {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
@@ -88,29 +98,35 @@
       font-family: Arial, sans-serif;
       font-size: 14px;
     }
-    button[type="submit"] {
-      background-color: #2b7a2b;
-      color: white;
-      font-weight: bold;
-      margin-top: 18px;
-      cursor: pointer;
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-    }
     .phone-container {
       position: relative;
       margin-bottom: 30px;
+      display: flex;
+      align-items: center;
     }
-    .call-icon {
+    .phone-container input {
+      flex: 1;
+      margin-right: 6px;
+    }
+    .call-btn-3d {
       display: none;
-      position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-      cursor: pointer;
+      background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
+      color: #fff;
       border: none;
-      background: none;
-      padding: 0;
+      border-radius: 50%;
+      width: 46px;
+      height: 46px;
+      font-size: 22px;
+      box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: box-shadow 0.18s, transform 0.1s;
+      position: relative;
+    }
+    .call-btn-3d:active {
+      box-shadow: 0 2px 5px #bbb;
+      transform: translateY(2px) scale(0.98);
     }
     .footer {
       text-align: center;
@@ -122,11 +138,12 @@
       font-weight: bold;
     }
   </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.370.0/font/lucide.css">
 </head>
 <body>
   <h2>SENSORY RESIDENCE GUARD HOUSE REGISTRATION 2025</h2>
   <div class="top-action">
-    <button type="button" id="takePhotoBtn" onclick="openCamera()">TAKE PICTURE</button>
+    <button type="button" id="takePhotoBtn" class="btn-3d" onclick="openCamera()">TAKE PICTURE</button>
     <span class="photo-label">Take photo of MyKad/Licence</span>
   </div>
   <div class="image-container" id="imageContainer">
@@ -143,13 +160,7 @@
     <label for="contact">CONTACT NUMBER</label>
     <div class="phone-container">
       <input type="text" id="contact" name="contact" required oninput="updateCallLink()">
-      <a href="#" id="callIcon" class="call-icon" target="_blank" title="Call this number" style="display:none;">
-        <!-- SVG 3D ikon telefon hijau lembut -->
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="12" fill="#8ee79c"/>
-          <path d="M17.707 15.293l-2-2a1 1 0 0 0-1.414 0l-.586.586a14.051 14.051 0 0 1-6.293-6.293l.586-.586a1 1 0 0 0 0-1.414l-2-2A1 1 0 0 0 4.293 3.293l-1 1A2.993 2.993 0 0 0 2 7c0 8.837 7.163 16 16 16a2.993 2.993 0 0 0 2.707-1.293l1-1a1 1 0 0 0 0-1.414z" fill="#1a6131"/>
-        </svg>
-      </a>
+      <a id="callBtn" class="call-btn-3d" title="Call this number"><i class="lucide lucide-phone"></i></a>
     </div>
 
     <label for="remark">CATEGORY</label>
@@ -180,7 +191,7 @@
     </select>
 
     <input type="file" accept="image/*" capture="environment" id="imageInput" style="display:none;">
-    <button type="submit">SUBMIT</button>
+    <button type="submit" class="btn-3d submit-3d">SUBMIT</button>
   </form>
   <div class="footer">Powered By Mred Tech</div>
   <script>
@@ -202,15 +213,19 @@
       if (!file) return;
       const reader = new FileReader();
       reader.onload = function() {
+        // Kompress gambar ke JPEG saiz lebih kecil
         const img = new window.Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
+          // Resize if needed (width max 800px)
           const scale = Math.min(1, 800 / img.width);
           canvas.width = img.width * scale;
           canvas.height = img.height * scale;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          // Convert to JPEG dengan quality 0.7
           const compressed = canvas.toDataURL('image/jpeg', 0.7);
+          // Preview + watermark
           const preview = document.getElementById('preview');
           preview.src = compressed;
           document.getElementById('imageContainer').style.display = 'block';
@@ -220,17 +235,21 @@
       reader.readAsDataURL(file);
     });
 
-    // Ganti updateCallLink dengan ikon
+    // Call this number (10 digit, button 3D right)
     function updateCallLink() {
       const phone = document.getElementById('contact').value.trim();
-      const icon = document.getElementById('callIcon');
+      const callBtn = document.getElementById('callBtn');
       if (phone.length >= 10) {
-        icon.href = 'tel:' + phone;
-        icon.style.display = 'block';
+        callBtn.href = 'tel:' + phone;
+        callBtn.style.display = 'flex';
       } else {
-        icon.style.display = 'none';
+        callBtn.style.display = 'none';
       }
     }
+    document.getElementById('callBtn').addEventListener('click', function(e) {
+      const phone = document.getElementById('contact').value.trim();
+      if (phone.length < 10) e.preventDefault();
+    });
 
     // Logic kategori tambahan
     const remarkSelect = document.getElementById('remark');
