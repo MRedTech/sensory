@@ -97,20 +97,20 @@
       font-family: Arial, sans-serif;
       font-size: 16px;
     }
-    .call-link {
-      display: none;
-      font-family: Arial, sans-serif;
-      font-size: 15px;
-      color: blue;
-      text-decoration: underline;
-      position: absolute;
-      right: 0;
-      top: 100%;
-      margin-top: 6px;
-    }
     .phone-container {
       position: relative;
       margin-bottom: 30px;
+    }
+    .call-icon {
+      display: none;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
     }
     .footer {
       text-align: center;
@@ -143,7 +143,13 @@
     <label for="contact">CONTACT NUMBER</label>
     <div class="phone-container">
       <input type="text" id="contact" name="contact" required oninput="updateCallLink()">
-      <a href="#" id="callLink" class="call-link" target="_blank">CALL THIS NUMBER</a>
+      <a href="#" id="callIcon" class="call-icon" target="_blank" title="Call this number" style="display:none;">
+        <!-- SVG 3D ikon telefon hijau lembut -->
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="12" fill="#8ee79c"/>
+          <path d="M17.707 15.293l-2-2a1 1 0 0 0-1.414 0l-.586.586a14.051 14.051 0 0 1-6.293-6.293l.586-.586a1 1 0 0 0 0-1.414l-2-2A1 1 0 0 0 4.293 3.293l-1 1A2.993 2.993 0 0 0 2 7c0 8.837 7.163 16 16 16a2.993 2.993 0 0 0 2.707-1.293l1-1a1 1 0 0 0 0-1.414z" fill="#1a6131"/>
+        </svg>
+      </a>
     </div>
 
     <label for="remark">CATEGORY</label>
@@ -196,19 +202,15 @@
       if (!file) return;
       const reader = new FileReader();
       reader.onload = function() {
-        // Kompress gambar ke JPEG saiz lebih kecil
         const img = new window.Image();
         img.onload = function() {
           const canvas = document.createElement('canvas');
-          // Resize if needed (width max 800px)
           const scale = Math.min(1, 800 / img.width);
           canvas.width = img.width * scale;
           canvas.height = img.height * scale;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          // Convert to JPEG dengan quality 0.7
           const compressed = canvas.toDataURL('image/jpeg', 0.7);
-          // Preview + watermark
           const preview = document.getElementById('preview');
           preview.src = compressed;
           document.getElementById('imageContainer').style.display = 'block';
@@ -218,15 +220,15 @@
       reader.readAsDataURL(file);
     });
 
-    // Call this number (10 digit)
+    // Ganti updateCallLink dengan ikon
     function updateCallLink() {
       const phone = document.getElementById('contact').value.trim();
-      const link = document.getElementById('callLink');
+      const icon = document.getElementById('callIcon');
       if (phone.length >= 10) {
-        link.href = 'tel:' + phone;
-        link.style.display = 'block';
+        icon.href = 'tel:' + phone;
+        icon.style.display = 'block';
       } else {
-        link.style.display = 'none';
+        icon.style.display = 'none';
       }
     }
 
