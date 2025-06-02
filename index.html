@@ -289,7 +289,7 @@
         e.preventDefault();
         return;
         // Tukar space jadi '-' automatik pada UNIT NUMBER
-document.getElementById('unitNumber').addEventListener('keydown', function(e) {
+document.getElementById('unitNumber').addEventListener('input', function(e) {
   // Pastikan hanya trigger bila tekan space
   if (e.key === ' ') {
     e.preventDefault();
