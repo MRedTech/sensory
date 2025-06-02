@@ -108,9 +108,60 @@
       right: 10px;
       transform: translateY(-50%);
       cursor: pointer;
-      border: none;
-      background: none;
-      padding: 0;
+      background: #8ee79c;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      box-shadow: 0 2px 8px rgba(33, 107, 48, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #fff;
+      z-index: 2;
+      transition: box-shadow 0.3s, transform 0.2s;
+    }
+    .call-icon svg {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+    .call-icon:hover {
+      box-shadow: 0 4px 16px rgba(33, 107, 48, 0.25);
+      transform: translateY(-50%) scale(1.10);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 #8ee79c88; }
+      70% { box-shadow: 0 0 0 14px #8ee79c00; }
+      100% { box-shadow: 0 0 0 0 #8ee79c00; }
+    }
+    .call-icon.pulse {
+      animation: pulse 1.5s infinite;
+    }
+    .call-tooltip {
+      visibility: hidden;
+      opacity: 0;
+      width: 110px;
+      background: #1a6131;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      padding: 7px 0;
+      position: absolute;
+      z-index: 3;
+      right: 55px;
+      top: 50%;
+      transform: translateY(-50%);
+      transition: opacity 0.3s;
+      font-size: 13px;
+      pointer-events: none;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .call-icon:hover .call-tooltip,
+    .call-icon:focus .call-tooltip {
+      visibility: visible;
+      opacity: 1;
     }
     .footer {
       text-align: center;
@@ -145,10 +196,11 @@
       <input type="text" id="contact" name="contact" required oninput="updateCallLink()">
       <a href="#" id="callIcon" class="call-icon" target="_blank" title="Call this number" style="display:none;">
         <!-- SVG 3D ikon telefon hijau lembut -->
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
           <circle cx="12" cy="12" r="12" fill="#8ee79c"/>
           <path d="M17.707 15.293l-2-2a1 1 0 0 0-1.414 0l-.586.586a14.051 14.051 0 0 1-6.293-6.293l.586-.586a1 1 0 0 0 0-1.414l-2-2A1 1 0 0 0 4.293 3.293l-1 1A2.993 2.993 0 0 0 2 7c0 8.837 7.163 16 16 16a2.993 2.993 0 0 0 2.707-1.293l1-1a1 1 0 0 0 0-1.414z" fill="#1a6131"/>
         </svg>
+        <span class="call-tooltip">Call this number</span>
       </a>
     </div>
 
@@ -220,15 +272,17 @@
       reader.readAsDataURL(file);
     });
 
-    // Ganti updateCallLink dengan ikon
+    // Ganti updateCallLink dengan ikon pulse
     function updateCallLink() {
       const phone = document.getElementById('contact').value.trim();
       const icon = document.getElementById('callIcon');
       if (phone.length >= 10) {
         icon.href = 'tel:' + phone;
-        icon.style.display = 'block';
+        icon.style.display = 'flex';
+        icon.classList.add('pulse');
       } else {
         icon.style.display = 'none';
+        icon.classList.remove('pulse');
       }
     }
 
