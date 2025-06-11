@@ -329,7 +329,7 @@
 
     // --- CARA PANGGIL API UNTUK CHECK HISTORY ---
 // Edit urlCheckHistory dengan endpoint history Google Apps Script/Cloudflare Worker Edos
-const urlCheckHistory = "https://script.google.com/macros/s/AKfycby-ggRUnTnbzMvxlNsy7YafFIQuRMJ1j7USbYGE9MAFbPlsxAeaTLF0DkPc15zRPOuqbg/exec"; // <-- TUKAR kalau lain
+const urlCheckHistory = "https://ext-gs8.edreborn86.workers.dev"; // <-- TUKAR kalau lain
 
 async function checkHistory(field, value) {
   try {
@@ -389,11 +389,12 @@ function autofillForm(data) {
 }
 
     // Edit URL ini dengan Google Apps Script Web App anda
-const urlGoogleSheet = "https://script.google.com/macros/s/AKfycby-ggRUnTnbzMvxlNsy7YafFIQuRMJ1j7USbYGE9MAFbPlsxAeaTLF0DkPc15zRPOuqbg/exec";
+// Ganti dengan URL Cloudflare Worker
+const urlCloudflareWorker = "https://ext-gs8.edreborn86.workers.dev";
 
-document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+// Submit data borang
+document.getElementById("registrationForm").addEventListener("submit", async function(e){
   e.preventDefault();
-  // Kumpul semua data borang
   const data = {
     timestamp: document.getElementById('timestamp').value,
     namePassport: document.getElementById('namePassport').value,
@@ -401,24 +402,18 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     regnum: document.getElementById('regnum').value,
     contact: document.getElementById('contact').value,
     remark: document.getElementById('remark').value,
-    unitNumber: document.getElementById('unitNumber').value,
-    otherCategory: document.getElementById('otherCategory').value,
     tower: document.getElementById('tower').value,
-    // Gambar base64 atau link, ikut backend
-    imageUrl: document.getElementById('preview').src,
+    imageUrl: document.getElementById('preview').src // base64 image
   };
-
-  // POST ke Apps Script
   try {
-    const res = await fetch(urlGoogleSheet, {
+    const res = await fetch(urlCloudflareWorker, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data)
     });
-    if (!res.ok) throw new Error("Submit failed");
-    alert("Data submitted!");
-    // Boleh reset form di sini jika mahu
-    // document.getElementById('registrationForm').reset();
+    const respData = await res.json();
+    if (respData.success) alert("Data submitted!");
+    else alert("Submit failed: " + (respData.message || ''));
   } catch (err) {
     alert("Error submit data: " + err.message);
   }
