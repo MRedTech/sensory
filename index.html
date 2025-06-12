@@ -23,16 +23,16 @@
       box-shadow: 0 3px 16px #aaa7;
     }
     #frameOverlay {
-  position: absolute;
-  left: 7.5%;     /* lebih tepi */
-  top: 20%;       /* lebih rendah sikit */
-  width: 85%;     /* lebih lebar */
-  height: 44%;    /* lebih tinggi */
-  border: 3px solid #17a84b;
-  border-radius: 18px;
-  box-sizing: border-box;
-  pointer-events: none;
-  z-index: 10;
+      position: absolute;
+      left: 7.5%;
+      top: 20%;
+      width: 85%;
+      height: 44%;
+      border: 3px solid #17a84b;
+      border-radius: 18px;
+      box-sizing: border-box;
+      pointer-events: none;
+      z-index: 10;
     }
     #captureBtn {
       margin: 24px 0 12px 0;
@@ -103,23 +103,23 @@ async function startCamera() {
 }
 startCamera();
 
-// Crop + compress ikut kawasan frame
-document.getElementById('captureBtn').onclick = function() {
-  // Ratio dan posisi frame overlay (sama macam CSS)
+function cropToFrame(video, canvas) {
   const vw = video.videoWidth;
   const vh = video.videoHeight;
-  // RATIO BARU untuk cropping (MESTI ikut CSS atas)
-const sx = Math.floor(vw * 0.075);
-const sy = Math.floor(vh * 0.20);
-const sw = Math.floor(vw * 0.85);
-const sh = Math.floor(vh * 0.44);
 
-  // Canvas untuk crop
-  const canvas = document.createElement('canvas');
+  // Crop ikut kotak hijau (width 85%, height 44%, left 7.5%, top 20%)
+  const sx = Math.floor(vw * 0.075);
+  const sy = Math.floor(vh * 0.20);
+  const sw = Math.floor(vw * 0.85);
+  const sh = Math.floor(vh * 0.44);
+
+  // Canvas ikut saiz crop
   canvas.width = sw;
   canvas.height = sh;
-  const ctx = canvas.getContext('2d');
+
+  const ctx = canvas.getContext("2d");
   ctx.drawImage(video, sx, sy, sw, sh, 0, 0, sw, sh);
+}
 
   // Compress ke JPEG 0.7 quality
   const base64 = canvas.toDataURL('image/jpeg', 0.7);
