@@ -23,15 +23,16 @@
       box-shadow: 0 3px 16px #aaa7;
     }
     #frameOverlay {
-      position: absolute;
-      /* Responsive frame: adjust as needed */
-      left: 13%; top: 24%;
-      width: 74%; height: 36%;
-      border: 3px solid #17a84b;
-      border-radius: 16px;
-      box-sizing: border-box;
-      pointer-events: none;
-      z-index: 10;
+  position: absolute;
+  left: 7.5%;     /* lebih tepi */
+  top: 20%;       /* lebih rendah sikit */
+  width: 85%;     /* lebih lebar */
+  height: 44%;    /* lebih tinggi */
+  border: 3px solid #17a84b;
+  border-radius: 18px;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 10;
     }
     #captureBtn {
       margin: 24px 0 12px 0;
@@ -107,11 +108,11 @@ document.getElementById('captureBtn').onclick = function() {
   // Ratio dan posisi frame overlay (sama macam CSS)
   const vw = video.videoWidth;
   const vh = video.videoHeight;
-  // RATIO MESTI SAMA DGN CSS: left:13% top:24% width:74% height:36%
-  const sx = Math.floor(vw * 0.13);
-  const sy = Math.floor(vh * 0.24);
-  const sw = Math.floor(vw * 0.74);
-  const sh = Math.floor(vh * 0.36);
+  // RATIO BARU untuk cropping (MESTI ikut CSS atas)
+const sx = Math.floor(vw * 0.075);
+const sy = Math.floor(vh * 0.20);
+const sw = Math.floor(vw * 0.85);
+const sh = Math.floor(vh * 0.44);
 
   // Canvas untuk crop
   const canvas = document.createElement('canvas');
