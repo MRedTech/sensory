@@ -111,7 +111,7 @@
       margin-right: 6px;
     }
     .call-btn-3d {
-      display: none;
+      display: none; /* Mula-mula hidden */
       background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
       color: #fff;
       border: none;
@@ -151,58 +151,6 @@
       font-family: Arial, sans-serif;
       font-weight: bold;
     }
-    /* === TAMBAHAN KAMERA MODAL & GUIDELINE === */
-    .camera-modal {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.85); z-index: 99999;
-      display: flex; justify-content: center; align-items: center;
-      flex-direction: column;
-    }
-    .camera-container {
-      position: relative; width: 94vw; max-width: 400px; aspect-ratio: 4/3;
-      background: #000; border-radius: 14px; overflow: hidden;
-    }
-    #camera-video {
-      width: 100%; height: auto; border-radius: 14px;
-      background: #222;
-    }
-    .guideline {
-      position: absolute; border: 3px solid #28cc6c; border-radius: 8px;
-      left: 4%; top: 4%; width: 92%; height: 92%;
-      pointer-events: none; box-sizing: border-box;
-    }
-    .close-cam-btn {
-      position: absolute; top: 10px; right: 13px; z-index: 100;
-      background: #fff; color: #1c7e41; border: none; border-radius: 24px;
-      font-size: 21px; padding: 4px 13px; font-weight: bold; cursor: pointer;
-      box-shadow: 0 2px 10px #aaa;
-    }
-    .capture-btn-3d {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
-     color: #fff;
-     border: none;
-     border-radius: 100%;
-     width: 60px;
-     height: 60px;
-     font-size: 17px;
-     font-family: Arial, sans-serif;
-     font-weight: bold;
-     box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333;
-     letter-spacing: 1.5px;
-     cursor: pointer;
-     transition: box-shadow 0.18s, transform 0.1s;
-     margin-top: 16px;
-   }
-   .capture-btn-3d:active {
-     box-shadow: 0 2px 5px #bbb;
-     transform: translateY(2px) scale(0.98);
-   }
-    @media (max-width: 500px) {
-      .camera-container { max-width: 98vw; }
-    }
   </style>
 </head>
 <body>
@@ -213,7 +161,7 @@
   </div>
   <div class="image-container" id="imageContainer">
     <img id="preview" src="#" alt="IMAGE PREVIEW">
-    <div class="watermark">SENSORY USE ONLY</div>
+    <div class="watermark">MAHSING USE ONLY</div>
   </div>
   <form id="registrationForm" autocomplete="off">
     <label for="namePassport">NAME</label>
@@ -228,7 +176,7 @@
     <label for="contact">CONTACT NUMBER</label>
     <div class="phone-container">
       <input type="tel" id="contact" name="contact" required oninput="updateCallLink()" maxlength="15" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
-      <a id="callBtn" class="call-btn-3d" title="Call this number" style="display:none;" target="_blank"><span>📞</span></a>
+      <a id="callBtn" class="call-btn-3d" title="Call this number" style="display:none;" target="_blank"><span>CALL</span></a>
     </div>
 
     <label for="remark">CATEGORY</label>
@@ -265,125 +213,13 @@
     <button type="submit" class="btn-3d submit-3d">SUBMIT</button>
   </form>
   <div class="footer">POWERED BY MRED TECH</div>
-
-  <!-- === MODAL KAMERA UNTUK GUIDELINE === -->
-  <div id="cameraModal" class="camera-modal" style="display:none;">
-    <div class="camera-container">
-      <video id="camera-video" autoplay playsinline></video>
-      <div class="guideline"></div>
-      <button class="close-cam-btn" type="button" onclick="closeCameraModal()">×</button>
-    </div>
-    <button class="capture-btn-3d" type="button" onclick="captureImage()"></button>
-  </div>
-
   <script>
-    // Set timestamp automatik
-    (function setTimestamp() {
-      const timestampInput = document.getElementById('timestamp');
-      const now = new Date();
-      timestampInput.value = now.toLocaleDateString().toUpperCase() + " " + now.toLocaleTimeString().toUpperCase();
-    })();
-
-    // --- MODAL CAMERA + GUIDELINE & AUTO-CROP ---
-    let stream = null;
-    let video = null;
-
-    // Gantikan fungsi openCamera()
+    // Fungsi buka kamera bila tekan button sahaja
     function openCamera() {
-      document.getElementById('cameraModal').style.display = 'flex';
-      startCamera();
+      document.getElementById('imageInput').click();
     }
 
-    async function startCamera() {
-      video = document.getElementById('camera-video');
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-        video.srcObject = stream;
-      } catch (e) {
-        alert("Failed to open camera: " + e.message);
-        closeCameraModal();
-      }
-    }
-
-    function closeCameraModal() {
-      document.getElementById('cameraModal').style.display = 'none';
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        stream = null;
-      }
-    }
-
-    // === Core: Snap + Crop ikut guideline ===
-    function captureImage() {
-      if (!video) return;
-      // Dapatkan dimensi guideline overlay
-      const container = document.querySelector('.camera-container');
-      const guideline = document.querySelector('.guideline');
-      const rect = guideline.getBoundingClientRect();
-      const contRect = container.getBoundingClientRect();
-
-      // Ratio guideline dalam kamera
-      const ratioLeft = (rect.left - contRect.left) / contRect.width;
-      const ratioTop = (rect.top - contRect.top) / contRect.height;
-      const ratioWidth = rect.width / contRect.width;
-      const ratioHeight = rect.height / contRect.height;
-
-      // Capture full frame, crop ikut ratio guideline
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      // Crop ikut guideline (pixel calculation)
-      const cropX = canvas.width * ratioLeft;
-      const cropY = canvas.height * ratioTop;
-      const cropW = canvas.width * ratioWidth;
-      const cropH = canvas.height * ratioHeight;
-
-      // Create crop canvas
-      const cropCanvas = document.createElement('canvas');
-      cropCanvas.width = cropW;
-      cropCanvas.height = cropH;
-      cropCanvas.getContext('2d').drawImage(
-        canvas,
-        cropX, cropY, cropW, cropH,
-        0, 0, cropW, cropH
-      );
-
-      // Compress to JPEG, 0.7 quality
-      const compressed = cropCanvas.toDataURL('image/jpeg', 0.7);
-
-      // Preview + watermark + autofill (fungsi asal KEKAL, tak sentuh)
-      const preview = document.getElementById('preview');
-      preview.src = compressed;
-      document.getElementById('imageContainer').style.display = 'block';
-
-      // === HANTAR KE GOOGLE VISION PROXY (KEKAL FUNGSI ASAL) ===
-      (async () => {
-        try {
-          document.body.style.cursor = 'progress';
-          const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
-          const res = await fetch(proxyUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ image: compressed.split(",")[1] })
-          });
-          const result = await res.json();
-          document.body.style.cursor = 'default';
-          // === Autofill nama & MyKad/Passport ===
-          if (result.name) document.getElementById('namePassport').value = result.name.toUpperCase();
-          if (result.idnum) document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
-        } catch (err) {
-          document.body.style.cursor = 'default';
-          alert("Autofill GAGAL: " + err.message);
-        }
-      })();
-
-      closeCameraModal();
-    }
-
-    // Compress & preview gambar sebelum submit (fungsi fallback input file asal)
+    // Compress & preview gambar sebelum submit
     document.getElementById('imageInput').addEventListener('change', function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -404,7 +240,7 @@
           preview.src = compressed;
           document.getElementById('imageContainer').style.display = 'block';
 
-          // === HANTAR KE GOOGLE VISION PROXY (APPS SCRIPT) ===
+          // === HANTAR KE GOOGLE VISION PROXY (APPS SCRIPT/CLOUDFLARE) ===
           try {
             const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
             document.body.style.cursor = 'progress';
@@ -480,7 +316,6 @@
     });
 
     // --- CARA PANGGIL API UNTUK CHECK HISTORY ---
-    // Edit urlCheckHistory dengan endpoint history Google Apps Script/Cloudflare Worker Edos
     const urlCheckHistory = "https://ext-gs12.edreborn86.workers.dev"; // <-- TUKAR kalau lain
 
     async function checkHistory(field, value) {
@@ -495,7 +330,6 @@
         if (data && data.exist) return data.data; // Data rekod lama
         return null;
       } catch (err) {
-        // Optional: alert("Gagal semak rekod history.");
         return null;
       }
     }
@@ -524,7 +358,7 @@
       }
     });
 
-    // Fungsi AUTOFILL form (boleh edit ikut id input borang)
+    // Fungsi AUTOFILL form
     function autofillForm(data) {
       if (data.namePassport) document.getElementById('namePassport').value = data.namePassport;
       if (data.mykadPassport) document.getElementById('mykadPassport').value = data.mykadPassport;
@@ -540,11 +374,8 @@
       }
     }
 
-    // Edit URL ini dengan Google Apps Script Web App anda
-    // Ganti dengan URL Cloudflare Worker
-    const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
-
     // Submit data borang
+    const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev"; // <-- TUKAR jika lain
     document.getElementById("registrationForm").addEventListener("submit", async function(e){
       e.preventDefault();
       const data = {
