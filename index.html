@@ -1,228 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>SENSORY RESIDENCE SECURE ENTRY SYSTEM</title>
+  <title>SECURE ENTRY SYSTEM (SENSORY)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #e9f5e9;
-      padding: 20px;
-      text-transform: uppercase;
-    }
-    h2 {
-      color: #2b7a2b;
-      text-align: center;
-      margin-top: 5px;
-      margin-bottom: 30px;
-    }
-    .top-action {
-      text-align: center;
-      margin-bottom: 18px;
-    }
-    .btn-3d {
-      background: linear-gradient(145deg, #3bd97b 0%, #2b7a2b 100%);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      padding: 13px 30px;
-      box-shadow: 0 4px 16px 0 #bbdfbb, 0 1.5px 3px #3333;
-      letter-spacing: 2px;
-      cursor: pointer;
-      margin-bottom: 5px;
-      transition: box-shadow 0.18s, transform 0.1s;
-    }
-    .btn-3d:active {
-      box-shadow: 0 2px 5px #bbb;
-      transform: translateY(2px);
-    }
-    .submit-3d {
-      margin-top: 18px;
-      width: 100%;
-    }
-    .photo-label {
-      color: #2b7a2b;
-      font-weight: bold;
-      font-size: 15px;
-      margin-bottom: 5px;
-      display: block;
-    }
-    .image-container {
-      position: relative;
-      display: none;
-      margin-top: 12px;
-      margin-bottom: 15px;
-      width: 100%;
-      max-height: 260px;
-      overflow: hidden;
-      background-color: #f0f0f0;
-      border: 1px solid #2b7a2b;
-      border-radius: 4px;
-    }
-    .image-container img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      transform-origin: center;
-    }
-    .watermark {
-      position: absolute;
-      bottom: 80px;
-      right: 8px;
-      color: red;
-      background: none;
-      padding: 4px 12px;
-      font-size: 14px;
-      font-family: Arial, sans-serif;
-      font-weight: bold;
-      border-radius: 4px;
-      pointer-events: none;
-      letter-spacing: 2px;
-    }
-    label {
-      display: block;
-      margin-top: 14px;
-      color: #2b7a2b;
-      font-weight: bold;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #2b7a2b;
-      border-radius: 4px;
-      text-transform: uppercase;
-      background-color: #e9f7ff;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-      font-weight: bold;
-    }
-    .phone-container {
-      position: relative;
-      margin-bottom: 30px;
-      display: flex;
-      align-items: center;
-    }
-    .phone-container input {
-      flex: 1;
-      margin-right: 6px;
-    }
-    .call-btn-3d {
-      display: none;
-      background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
-      color: #fff;
-      border: none;
-      border-radius: 100%;
-      width: 60px;
-      height: 60px;
-      font-size: 19px;
-      font-weight: bold;
-      box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: box-shadow 0.18s, transform 0.1s;
-      position: relative;
-      margin-left: 5px;
-      outline: none;
-      text-decoration: none;
-    }
-    .call-btn-3d span {
-      font-size: 16px;
-      font-family: Arial, sans-serif;
-      font-weight: bold;
-      letter-spacing: 1.5px;
-      color: #fff;
-    }
-    .call-btn-3d:active {
-      box-shadow: 0 2px 5px #bbb;
-      transform: translateY(2px) scale(0.98);
-    }
-    .footer {
-      text-align: center;
-      padding: 5px;
-      font-size: 11px;
-      color: #888888;
-      margin-top: 30px;
-      margin-bottom: 1px;
-      font-family: Arial, sans-serif;
-      font-weight: bold;
-    }
-    /* === TAMBAHAN KAMERA MODAL & GUIDELINE === */
-    .camera-modal {
-      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.85); z-index: 99999;
-      display: flex; justify-content: center; align-items: center;
-      flex-direction: column;
-    }
-    .camera-container {
-      position: relative; width: 94vw; max-width: 400px; aspect-ratio: 4/3;
-      background: #000; border-radius: 14px; overflow: hidden;
-    }
-    #camera-video {
-      width: 100%; height: auto; border-radius: 14px;
-      background: #222;
-    }
-    .guideline {
-      position: absolute; border: 3px solid #28cc6c; border-radius: 8px;
-      left: 4%; top: 4%; width: 92%; height: 92%;
-      pointer-events: none; box-sizing: border-box;
-    }
-    .close-cam-btn {
-      position: absolute; top: 10px; right: 13px; z-index: 100;
-      background: #fff; color: #1c7e41; border: none; border-radius: 24px;
-      font-size: 21px; padding: 4px 13px; font-weight: bold; cursor: pointer;
-      box-shadow: 0 2px 10px #aaa;
-    }
-    .capture-btn-3d {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
-     color: #fff;
-     border: none;
-     border-radius: 100%;
-     width: 60px;
-     height: 60px;
-     font-size: 17px;
-     font-family: Arial, sans-serif;
-     font-weight: bold;
-     box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333;
-     letter-spacing: 1.5px;
-     cursor: pointer;
-     transition: box-shadow 0.18s, transform 0.1s;
-     margin-top: 16px;
-   }
-   .capture-btn-3d:active {
-     box-shadow: 0 2px 5px #bbb;
-     transform: translateY(2px) scale(0.98);
-   }
-    @media (max-width: 500px) {
-      .camera-container { max-width: 98vw; }
-    }
+    body { font-family: Arial, sans-serif; background: #e9f5e9; padding: 16px; }
+    h2 { color: #207844; text-align: center; margin-bottom: 15px; }
+    label { display: block; margin-top: 13px; color: #207844; font-weight: bold; }
+    input, select { width: 100%; padding: 11px; margin-top: 5px; border: 1.5px solid #2b7a2b; border-radius: 5px; background: #fff; font-size: 15px; text-transform: uppercase; font-weight: bold;}
+    .top-action { text-align: center; margin-bottom: 16px;}
+    .btn-3d, .submit-btn { background: linear-gradient(145deg,#3bd97b 0%,#2b7a2b 100%); color: #fff; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; padding: 13px 30px; box-shadow: 0 4px 16px 0 #bbdfbb, 0 1.5px 3px #3333; letter-spacing: 2px; cursor: pointer; margin-bottom: 5px; transition: box-shadow 0.18s, transform 0.1s;}
+    .btn-3d:active, .submit-btn:active { box-shadow: 0 2px 5px #bbb; transform: translateY(2px);}
+    .submit-btn:disabled { background: #bdbdbd; color: #fff; cursor: not-allowed;}
+    .image-container { display: none; position: relative; margin-top: 8px; margin-bottom: 10px; width: 100%; max-height: 220px; overflow: hidden; background: #f0f0f0; border: 1.2px solid #2b7a2b; border-radius: 6px;}
+    .image-container img { width: 100%; height: auto; object-fit: cover;}
+    .watermark { position: absolute; bottom: 8px; right: 8px; color: red; background: rgba(255,255,255,0.75); padding: 3.5px 14px; font-size: 13px; font-family: Arial, sans-serif; font-weight: bold; border-radius: 4px; pointer-events: none; letter-spacing: 2px;}
+    .phone-container { position: relative; margin-bottom: 17px; display: flex; align-items: center;}
+    .phone-container input { flex: 1; margin-right: 5px;}
+    .call-btn-3d { display: none; background: linear-gradient(145deg,#41e671 0%,#176B39 100%); color: #fff; border: none; border-radius: 14px; width: 65px; height: 45px; font-size: 17px; box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333; justify-content: center; align-items: center; cursor: pointer; transition: box-shadow 0.18s, transform 0.1s; position: relative;}
+    .call-btn-3d:active { box-shadow: 0 2px 5px #bbb; transform: translateY(2px) scale(0.98);}
+    .footer { text-align: center; padding: 10px; font-size: 12px; color: #888; margin-top: 18px; font-family: Arial, sans-serif;}
+    .preview-btn { background:#299966; color:#fff; border:none; border-radius:6px; padding:5px 15px; font-weight:bold; cursor:pointer; box-shadow: 0 2px 6px #b9dfbb;}
+    .preview-btn:active { box-shadow: 0 1.5px 3px #bbb;}
   </style>
 </head>
 <body>
-  <h2>SENSORY RESIDENCE SECURE ENTRY SYSTEM</h2>
+  <h2>SECURE ENTRY SYSTEM (SENSORY)</h2>
   <div class="top-action">
     <button type="button" id="takePhotoBtn" class="btn-3d" onclick="openCamera()">TAKE PICTURE</button>
-    <span class="photo-label">Take photo of MyKad/Licence</span>
+    <span style="display:block;color:#2b7a2b;font-size:15px;font-weight:bold;">Take photo of MyKad/Passport/Licence</span>
   </div>
   <div class="image-container" id="imageContainer">
     <img id="preview" src="#" alt="IMAGE PREVIEW">
-    <div class="watermark">SENSORY USE ONLY</div>
+    <div class="watermark">MAHSING USE ONLY</div>
   </div>
   <form id="registrationForm" autocomplete="off">
-    <label for="timestamp">TIMESTAMP</label>
-    <input type="text" id="timestamp" name="timestamp" readonly>
-    
-    <label for="namePassport">NAME</label>
+    <label for="namePassport">NAME / PASSPORT</label>
     <input type="text" id="namePassport" name="namePassport" required>
 
-    <label for="mykadPassport">MYKAD / PASSPORT</label>
+    <label for="mykadPassport">MYKAD / PASSPORT NUMBER</label>
     <input type="text" id="mykadPassport" name="mykadPassport" required>
 
     <label for="regnum">REGISTRATION NUMBER</label>
@@ -230,13 +46,13 @@
 
     <label for="contact">CONTACT NUMBER</label>
     <div class="phone-container">
-      <input type="tel" id="contact" name="contact" required oninput="updateCallLink()" maxlength="15" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
-      <a id="callBtn" class="call-btn-3d" title="Call this number" style="display:none;" target="_blank"><span>📞</span></a>
+      <input type="number" pattern="[0-9]*" inputmode="numeric" id="contact" name="contact" required oninput="updateCallLink()">
+      <a id="callBtn" class="call-btn-3d" title="Call this number"><span>CALL</span></a>
     </div>
 
     <label for="remark">CATEGORY</label>
     <select id="remark" name="remark" required>
-      <option value="-PLEASE SELECT-">-PLEASE SELECT-</option>
+      <option value="">--SELECT--</option>
       <option value="DROP OFF/PICK UP">DROP OFF/PICK UP</option>
       <option value="E-HAILING">E-HAILING</option>
       <option value="FLASH EXPRESS">FLASH EXPRESS</option>
@@ -258,186 +74,69 @@
 
     <label for="tower">TOWER</label>
     <select id="tower" name="tower" required>
-      <option value="-PLEASE SELECT-">-PLEASE SELECT-</option>
+      <option value="">--SELECT--</option>
       <option value="TOWER A">TOWER A</option>
       <option value="TOWER B">TOWER B</option>
-      <option value="TOWER A & B">TOWER A & B</option>
     </select>
 
     <input type="file" accept="image/*" capture="environment" id="imageInput" style="display:none;">
-    <button type="submit" class="btn-3d submit-3d">SUBMIT</button>
+    <button type="submit" class="submit-btn" disabled>SUBMIT</button>
   </form>
-  <div class="footer">POWERED BY MRED TECH</div>
-
-  <!-- === MODAL KAMERA UNTUK GUIDELINE === -->
-  <div id="cameraModal" class="camera-modal" style="display:none;">
-    <div class="camera-container">
-      <video id="camera-video" autoplay playsinline></video>
-      <div class="guideline"></div>
-      <button class="close-cam-btn" type="button" onclick="closeCameraModal()">×</button>
-    </div>
-    <button class="capture-btn-3d" type="button" onclick="captureImage()"></button>
+  <div class="footer">
+    SECURE ENTRY SYSTEM <br> Powered by Mred Tech
   </div>
 
   <script>
-    // Set timestamp automatik
-    (function setTimestamp() {
-      const timestampInput = document.getElementById('timestamp');
-      const now = new Date();
-      timestampInput.value = now.toLocaleDateString().toUpperCase() + " " + now.toLocaleTimeString().toUpperCase();
-    })();
+    // =========== SETTING URL API GOOGLE SCRIPT (EDIT SENDIRI!) ===========
+    const urlGoogleScript = "PASTE_APPS_SCRIPT_DEPLOYMENT_URL_KAT_SINI"; // <-- EDIT!
+    // =========== END SETTING ===========
 
-    // --- MODAL CAMERA + GUIDELINE & AUTO-CROP ---
-    let stream = null;
-    let video = null;
+    // Auto uppercase on input
+    document.querySelectorAll("input[type=text]").forEach(el => {
+      el.addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+      });
+    });
 
-    // Gantikan fungsi openCamera()
+    // === Open camera ===
     function openCamera() {
-      document.getElementById('cameraModal').style.display = 'flex';
-      startCamera();
+      document.getElementById('imageInput').click();
     }
 
-    async function startCamera() {
-      video = document.getElementById('camera-video');
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-        video.srcObject = stream;
-      } catch (e) {
-        alert("Failed to open camera: " + e.message);
-        closeCameraModal();
-      }
-    }
-
-    function closeCameraModal() {
-      document.getElementById('cameraModal').style.display = 'none';
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
-        stream = null;
-      }
-    }
-
-    // === Core: Snap + Crop ikut guideline ===
-    function captureImage() {
-      if (!video) return;
-      // Dapatkan dimensi guideline overlay
-      const container = document.querySelector('.camera-container');
-      const guideline = document.querySelector('.guideline');
-      const rect = guideline.getBoundingClientRect();
-      const contRect = container.getBoundingClientRect();
-
-      // Ratio guideline dalam kamera
-      const ratioLeft = (rect.left - contRect.left) / contRect.width;
-      const ratioTop = (rect.top - contRect.top) / contRect.height;
-      const ratioWidth = rect.width / contRect.width;
-      const ratioHeight = rect.height / contRect.height;
-
-      // Capture full frame, crop ikut ratio guideline
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-      // Crop ikut guideline (pixel calculation)
-      const cropX = canvas.width * ratioLeft;
-      const cropY = canvas.height * ratioTop;
-      const cropW = canvas.width * ratioWidth;
-      const cropH = canvas.height * ratioHeight;
-
-      // Create crop canvas
-      const cropCanvas = document.createElement('canvas');
-      cropCanvas.width = cropW;
-      cropCanvas.height = cropH;
-      cropCanvas.getContext('2d').drawImage(
-        canvas,
-        cropX, cropY, cropW, cropH,
-        0, 0, cropW, cropH
-      );
-
-      // Compress to JPEG, 0.7 quality
-      const compressed = cropCanvas.toDataURL('image/jpeg', 0.7);
-
-      // Preview + watermark + autofill (fungsi asal KEKAL, tak sentuh)
-      const preview = document.getElementById('preview');
-      preview.src = compressed;
-      document.getElementById('imageContainer').style.display = 'block';
-
-      // === HANTAR KE GOOGLE VISION PROXY (KEKAL FUNGSI ASAL) ===
-      (async () => {
-        try {
-          document.body.style.cursor = 'progress';
-          const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
-          const res = await fetch(proxyUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ image: compressed.split(",")[1] })
-          });
-          const result = await res.json();
-          document.body.style.cursor = 'default';
-          // === Autofill nama & MyKad/Passport ===
-          if (result.name) document.getElementById('namePassport').value = result.name.toUpperCase();
-          if (result.idnum) document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
-        } catch (err) {
-          document.body.style.cursor = 'default';
-          alert("Autofill GAGAL: " + err.message);
-        }
-      })();
-
-      closeCameraModal();
-    }
-
-    // Compress & preview gambar sebelum submit (fungsi fallback input file asal)
+    // === Compress, preview gambar, simpan base64 ===
+    let base64img = "";
     document.getElementById('imageInput').addEventListener('change', function(event) {
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = function() {
         const img = new window.Image();
-        img.onload = async function() {
+        img.onload = function() {
+          // Potrait autocrop size: set ke separuh dari height asal
+          const cropH = img.height * 0.55;
+          const cropY = (img.height - cropH) / 2;
           const canvas = document.createElement('canvas');
-          const scale = Math.min(1, 800 / img.width);
-          canvas.width = img.width * scale;
-          canvas.height = img.height * scale;
+          canvas.width = img.width;
+          canvas.height = cropH;
           const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, cropY, img.width, cropH, 0, 0, img.width, cropH);
           const compressed = canvas.toDataURL('image/jpeg', 0.7);
-
-          // Preview + watermark
+          base64img = compressed;
           const preview = document.getElementById('preview');
           preview.src = compressed;
           document.getElementById('imageContainer').style.display = 'block';
-
-          // === HANTAR KE GOOGLE VISION PROXY (APPS SCRIPT) ===
-          try {
-            const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
-            document.body.style.cursor = 'progress';
-            const res = await fetch(proxyUrl, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ image: compressed.split(",")[1] })
-            });
-            const result = await res.json();
-            document.body.style.cursor = 'default';
-
-            // === Autofill nama & MyKad/Passport ===
-            if (result.name) document.getElementById('namePassport').value = result.name.toUpperCase();
-            if (result.idnum) document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
-          } catch (err) {
-            document.body.style.cursor = 'default';
-            alert("Autofill GAGAL: " + err.message);
-          }
         };
         img.src = reader.result;
       };
       reader.readAsDataURL(file);
     });
 
-    // Butang CALL (10 digit, muncul kanan, 3D)
+    // === Call this number (only show after 10 digit) ===
     function updateCallLink() {
       const phone = document.getElementById('contact').value.trim();
       const callBtn = document.getElementById('callBtn');
       if (phone.length >= 10) {
-        callBtn.href = 'tel:' + phone;
+        callBtn.href = 'tel:' + (phone.startsWith('0') ? phone : '0'+phone);
         callBtn.style.display = 'flex';
       } else {
         callBtn.style.display = 'none';
@@ -448,7 +147,7 @@
       if (phone.length < 10) e.preventDefault();
     });
 
-    // Logic kategori tambahan
+    // === Dropdown show/hide field ===
     const remarkSelect = document.getElementById('remark');
     const otherField = document.getElementById('otherCategory');
     const unitField = document.getElementById('unitNumber');
@@ -460,119 +159,111 @@
       if (value !== 'OWNER' && value !== 'TENANT') unitField.value = '';
     });
 
-    // Validasi submit
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
-      const remark = remarkSelect.value;
-      const other = otherField.value.trim();
-      const unit = unitField.value.trim();
-      if (remark === 'OTHER' && other === '') {
-        alert('PLEASE SPECIFY OTHER CATEGORY.');
-        e.preventDefault();
-        return;
-      }
-      if ((remark === 'OWNER' || remark === 'TENANT') && unit === '') {
-        alert('PLEASE ENTER UNIT NUMBER.');
-        e.preventDefault();
-        return;
-      }
-    });
-
-    // Tukar SPACE ke "-" & auto UPPERCASE untuk UNIT NUMBER
-    document.getElementById('unitNumber').addEventListener('input', function(e) {
-      this.value = this.value.replace(/ /g, "-").toUpperCase();
-    });
-
-    // --- CARA PANGGIL API UNTUK CHECK HISTORY ---
-    // Edit urlCheckHistory dengan endpoint history Google Apps Script/Cloudflare Worker Edos
-    const urlCheckHistory = "https://ext-gs12.edreborn86.workers.dev"; // <-- TUKAR kalau lain
-
-    async function checkHistory(field, value) {
-      try {
-        const res = await fetch(urlCheckHistory, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ searchBy: field, value: value })
-        });
-        if (!res.ok) return null;
-        const data = await res.json();
-        if (data && data.exist) return data.data; // Data rekod lama
-        return null;
-      } catch (err) {
-        // Optional: alert("Gagal semak rekod history.");
-        return null;
-      }
+    // === Enable submit button only if all required filled ===
+    function updateSubmitState() {
+      const form = document.getElementById('registrationForm');
+      const submitBtn = document.querySelector('.submit-btn');
+      let allFilled = true;
+      form.querySelectorAll('[required]').forEach(input => {
+        if (input.offsetParent !== null && !input.value.trim()) allFilled = false;
+      });
+      // Gambar wajib
+      if (!base64img) allFilled = false;
+      submitBtn.disabled = !allFilled;
     }
-
-    // BILA USER ISI MYKAD / PASSPORT
-    document.getElementById('mykadPassport').addEventListener('change', async function() {
-      const value = this.value.trim();
-      if (value.length < 6) return;
-      const history = await checkHistory("mykadPassport", value);
-      if (history) {
-        if (confirm("This record has already been registered. Do you want to autofill with previous data?")) {
-          autofillForm(history);
-        }
-      }
+    document.querySelectorAll('#registrationForm input, #registrationForm select').forEach(el => {
+      el.addEventListener('input', updateSubmitState);
+      el.addEventListener('change', updateSubmitState);
     });
 
-    // BILA USER ISI REGISTRATION NUMBER
-    document.getElementById('regnum').addEventListener('change', async function() {
-      const value = this.value.trim();
-      if (value.length < 3) return;
-      const history = await checkHistory("regnum", value);
-      if (history) {
-        if (confirm("This record has already been registered. Do you want to autofill with previous data?")) {
-          autofillForm(history);
-        }
-      }
-    });
-
-    // Fungsi AUTOFILL form (boleh edit ikut id input borang)
-    function autofillForm(data) {
-      if (data.namePassport) document.getElementById('namePassport').value = data.namePassport;
-      if (data.mykadPassport) document.getElementById('mykadPassport').value = data.mykadPassport;
-      if (data.regnum) document.getElementById('regnum').value = data.regnum;
-      if (data.contact) document.getElementById('contact').value = data.contact;
-      if (data.remark) document.getElementById('remark').value = data.remark;
-      if (data.unitNumber) document.getElementById('unitNumber').value = data.unitNumber;
-      if (data.otherCategory) document.getElementById('otherCategory').value = data.otherCategory;
-      if (data.tower) document.getElementById('tower').value = data.tower;
-      if (data.imageUrl) {
-        document.getElementById('preview').src = data.imageUrl;
-        document.getElementById('imageContainer').style.display = 'block';
-      }
-    }
-
-    // Edit URL ini dengan Google Apps Script Web App anda
-    // Ganti dengan URL Cloudflare Worker
-    const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
-
-    // Submit data borang
-    document.getElementById("registrationForm").addEventListener("submit", async function(e){
+    // === SUBMIT DATA KE GOOGLE SHEET ===
+    document.getElementById('registrationForm').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const data = {
-        namePassport: document.getElementById('namePassport').value,
-        mykadPassport: document.getElementById('mykadPassport').value,
-        regnum: document.getElementById('regnum').value,
-        contact: document.getElementById('contact').value,
-        remark: document.getElementById('remark').value,
-        tower: document.getElementById('tower').value,
-        imageUrl: document.getElementById('preview').src // base64 image
+      const submitBtn = document.querySelector('.submit-btn');
+      submitBtn.disabled = true;
+
+      // Format data
+      let namePassport = document.getElementById('namePassport').value.trim().toUpperCase();
+      let mykadPassport = document.getElementById('mykadPassport').value.trim().toUpperCase();
+      let regnum = document.getElementById('regnum').value.trim().toUpperCase();
+      let contact = document.getElementById('contact').value.trim();
+      if (!contact.startsWith('0')) contact = '0' + contact;
+      let remark = document.getElementById('remark').value.trim().toUpperCase();
+      let unitNumber = document.getElementById('unitNumber').value.trim().toUpperCase();
+      if ((remark === 'OWNER' || remark === 'TENANT') && unitNumber)
+        remark += ' (' + unitNumber + ')';
+      if (remark === 'OTHER') remark = document.getElementById('otherCategory').value.trim().toUpperCase();
+      let tower = document.getElementById('tower').value.trim().toUpperCase();
+
+      // Hantar ke Apps Script
+      let body = {
+        namePassport, mykadPassport, regnum, contact, remark, tower,
+        imageUrl: base64img
       };
       try {
-        const res = await fetch(urlCloudflareWorker, {
+        document.body.style.cursor = 'progress';
+        let res = await fetch(urlGoogleScript, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
+          body: JSON.stringify(body)
         });
-        const respData = await res.json();
-        if (respData.success) alert("Data submitted!");
-        else alert("Submit failed: " + (respData.message || ''));
+        let data = await res.json();
+        document.body.style.cursor = 'default';
+        if (data.success) {
+          alert("Berjaya submit!");
+          location.reload();
+        } else {
+          alert("Gagal submit. " + (data.message || ""));
+          submitBtn.disabled = false;
+        }
       } catch (err) {
-        alert("Error submit data: " + err.message);
+        document.body.style.cursor = 'default';
+        alert("Error submit: " + err.message);
+        submitBtn.disabled = false;
       }
     });
 
+    // ======= HISTORY/CHECK RECORD (Autofill jika wujud) =======
+    async function checkHistory(field, value) {
+      if (!value || value.length < 3) return;
+      try {
+        let url = `${urlGoogleScript}?field=${field}&value=${encodeURIComponent(value)}`;
+        let res = await fetch(url, { method: "GET" });
+        let data = await res.json();
+        if (data.exist && data.data) {
+          if (confirm("Maklumat telah didaftarkan. Klik OK untuk autofill semula data lama.")) {
+            document.getElementById('namePassport').value = data.data.namePassport || "";
+            document.getElementById('mykadPassport').value = data.data.mykadPassport || "";
+            document.getElementById('regnum').value = data.data.regnum || "";
+            document.getElementById('contact').value = data.data.contact || "";
+            document.getElementById('remark').value = data.data.remark || "";
+            document.getElementById('tower').value = data.data.tower || "";
+            // Autofill gambar preview jika ada
+            if (data.data.imageUrl) {
+              let imgPrev = document.getElementById('preview');
+              imgPrev.src = data.data.imageUrl.replace(/=HYPERLINK"(.+?)",.+?/, "$1") || data.data.imageUrl;
+              document.getElementById('imageContainer').style.display = 'block';
+            }
+            // Autofill unit number jika OWNER/TENANT
+            if (data.data.remark && (data.data.remark.includes('OWNER') || data.data.remark.includes('TENANT'))) {
+              let unitMatch = data.data.remark.match(/(.*?)/);
+              document.getElementById('unitNumber').value = unitMatch ? unitMatch[1] : '';
+              document.getElementById('unitNumber').style.display = 'block';
+            }
+            updateSubmitState();
+          }
+        }
+      } catch (e) {}
+    }
+
+    document.getElementById('mykadPassport').addEventListener('blur', function(e) {
+      let v = this.value.trim().toUpperCase();
+      if (v) checkHistory('MYKAD/PASSPORT', v);
+    });
+    document.getElementById('regnum').addEventListener('blur', function(e) {
+      let v = this.value.trim().toUpperCase();
+      if (v) checkHistory('REGISTRATION_NUMBER', v);
+    });
   </script>
 </body>
 </html>
