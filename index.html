@@ -30,7 +30,6 @@
     .call-btn-3d span { font-size: 16px; color: #fff; }
     .call-btn-3d:active { box-shadow: 0 2px 5px #bbb; transform: translateY(2px) scale(0.98); }
     .footer { text-align: center; padding: 5px; font-size: 11px; color: #888; margin: 30px 0 1px; font-weight: bold; }
-    /* Camera modal */
     .camera-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(0,0,0,0.85); z-index: 99999; display: flex; justify-content: center;
       align-items: center; flex-direction: column; }
@@ -125,7 +124,6 @@
     </div>
     <button class="capture-btn-3d" type="button" onclick="captureImage()"></button>
   </div>  <script>
-    // Camera functions
     let stream, video;
     async function startCamera() {
       video = document.getElementById('camera-video');
@@ -144,49 +142,11 @@
       crop.getContext('2d').drawImage(canvas,canvas.width*ratios.x,canvas.height*ratios.y,crop.width,crop.height,0,0,crop.width,crop.height);
       const dataUrl=crop.toDataURL('image/jpeg',0.7);
       document.getElementById('preview').src=dataUrl; document.getElementById('imageContainer').style.display='block'; closeCameraModal();
-      (async()=>{ try{ document.body.style.cursor='progress'; const res=await fetch('https://sensory-vision.edreborn86.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:dataUrl.split(',',1)[1]})}); const r2=await res.json(); document.body.style.cursor='default'; if(r2.name)document.getElementById('namePassport').value=r2.name.toUpperCase(); if(r2.idnum)document.getElementById('mykadPassport').value=r2.idnum.toUpperCase(); }catch(err){document.body.style.cursor='default';alert('Autofill GAGAL: '+err.message);} })();
-    }
-    document.getElementById('imageInput').addEventListener('change',async e=>{
-      const file=e.target.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=()=>{
-        const img=new Image(); img.onload=()=>{ const c=document.createElement('canvas'),s=Math.min(1,800/img.width); c.width=img.width*s; c.height=img.height*s; c.getContext('2d').drawImage(img,0,0,c.width,c.height); const data=c.toDataURL('image/jpeg',0.7); document.getElementById('preview').src=data; document.getElementById('imageContainer').style.display='block'; (async()=>{ try{ const res=await fetch('https://sensory-vision.edreborn86.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:data.split(',',1)[1]})}); const r=await res.json(); if(r.name)document.getElementById('namePassport').value=r.name.toUpperCase(); if(r.idnum)document.getElementById('mykadPassport').value=r.idnum.toUpperCase(); }catch(err){alert('Autofill GAGAL: '+err.message);} })(); }; img.src=reader.result; }; reader.readAsDataURL(file);
-    });
-
-    // Update call button
-    function updateCallLink(){ const p=document.getElementById('contact').value.trim(); const btn=document.getElementById('callBtn'); if(p.length>=10){btn.href='tel:'+p;btn.style.display='flex';}else btn.style.display='none'; }
-    document.getElementById('callBtn').addEventListener('click',e=>{ if(document.getElementById('contact').value.trim().length<10)e.preventDefault(); });
-
-    // Enter key: navigate and open dropdowns
-    const formEls = Array.from(document.getElementById('registrationForm').elements)
-      .filter(el => (el.tagName==='INPUT' || el.tagName==='SELECT') && !el.disabled && el.type!=='hidden');
-    formEls.forEach((el, i) => el.addEventListener('keydown', e => {
-      if (e.key==='Enter'){
-        e.preventDefault();
-        const next = formEls[i+1];
-        if (next) {
-          next.focus();
-          if (next.tagName==='SELECT') next.size = next.options.length;
-        }
-      }
-    }));
-    // Reset size on select blur/change
-    formEls.filter(el=>el.tagName==='SELECT').forEach(sel=>{
-      sel.addEventListener('change',()=>sel.size=1);
-      sel.addEventListener('blur',()=>sel.size=1);
-    });
-
-    // Category & reason logic
-    const remark=document.getElementById('remark'), unit=document.getElementById('unitNumber'), other=document.getElementById('otherCategory'), reason=document.getElementById('reason'), rLabel=document.getElementById('reasonLabel');
-    remark.addEventListener('change',function(){ const v=this.value; other.style.display=v==='OTHER'?'block':'none'; unit.style.display=(v==='OWNER'||v==='TENANT')?'block':'none'; rLabel.style.display=(v==='OWNER'||v==='TENANT')?'block':'none'; reason.style.display=(v==='OWNER'||v==='TENANT')?'block':'none'; if(v!=='OTHER')other.value=''; if(v!=='OWNER'&&v!=='TENANT'){unit.value=''; reason.value='-PLEASE SELECT-';} });
-
-    // Submit data
-    document.getElementById('registrationForm').addEventListener('submit',async e=>{
-      e.preventDefault();
-      const cat=remark.value, oth=other.value.trim(), uni=unit.value.trim(), rea=reason.value;
-      if(cat==='OTHER'&&oth===''){return alert('PLEASE SPECIFY OTHER CATEGORY.');}
-      if((cat==='OWNER'||cat==='TENANT')&&uni===''){return alert('PLEASE ENTER UNIT NUMBER.');}
-      if((cat==='OWNER'||cat==='TENANT')&&rea==='-PLEASE SELECT-'){return alert('PLEASE SELECT REASON.');}
-      const data={ namePassport:document.getElementById('namePassport').value, mykadPassport:document.getElementById('mykadPassport').value, regnum:document.getElementById('regnum').value, contact:document.getElementById('contact').value, remark:cat, tower:document.getElementById('tower').value, otherCategory:cat==='OTHER'?oth:'', unitNumber:(cat==='OWNER'||cat==='TENANT')?uni:'', reason:(cat==='OWNER'||cat==='TENANT')?rea:'', imageUrl:document.getElementById('preview').src };
-      try{ const res=await fetch('https://ext-gs12.edreborn86.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); const r=await res.json(); r.success?alert('Data submitted!'):alert('Submit failed: '+(r.message||'')); }
-      catch(err){alert('Error submit data: '+err.message);}    });
-  </script></body>
-</html>
+      (async()=>{
+        try{
+          document.body.style.cursor='progress';
+          const res=await fetch('https://sensory-vision.edreborn86.workers.dev',{ method:'POST', headers:{ 'Content-Type':'application/json' }, body:JSON.stringify({ image:dataUrl.split(',')[1] }) });
+          const r2=await res.json();
+          document.body.style.cursor='default';
+          if(r2.name) document.getElementById('namePassport').value = r2.name.toUpperCase();
+          if(r2.idnum) document.getElementBy
