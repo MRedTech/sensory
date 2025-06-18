@@ -216,9 +216,6 @@
     <div class="watermark">SENSORY USE ONLY</div>
   </div>
   <form id="registrationForm" autocomplete="off">
-    <label for="timestamp">TIMESTAMP</label>
-    <input type="text" id="timestamp" name="timestamp" readonly>
-    
     <label for="namePassport">NAME</label>
     <input type="text" id="namePassport" name="namePassport" required>
 
@@ -280,13 +277,6 @@
   </div>
 
   <script>
-    // Set timestamp automatik
-    (function setTimestamp() {
-      const timestampInput = document.getElementById('timestamp');
-      const now = new Date();
-      timestampInput.value = now.toLocaleDateString().toUpperCase() + " " + now.toLocaleTimeString().toUpperCase();
-    })();
-
     // --- MODAL CAMERA + GUIDELINE & AUTO-CROP ---
     let stream = null;
     let video = null;
