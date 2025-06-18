@@ -203,6 +203,11 @@
     @media (max-width: 500px) {
       .camera-container { max-width: 98vw; }
     }
+    <div id="loadingSpinner" style="display:none;position:fixed;left:0;top:0;z-index:9999;width:100vw;height:100vh;background:rgba(0,0,0,0.18);display:flex;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:20px;padding:24px 42px;font-size:18px;font-weight:bold;box-shadow:0 4px 18px #888;">
+    ⏳ Submitting... Please wait.
+  </div>
+</div>
   </style>
 </head>
 <body>
@@ -546,29 +551,32 @@
 
     // Submit data borang
     document.getElementById("registrationForm").addEventListener("submit", async function(e){
-      e.preventDefault();
-      const data = {
-        namePassport: document.getElementById('namePassport').value,
-        mykadPassport: document.getElementById('mykadPassport').value,
-        regnum: document.getElementById('regnum').value,
-        contact: document.getElementById('contact').value,
-        remark: document.getElementById('remark').value,
-        tower: document.getElementById('tower').value,
-        imageUrl: document.getElementById('preview').src // base64 image
-      };
-      try {
-        const res = await fetch(urlCloudflareWorker, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
-        const respData = await res.json();
-        if (respData.success) alert("Data submitted!");
-        else alert("Submit failed: " + (respData.message || ''));
-      } catch (err) {
-        alert("Error submit data: " + err.message);
-      }
-    }); 
+  e.preventDefault();
+  document.getElementById('loadingSpinner').style.display = 'flex'; // <-- Tunjuk spinner
+  const data = {
+    namePassport: document.getElementById('namePassport').value,
+    mykadPassport: document.getElementById('mykadPassport').value,
+    regnum: document.getElementById('regnum').value,
+    contact: document.getElementById('contact').value,
+    remark: document.getElementById('remark').value,
+    tower: document.getElementById('tower').value,
+    imageUrl: document.getElementById('preview').src // base64 image
+  };
+  try {
+    const res = await fetch(urlCloudflareWorker, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    const respData = await res.json();
+    document.getElementById('loadingSpinner').style.display = 'none'; // <-- Sembunyi spinner
+    if (respData.success) alert("Data submitted!");
+    else alert("Submit failed: " + (respData.message || ''));
+  } catch (err) {
+    document.getElementById('loadingSpinner').style.display = 'none'; // <-- Sembunyi spinner
+    alert("Error submit data: " + err.message);
+  }
+});
 
     // === AUTO BUKA DROPDOWN BILA TEKAN ENTER DI INPUT SEBELUMNYA ===
 const dropdownList = [
