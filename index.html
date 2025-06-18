@@ -568,7 +568,31 @@
       } catch (err) {
         alert("Error submit data: " + err.message);
       }
+    }); 
+
+    // === AUTO BUKA DROPDOWN BILA TEKAN ENTER DI INPUT SEBELUMNYA ===
+const dropdownList = [
+  {input: 'contact', dropdown: 'remark'},
+  {input: 'remark', dropdown: 'tower'}
+];
+
+dropdownList.forEach(item => {
+  const inputElem = document.getElementById(item.input);
+  const dropdownElem = document.getElementById(item.dropdown);
+  if (inputElem && dropdownElem) {
+    inputElem.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        e.preventDefault();
+        dropdownElem.focus();
+        dropdownElem.scrollIntoView({behavior: "smooth", block: "center"});
+        try {
+          const event = new MouseEvent('mousedown', {bubbles: true, cancelable: true, view: window});
+          dropdownElem.dispatchEvent(event);
+        } catch (err) {}
+      }
     });
+  }
+});
 
   </script>
 </body>
