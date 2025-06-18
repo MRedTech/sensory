@@ -506,16 +506,17 @@
     });
 
     // BILA USER ISI REGISTRATION NUMBER
-    document.getElementById('regnum').addEventListener('change', async function() {
-      const value = this.value.trim();
-      if (value.length < 3) return;
-      const history = await checkHistory("regnum", value);
-      if (history) {
-        if (confirm("This record has already been registered. Do you want to autofill with previous data?")) {
-          autofillForm(history);
-        }
+    document.getElementById('mykadPassport').addEventListener('input', async function() {
+  const value = this.value.trim();
+  if (value.length >= 6) {
+    const history = await checkHistory("mykadPassport", value);
+    if (history) {
+      if (confirm("This record has already been registered. Do you want to autofill with previous data?")) {
+        autofillForm(history);
       }
-    });
+    }
+  }
+});
 
     // Fungsi AUTOFILL form (boleh edit ikut id input borang)
     function autofillForm(data) {
