@@ -494,16 +494,30 @@
     }
 
     // BILA USER ISI MYKAD / PASSPORT
-    document.getElementById('mykadPassport').addEventListener('change', async function() {
-      const value = this.value.trim();
-      if (value.length < 6) return;
-      const history = await checkHistory("mykadPassport", value);
-      if (history) {
-        if (confirm("This record has already been registered. Do you want to autofill with previous data?")) {
-          autofillForm(history);
-        }
-      }
+    document.getElementById('mykadPassport').addEventListener('input', async function () {
+  const value = this.value.trim();
+  if (value.length < 6) return;
+
+  try {
+    const res = await fetch("https://ext-gs12.edreborn86.workers.dev", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ searchBy: "mykadPassport", value: value })
     });
+    const result = await res.json();
+
+    if (result.exist) {
+      if (confirm("This record has already been registered. Do you want to autofill with previous data?")) {
+        autofillForm(result.data);
+      }
+    } else {
+      console.log("TIADA REKOD DIJUMPAI UNTUK: " + value);
+    }
+  } catch (err) {
+    alert("Ralat semak rekod: " + err.message);
+  }
+});
+
 
     // BILA USER ISI REGISTRATION NUMBER
     document.getElementById('mykadPassport').addEventListener('input', async function() {
