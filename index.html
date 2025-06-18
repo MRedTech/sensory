@@ -422,25 +422,6 @@
       reader.readAsDataURL(file);
     });
 
-  // Bila user tekan Enter masa fokus pada dropdown
-  dropdown.addEventListener("keydown", function (e) {
-    if (e.key === "Enter" || e.keyCode === 13) {
-      this.size = this.options.length; // Papar semua option
-      this.focus(); // Fokus semula
-    }
-  });
-
-  // Bila user dah pilih, tutup dropdown semula
-  dropdown.addEventListener("change", function () {
-    this.size = 0;
-  });
-
-  // Bila hilang fokus, tutup dropdown
-  dropdown.addEventListener("blur", function () {
-    this.size = 0;
-  });
-});
-    
     // Butang CALL (10 digit, muncul kanan, 3D)
     function updateCallLink() {
       const phone = document.getElementById('contact').value.trim();
