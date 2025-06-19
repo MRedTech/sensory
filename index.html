@@ -313,32 +313,63 @@
 
     // === Core: Snap + Crop ikut guideline ===
     function captureImage() {
-      if (!video) return;
-      // Dapatkan dimensi guideline overlay
-      const container = document.querySelector('.camera-container');
-      const guideline = document.querySelector('.guideline');
-      const rect = guideline.getBoundingClientRect();
-      const contRect = container.getBoundingClientRect();
+  if (!video) return;
 
-      // Ratio guideline dalam kamera
-      const ratioLeft = (rect.left - contRect.left) / contRect.width;
-      const ratioTop = (rect.top - contRect.top) / contRect.height;
-      const ratioWidth = rect.width / contRect.width;
-      const ratioHeight = rect.height / contRect.height;
+  // --- KOD BARU BERMULA DI SINI ---
+  // Saiz penuh video/canvas
+  const videoW = video.videoWidth;
+  const videoH = video.videoHeight;
 
-      // Capture full frame, crop ikut ratio guideline
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  // Crop ikut guideline 4% kiri/atas, 92% lebar/tinggi
+  const cropX = videoW * 0.04;
+  const cropY = videoH * 0.04;
+  const cropW = videoW * 0.92;
+  const cropH = videoH * 0.92;
 
-      // Crop ikut guideline (pixel calculation)
-      const cropX = canvas.width * ratioLeft;
-      const cropY = canvas.height * ratioTop;
-      const cropW = canvas.width * ratioWidth;
-      const cropH = canvas.height * ratioHeight;
+  // Ambil frame penuh dari video
+  const canvas = document.createElement('canvas');
+  canvas.width = videoW;
+  canvas.height = videoH;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, videoW, videoH);
 
+  // Crop ikut guideline
+  const cropCanvas = document.createElement('canvas');
+  cropCanvas.width = cropW;
+  cropCanvas.height = cropH;
+  cropCanvas.getContext('2d').drawImage(
+    canvas,
+    cropX, cropY, cropW, cropH,
+    0, 0, cropW, cropH
+  );
+
+  // Compress ke JPEG untuk upload/preview
+  const compressed = cropCanvas.toDataURL('image/jpeg', 0.7);
+
+  // Preview gambar dalam form
+  document.getElementById('preview').src = compressed;
+  document.getElementById('imageContainer').style.display = 'block';
+  // Autofill, tutup kamera dsb. KEKAL
+  (async () => {
+    try {
+      document.body.style.cursor = 'progress';
+      const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
+      const res = await fetch(proxyUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: compressed.split(",")[1] })
+      });
+      const result = await res.json();
+      document.body.style.cursor = 'default';
+      if (result.name) document.getElementById('namePassport').value = result.name.toUpperCase();
+      if (result.idnum) document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
+    } catch (err) {
+      document.body.style.cursor = 'default';
+      alert("Autofill GAGAL: " + err.message);
+    }
+  })();
+  closeCameraModal();
+}
       // Create crop canvas
       const cropCanvas = document.createElement('canvas');
       cropCanvas.width = cropW;
