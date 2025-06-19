@@ -549,12 +549,14 @@ document.getElementById('regnum').addEventListener('blur', async function() {
     mykadPassport: document.getElementById('mykadPassport').value,
     regnum: document.getElementById('regnum').value,
     contact: document.getElementById('contact').value,
-    remark: remarkValue, // <-- gabungan
+    remark: remarkValue,
     tower: document.getElementById('tower').value,
-    imageUrl: document.getElementById('preview').src // ikut kod anda
+    imageUrl: document.getElementById('preview').src
   };
 
-  // Seterusnya, submit data ke endpoint seperti biasa
+  // Debug: tunjuk data sebelum submit
+  alert(JSON.stringify(data));
+
   try {
     document.getElementById('loadingSpinner').style.display = 'flex';
     const res = await fetch(urlCloudflareWorker, {
