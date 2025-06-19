@@ -532,7 +532,6 @@ document.getElementById('regnum').addEventListener('blur', async function() {
    // Letak di atas, sebelum kod submit
 const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
 
-// Submit form
 document.getElementById("registrationForm").addEventListener("submit", async function(e){
   e.preventDefault();
 
@@ -547,29 +546,25 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     imageUrl: document.getElementById('preview').src
   };
 
-  // Debug (optional): boleh aktifkan untuk semak data
-  // alert(JSON.stringify(data));
+  // Debug: pastikan data dihantar
+  // alert(JSON.stringify(data)); // Boleh ON jika perlu
 
   try {
-    document.getElementById('loadingSpinner').style.display = 'flex';
     const res = await fetch(urlCloudflareWorker, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
     const respData = await res.json();
-    document.getElementById('loadingSpinner').style.display = 'none';
     if (respData.success) {
       alert("Data submitted!");
     } else {
       alert("Submit failed: " + (respData.message || ''));
     }
   } catch (err) {
-    document.getElementById('loadingSpinner').style.display = 'none';
     alert("Error submit data: " + err.message);
   }
 });
-
 
   </script>
 </body>
