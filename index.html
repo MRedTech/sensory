@@ -536,26 +536,16 @@ document.getElementById('regnum').addEventListener('blur', async function() {
     document.getElementById("registrationForm").addEventListener("submit", async function(e){
   e.preventDefault();
 
-  // Gabung kategori OWNER/TENANT + UNIT NUMBER sebelum submit
-  let remarkValue = document.getElementById('remark').value;
-  let unitNumberValue = document.getElementById('unitNumber').value.trim();
-
-  if ((remarkValue === 'OWNER' || remarkValue === 'TENANT') && unitNumberValue) {
-    remarkValue = `${remarkValue} ( ${unitNumberValue} )`;
-  }
-
   const data = {
     namePassport: document.getElementById('namePassport').value,
     mykadPassport: document.getElementById('mykadPassport').value,
     regnum: document.getElementById('regnum').value,
     contact: document.getElementById('contact').value,
-    remark: remarkValue,
+    remark: document.getElementById('remark').value,
+    unitNumber: document.getElementById('unitNumber').value.trim(), // <-- tambah field ini!
     tower: document.getElementById('tower').value,
     imageUrl: document.getElementById('preview').src
   };
-
-  // Debug: tunjuk data sebelum submit
-  alert(JSON.stringify(data));
 
   try {
     document.getElementById('loadingSpinner').style.display = 'flex';
