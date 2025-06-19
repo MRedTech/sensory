@@ -497,13 +497,10 @@ function autofillForm(data) {
   if (data.remark) {
     const remarkField = document.getElementById('remark');
     remarkField.value = data.remark;
-    // WAJIB: trigger change supaya ruangan unit number muncul jika OWNER/TENANT
     remarkField.dispatchEvent(new Event('change'));
   }
   if (data.tower) document.getElementById('tower').value = data.tower;
-  // Autofill unit number jika ada (jika field wujud dalam rekod)
   if (data.unitNumber) document.getElementById('unitNumber').value = data.unitNumber;
-}
   if (data.otherCategory) document.getElementById('otherCategory').value = data.otherCategory;
   if (data.tower) document.getElementById('tower').value = data.tower;
 }
