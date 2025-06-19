@@ -562,16 +562,18 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     const respData = await res.json();
     if (respData.success) {
       Swal.fire({
-        title: 'SUCCESS!',
-        text: 'Data submitted!',
-        icon: 'success',
-        confirmButtonText: 'OK',
-        background: '#fff',
-        color: '#176B39',
-        customClass: {
-          popup: 'rounded-3xl shadow-2xl'
-        }
-      });
+     title: 'SUCCESS!',
+     text: 'Data submitted!',
+     icon: 'success',
+     confirmButtonText: 'OK',
+     background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+     color: '#176B39',
+     customClass: {
+       popup: 'rounded-xl shadow-2xl px-7 pt-7 pb-6'  // Tukar 'rounded-3xl' ke 'rounded-xl' (atau 'rounded-lg')
+     },
+     timer: 2500,
+     timerProgressBar: true
+   });
       document.getElementById("registrationForm").reset();
       document.getElementById('preview').src = "#";
       document.getElementById('imageContainer').style.display = 'none';
