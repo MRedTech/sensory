@@ -477,54 +477,48 @@
       this.value = this.value.replace(/ /g, "-").toUpperCase();
     });
 
-    // --- CARA PANGGIL API UNTUK CHECK HISTORY ---
-    // Edit urlCheckHistory dengan endpoint history Google Apps Script/Cloudflare Worker Edos
-    const urlCheckHistory = "https://ext-gs12.edreborn86.workers.dev"; // <-- TUKAR kalau lain
+    // Endpoint Cloudflare Worker
+const WORKER_URL = "https://ext-gs12.edreborn86.workers.dev";
 
-    async function checkHistory(field, value) {
-      try {
-        const res = await fetch(urlCheckHistory, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ searchBy: field, value: value })
-        });
-        if (!res.ok) return null;
-        const data = await res.json();
-        if (data && data.exist) return data.data; // Data rekod lama
-        return null;
-      } catch (err) {
-        // Optional: alert("Gagal semak rekod history.");
-        return null;
-      }
-    }
+// Fungsi carian rekod
+async function searchRecord(field, value) {
+  const url = `${WORKER_URL}?field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
+}
 
-    // BILA USER ISI MYKAD / PASSPORT
-    document.getElementById('mykadPassport').addEventListener('input', async function () {
+// Fungsi autofill form
+function autofillForm(data) {
+  if (data.namePassport) document.getElementById('namePassport').value = data.namePassport;
+  if (data.mykadPassport) document.getElementById('mykadPassport').value = data.mykadPassport;
+  if (data.regnum) document.getElementById('regnum').value = data.regnum;
+  if (data.contact) document.getElementById('contact').value = data.contact;
+  if (data.remark) document.getElementById('remark').value = data.remark;
+  if (data.tower) document.getElementById('tower').value = data.tower;
+  // tambah field lain jika perlu
+}
+
+// Trigger carian bila keluar dari MYKAD / PASSPORT
+document.getElementById('mykadPassport').addEventListener('blur', async function() {
   const value = this.value.trim();
   if (value.length < 6) return;
-
-  const res = await fetch(urlCheckHistory, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ searchBy: "mykadPassport", value: value })
-  });
-  const result = await res.json();
+  const result = await searchRecord('mykadPassport', value);
   if (result.exist) {
-    if (confirm("This record has already been registered. Do you want to autofill with previous data?")) {
+    if (confirm("Rekod lama (MYKAD/PASSPORT) dijumpai. Autofill borang?")) {
       autofillForm(result.data);
     }
   }
 });
 
-    // BILA USER ISI REGISTRATION NUMBER
-    document.getElementById('mykadPassport').addEventListener('input', async function() {
+// Trigger carian bila keluar dari REGISTRATION NUMBER
+document.getElementById('regnum').addEventListener('blur', async function() {
   const value = this.value.trim();
-  if (value.length >= 6) {
-    const history = await checkHistory("mykadPassport", value);
-    if (history) {
-      if (confirm("This record has already been registered. Do you want to autofill with previous data?")) {
-        autofillForm(history);
-      }
+  if (value.length < 3) return;
+  const result = await searchRecord('regnum', value);
+  if (result.exist) {
+    if (confirm("Rekod lama (No Pendaftaran) dijumpai. Autofill borang?")) {
+      autofillForm(result.data);
     }
   }
 });
