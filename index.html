@@ -553,9 +553,6 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     imageUrl: document.getElementById('preview').src
   };
 
-  // Debug: pastikan data dihantar
-  // alert(JSON.stringify(data)); // Boleh ON jika perlu
-
   try {
     const res = await fetch(urlCloudflareWorker, {
       method: "POST",
@@ -565,6 +562,14 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     const respData = await res.json();
     if (respData.success) {
       alert("Data submitted!");
+      // RESET FORM selepas submit
+      document.getElementById("registrationForm").reset();
+      // Hide gambar preview kalau perlu
+      document.getElementById('preview').src = "#";
+      document.getElementById('imageContainer').style.display = 'none';
+      // Reset ruangan lain jika ada (contoh: unitNumber, otherCategory)
+      document.getElementById('unitNumber').style.display = 'none';
+      document.getElementById('otherCategory').style.display = 'none';
     } else {
       alert("Submit failed: " + (respData.message || ''));
     }
