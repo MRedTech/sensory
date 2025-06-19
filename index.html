@@ -499,9 +499,6 @@ function autofillForm(data) {
   if (data.unitNumber) document.getElementById('unitNumber').value = data.unitNumber;
   if (data.otherCategory) document.getElementById('otherCategory').value = data.otherCategory;
   if (data.tower) document.getElementById('tower').value = data.tower;
-  if (data.imageUrl) {
-        document.getElementById('preview').src = data.imageUrl;
-        document.getElementById('imageContainer').style.display = 'block';
 }
 
 // Trigger carian bila keluar dari MYKAD / PASSPORT
@@ -527,23 +524,7 @@ document.getElementById('regnum').addEventListener('blur', async function() {
     }
   }
 });
-
-    // Fungsi AUTOFILL form (boleh edit ikut id input borang)
-    function autofillForm(data) {
-      if (data.namePassport) document.getElementById('namePassport').value = data.namePassport;
-      if (data.mykadPassport) document.getElementById('mykadPassport').value = data.mykadPassport;
-      if (data.regnum) document.getElementById('regnum').value = data.regnum;
-      if (data.contact) document.getElementById('contact').value = data.contact;
-      if (data.remark) document.getElementById('remark').value = data.remark;
-      if (data.unitNumber) document.getElementById('unitNumber').value = data.unitNumber;
-      if (data.otherCategory) document.getElementById('otherCategory').value = data.otherCategory;
-      if (data.tower) document.getElementById('tower').value = data.tower;
-      if (data.imageUrl) {
-        document.getElementById('preview').src = data.imageUrl;
-        document.getElementById('imageContainer').style.display = 'block';
-      }
-    }
-
+    
     // Ganti dengan URL Cloudflare Worker
     const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
 
