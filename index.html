@@ -494,9 +494,21 @@ function autofillForm(data) {
   if (data.mykadPassport) document.getElementById('mykadPassport').value = data.mykadPassport;
   if (data.regnum) document.getElementById('regnum').value = data.regnum;
   if (data.contact) document.getElementById('contact').value = data.contact;
-  if (data.remark) document.getElementById('remark').value = data.remark;
-  if (data.unitNumber) document.getElementById('unitNumber').value = data.unitNumber;
-  if (data.otherCategory) document.getElementById('otherCategory').value = data.otherCategory;
+  if (data.remark) {
+    // Jika remark = "OWNER ( UNIT )" atau "TENANT ( UNIT )"
+    let match = data.remark.match(/^(OWNER|TENANT)/i);
+    if (match) {
+      document.getElementById('remark').value = match[1];
+      document.getElementById('remark').dispatchEvent(new Event('change')); // pastikan field unit number muncul!
+      // Autofill unit number kalau ada
+      let unitMatch = data.remark.match(/\(\s*([^)]+)\s*\)/);
+      if (unitMatch) document.getElementById('unitNumber').value = unitMatch[1];
+    } else {
+      // Untuk remark lain, autofill macam biasa
+      document.getElementById('remark').value = data.remark;
+      document.getElementById('unitNumber').value = "";
+    }
+  }
   if (data.tower) document.getElementById('tower').value = data.tower;
 }
 
