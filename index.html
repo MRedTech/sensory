@@ -542,10 +542,13 @@ document.getElementById('regnum').addEventListener('blur', async function() {
     regnum: document.getElementById('regnum').value,
     contact: document.getElementById('contact').value,
     remark: document.getElementById('remark').value,
-    unitNumber: document.getElementById('unitNumber').value.trim(), // <-- tambah field ini!
+    unitNumber: document.getElementById('unitNumber').value.trim(), // <-- field tambahan
     tower: document.getElementById('tower').value,
     imageUrl: document.getElementById('preview').src
   };
+
+  // --- Debug: check data sebelum submit ---
+  // alert(JSON.stringify(data)); // Boleh ON untuk debug
 
   try {
     document.getElementById('loadingSpinner').style.display = 'flex';
@@ -563,6 +566,7 @@ document.getElementById('regnum').addEventListener('blur', async function() {
     alert("Error submit data: " + err.message);
   }
 });
+
 
   </script>
 </body>
