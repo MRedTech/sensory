@@ -69,17 +69,22 @@
     }
     .watermark {
       position: absolute;
-      bottom: 80px;
-      right: 8px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-25deg);
       color: red;
       background: none;
-      padding: 4px 12px;
-      font-size: 14px;
+      padding: 4px 20px;
+      font-size: 28px;
       font-family: Arial, sans-serif;
       font-weight: bold;
       border-radius: 4px;
       pointer-events: none;
-      letter-spacing: 2px;
+      letter-spacing: 4px;
+      opacity: 0.75;
+      text-shadow: 1px 2px 8px #fff, 1px 1px 2px #000;
+      z-index: 9;
+      white-space: nowrap;
     }
     label {
       display: block;
