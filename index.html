@@ -496,7 +496,9 @@ function autofillForm(data) {
   if (data.contact) document.getElementById('contact').value = data.contact;
   if (data.remark) document.getElementById('remark').value = data.remark;
   if (data.tower) document.getElementById('tower').value = data.tower;
-  // tambah field lain jika perlu
+  if (data.unitNumber) document.getElementById('unitNumber').value = data.unitNumber;
+  if (data.otherCategory) document.getElementById('otherCategory').value = data.otherCategory;
+  if (data.tower) document.getElementById('tower').value = data.tower;
 }
 
 // Trigger carian bila keluar dari MYKAD / PASSPORT
