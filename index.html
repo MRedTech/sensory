@@ -529,11 +529,11 @@ document.getElementById('regnum').addEventListener('blur', async function() {
   }
 });
     
-    // Ganti dengan URL Cloudflare Worker
-    const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
+   // Letak di atas, sebelum kod submit
+const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
 
-    // Submit data borang
-    document.getElementById("registrationForm").addEventListener("submit", async function(e){
+// Submit form
+document.getElementById("registrationForm").addEventListener("submit", async function(e){
   e.preventDefault();
 
   const data = {
@@ -542,13 +542,13 @@ document.getElementById('regnum').addEventListener('blur', async function() {
     regnum: document.getElementById('regnum').value,
     contact: document.getElementById('contact').value,
     remark: document.getElementById('remark').value,
-    unitNumber: document.getElementById('unitNumber').value.trim(), // <-- field tambahan
+    unitNumber: document.getElementById('unitNumber').value.trim(),
     tower: document.getElementById('tower').value,
     imageUrl: document.getElementById('preview').src
-  }
+  };
 
-  // --- Debug: check data sebelum submit ---
-  // alert(JSON.stringify(data)); // Boleh ON untuk debug
+  // Debug (optional): boleh aktifkan untuk semak data
+  // alert(JSON.stringify(data));
 
   try {
     document.getElementById('loadingSpinner').style.display = 'flex';
@@ -559,8 +559,11 @@ document.getElementById('regnum').addEventListener('blur', async function() {
     });
     const respData = await res.json();
     document.getElementById('loadingSpinner').style.display = 'none';
-    if (respData.success) alert("Data submitted!");
-    else alert("Submit failed: " + (respData.message || ''));
+    if (respData.success) {
+      alert("Data submitted!");
+    } else {
+      alert("Submit failed: " + (respData.message || ''));
+    }
   } catch (err) {
     document.getElementById('loadingSpinner').style.display = 'none';
     alert("Error submit data: " + err.message);
