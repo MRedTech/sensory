@@ -530,11 +530,30 @@ document.getElementById('regnum').addEventListener('blur', async function() {
   if (value.length < 3) return;
   const result = await searchRecord('regnum', value);
   if (result.exist) {
-    if (confirm("Rekod lama (No Pendaftaran) dijumpai. Autofill borang?")) {
+  Swal.fire({
+    title: 'PREVIOUS DATA FOUND',
+    text: 'Autofill with existing details?',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Autofill',
+    cancelButtonText: 'No',
+    background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+    color: '#176B39',
+     width: 280, // <-- tukar ikut citarasa, contoh 280, 300, 340 (unit: px)
+     customClass: {
+       popup: 'shadow-2xl px-7 pt-7 pb-6'
+     },
+     willOpen: (popup) => {
+       popup.style.borderRadius = '14px';
+     },
+     timer: 5000,
+     timerProgressBar: true
+  }).then((res) => {
+    if (res.isConfirmed) {
       autofillForm(result.data);
     }
+  });
   }
-});
     
    // Letak di atas, sebelum kod submit
 const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
