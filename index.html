@@ -512,8 +512,12 @@ function autofillForm(data) {
   if (data.tower) document.getElementById('tower').value = data.tower;
 }
 
-// Trigger carian bila keluar dari MYKAD / PASSPORT
+// Trigger carian bila keluar dari MYKAD / PASSPORT / REGNUM
+  let isAutofilling = false; // Global di luar event listener
+
+// Event untuk mykadPassport
 document.getElementById('mykadPassport').addEventListener('blur', async function() {
+  if (isAutofilling) return; // Block kalau tengah autofill
   const value = this.value.trim();
   if (value.length < 6) return;
   const result = await searchRecord('mykadPassport', value);
@@ -521,7 +525,7 @@ document.getElementById('mykadPassport').addEventListener('blur', async function
     Swal.fire({
       title: 'PREVIOUS DATA FOUND',
       text: 'Autofill with existing details?',
-      icon: 'warning',  // <-- Animasi warning (kuning)
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, Autofill',
       cancelButtonText: 'No',
@@ -536,14 +540,17 @@ document.getElementById('mykadPassport').addEventListener('blur', async function
       }
     }).then((res) => {
       if (res.isConfirmed) {
+        isAutofilling = true;
         autofillForm(result.data);
+        setTimeout(() => { isAutofilling = false; }, 1500); // Lepaskan flag selepas autofill selesai
       }
     });
   }
 });
 
-// Trigger carian bila keluar dari REGISTRATION NUMBER
+// Event untuk regnum
 document.getElementById('regnum').addEventListener('blur', async function() {
+  if (isAutofilling) return; // Block kalau tengah autofill
   const value = this.value.trim();
   if (value.length < 3) return;
   const result = await searchRecord('regnum', value);
@@ -551,7 +558,7 @@ document.getElementById('regnum').addEventListener('blur', async function() {
     Swal.fire({
       title: 'PREVIOUS DATA FOUND',
       text: 'Autofill with existing details?',
-      icon: 'warning',  // <-- warning, animasi kuning!
+      icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, Autofill',
       cancelButtonText: 'No',
@@ -566,7 +573,9 @@ document.getElementById('regnum').addEventListener('blur', async function() {
       }
     }).then((res) => {
       if (res.isConfirmed) {
+        isAutofilling = true;
         autofillForm(result.data);
+        setTimeout(() => { isAutofilling = false; }, 1500);
       }
     });
   }
