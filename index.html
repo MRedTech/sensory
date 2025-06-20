@@ -518,9 +518,27 @@ document.getElementById('mykadPassport').addEventListener('blur', async function
   if (value.length < 6) return;
   const result = await searchRecord('mykadPassport', value);
   if (result.exist) {
-    if (confirm("Rekod lama (MYKAD/PASSPORT) dijumpai. Autofill borang?")) {
-      autofillForm(result.data);
-    }
+    Swal.fire({
+      title: 'PREVIOUS DATA FOUND',
+      text: 'Autofill with existing details?',
+      icon: 'warning',  // <-- Animasi warning (kuning)
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Autofill',
+      cancelButtonText: 'No',
+      background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+      color: '#176B39',
+      width: 280,
+      customClass: {
+        popup: 'shadow-2xl px-7 pt-7 pb-6'
+      },
+      willOpen: (popup) => {
+        popup.style.borderRadius = '14px';
+      }
+    }).then((res) => {
+      if (res.isConfirmed) {
+        autofillForm(result.data);
+      }
+    });
   }
 });
 
