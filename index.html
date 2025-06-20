@@ -526,6 +526,7 @@ document.getElementById('mykadPassport').addEventListener('blur', async function
 
 // Trigger carian bila keluar dari REGISTRATION NUMBER
 document.getElementById('regnum').addEventListener('blur', async function() {
+document.getElementById('regnum').addEventListener('blur', async function() {
   const value = this.value.trim();
   if (value.length < 3) return;
   const result = await searchRecord('regnum', value);
@@ -533,7 +534,7 @@ document.getElementById('regnum').addEventListener('blur', async function() {
     Swal.fire({
       title: 'PREVIOUS DATA FOUND',
       text: 'Autofill with existing details?',
-      icon: 'info',  // <-- icon info (biru, animasi)
+      icon: 'warning',  // <-- warning, animasi kuning!
       showCancelButton: true,
       confirmButtonText: 'Yes, Autofill',
       cancelButtonText: 'No',
