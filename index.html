@@ -513,11 +513,26 @@ function autofillForm(data) {
 }
 
 // Trigger carian bila keluar dari MYKAD / PASSPORT / REGNUM
-  let isAutofilling = false;
+let isAutofilling = false;
 
-// Event handler untuk regnum
-async function handleRegnumBlur() {
-  if (isAutofilling) return;
+// AutofillForm versi flag
+function autofillForm(data) {
+  isAutofilling = true; // ON sebelum isi
+  if (data.namePassport) document.getElementById('namePassport').value = data.namePassport;
+  if (data.mykadPassport) document.getElementById('mykadPassport').value = data.mykadPassport;
+  if (data.regnum) document.getElementById('regnum').value = data.regnum;
+  if (data.contact) document.getElementById('contact').value = data.contact;
+  if (data.remark) {
+    // ... logic extract remark/unitNumber kalau perlu ...
+    document.getElementById('remark').value = data.remark;
+  }
+  if (data.tower) document.getElementById('tower').value = data.tower;
+  setTimeout(() => { isAutofilling = false; }, 700); // OFF selepas isi (tunggu sebentar)
+}
+
+// Event untuk regnum
+document.getElementById('regnum').addEventListener('blur', async function() {
+  if (isAutofilling) return; // Block kalau tengah autofill
   const value = this.value.trim();
   if (value.length < 3) return;
   const result = await searchRecord('regnum', value);
@@ -540,24 +555,15 @@ async function handleRegnumBlur() {
       }
     }).then((res) => {
       if (res.isConfirmed) {
-        isAutofilling = true;
-        // REMOVE event regnum sementara autofill
-        document.getElementById('regnum').removeEventListener('blur', handleRegnumBlur);
         autofillForm(result.data);
-        setTimeout(() => {
-          isAutofilling = false;
-          // TAMBAH semula event regnum selepas autofill selesai
-          document.getElementById('regnum').addEventListener('blur', handleRegnumBlur);
-        }, 1500); // 0.8s, boleh adjust jika perlu
       }
     });
   }
-}
-document.getElementById('regnum').addEventListener('blur', handleRegnumBlur);
+});
 
-// Handler untuk mykadPassport (boleh guna cara biasa dengan flag)
+// Event untuk mykadPassport
 document.getElementById('mykadPassport').addEventListener('blur', async function() {
-  if (isAutofilling) return;
+  if (isAutofilling) return; // Block kalau tengah autofill
   const value = this.value.trim();
   if (value.length < 6) return;
   const result = await searchRecord('mykadPassport', value);
@@ -580,19 +586,11 @@ document.getElementById('mykadPassport').addEventListener('blur', async function
       }
     }).then((res) => {
       if (res.isConfirmed) {
-        isAutofilling = true;
-        // REMOVE event regnum sebelum autofill
-        document.getElementById('regnum').removeEventListener('blur', handleRegnumBlur);
         autofillForm(result.data);
-        setTimeout(() => {
-          isAutofilling = false;
-          // TAMBAH semula event regnum selepas autofill selesai
-          document.getElementById('regnum').addEventListener('blur', handleRegnumBlur);
-        }, 1500); // 0.8s, boleh adjust jika perlu
       }
     });
   }
-});
+});  
     
    // Letak di atas, sebelum kod submit
 const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
