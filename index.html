@@ -216,6 +216,15 @@
     <button type="button" id="takePhotoBtn" class="btn-3d" onclick="openCamera()">TAKE PICTURE</button>
     <span class="photo-label">Take photo of MyKad/Licence</span>
   </div>
+
+  <div style="margin-bottom:28px; background:#fff; border-radius:16px; box-shadow:0 2px 14px #d5ffe0; padding:20px;">
+  <h2 style="color:#176B39; margin-bottom:12px;">🔎 SEARCH RECORD</h2>
+  <input id="searchMykad" type="text" placeholder="MYKAD / PASSPORT" style="padding:12px; border-radius:7px; border:1.5px solid #176B39; font-size:16px; margin-bottom:7px;">
+  <input id="searchRegnum" type="text" placeholder="REGISTRATION NO." style="padding:12px; border-radius:7px; border:1.5px solid #176B39; font-size:16px;">
+  <button onclick="searchOldRecord()" style="background:linear-gradient(135deg,#2b7a2b,#3bd97b); color:#fff; border:none; border-radius:8px; font-weight:bold; font-size:17px; padding:12px 22px; margin-left:10px; cursor:pointer;">SEARCH</button>
+  <div id="searchResult" style="margin-top:18px;"></div>
+  </div>
+  
   <div class="image-container" id="imageContainer">
     <img id="preview" src="#" alt="IMAGE PREVIEW">
     <div class="watermark">SENSORY USE ONLY</div>
@@ -426,6 +435,44 @@
       };
       reader.readAsDataURL(file);
     });
+
+    // Fungsi search record
+    function normalize(str) {
+  return (str || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+async function searchOldRecord() {
+  const mykad = document.getElementById('searchMykad').value.trim();
+  const regnum = document.getElementById('searchRegnum').value.trim();
+  let result = null;
+
+  // Normalize input
+  const mykadNorm = normalize(mykad);
+  const regnumNorm = normalize(regnum);
+
+  // Gunakan fungsi carian sedia ada (pastikan searchRecord boleh akses field normalized)
+  if (mykad) {
+    result = await searchRecord('mykadPassport', mykadNorm);
+  } else if (regnum) {
+    result = await searchRecord('regnum', regnumNorm);
+  }
+
+  // Papar hasil carian
+  if (result && result.exist) {
+    document.getElementById('searchResult').innerHTML =
+      `<div style="background:#e9f5e9; border-radius:12px; padding:16px 14px;">
+        <b>Name:</b> ${result.data.namePassport}<br>
+        <b>MyKad/Passport:</b> ${result.data.mykadPassport}<br>
+        <b>Reg No:</b> ${result.data.regnum}<br>
+        <b>Contact:</b> ${result.data.contact}<br>
+        <b>Category:</b> ${result.data.remark}<br>
+        <b>Tower:</b> ${result.data.tower}<br>
+        ${result.data.imageUrl ? `<img src="${result.data.imageUrl}" alt="Photo" style="margin-top:12px;max-width:260px;border-radius:8px;box-shadow:0 2px 8px #aaa;">` : ''}
+      </div>`;
+  } else {
+    document.getElementById('searchResult').innerHTML = "<i>No record found.</i>";
+  }
+}
 
     // Butang CALL (10 digit, muncul kanan, 3D)
     function updateCallLink() {
