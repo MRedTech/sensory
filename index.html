@@ -212,12 +212,31 @@
 </head>
 <body>
   <h2>SECURE ENTRY SYSTEM</h2>
-  
+
   <div style="margin-bottom:28px; background:#fff; border-radius:16px; box-shadow:0 2px 14px #d5ffe0; padding:20px;">
-  <h2 style="color:#176B39; margin-bottom:12px;">🔎 SEARCH RECORD</h2>
-  <input id="searchMykad" type="text" placeholder="MYKAD / PASSPORT" style="padding:12px; border-radius:7px; border:1.5px solid #176B39; font-size:16px; margin-bottom:7px;">
-  <input id="searchRegnum" type="text" placeholder="REGISTRATION NO." style="padding:12px; border-radius:7px; border:1.5px solid #176B39; font-size:16px;">
-  <button onclick="searchOldRecord()" style="background:linear-gradient(135deg,#2b7a2b,#3bd97b); color:#fff; border:none; border-radius:8px; font-weight:bold; font-size:17px; padding:12px 22px; margin-center:10px; cursor:pointer;">SEARCH</button>
+  <h2 style="color:#176B39; margin-bottom:12px; letter-spacing:1.2px; font-size:1.35rem; font-weight:bold;">
+    <span style="font-size:1.23rem;">🔎</span> SEARCH RECORD
+  </h2>
+  <input id="searchMykad" type="text" placeholder="MYKAD / PASSPORT" style="width:100%; padding:12px; border-radius:7px; border:1.5px solid #176B39; font-size:16px; margin-bottom:9px;">
+  <input id="searchRegnum" type="text" placeholder="REGISTRATION NO." style="width:100%; padding:12px; border-radius:7px; border:1.5px solid #176B39; font-size:16px; margin-bottom:18px;">
+  
+  <!-- Button center dengan style asal -->
+  <div style="display:flex; justify-content:center;">
+    <button onclick="searchOldRecord()" style="
+      background:linear-gradient(135deg,#2b7a2b,#3bd97b);
+      color:#fff;
+      border:none;
+      border-radius:12px;
+      font-weight:bold;
+      font-size:17px;
+      padding:13px 36px;
+      box-shadow:0 4px 16px 0 #bbdfbb, 0 1.5px 3px #3333;
+      letter-spacing:2px;
+      cursor:pointer;
+      transition: box-shadow 0.18s, transform 0.1s;">
+      SEARCH
+    </button>
+  </div>
   <div id="searchResult" style="margin-top:18px;"></div>
   </div>
   
