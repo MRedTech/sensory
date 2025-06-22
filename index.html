@@ -222,22 +222,27 @@
   
   <!-- Button center dengan style asal -->
   <div style="display:flex; justify-content:center;">
-    <button onclick="searchOldRecord()" style="
-      background: linear-gradient(145deg, #3bd97b 0%, #2b7a2b 100%);
+  <button
+    onclick="searchOldRecord()"
+    style="
+      background: linear-gradient(135deg,#3bd97b 0%, #2b7a2b 100%);
       color: #fff;
       border: none;
       border-radius: 12px;
-      font-size: 16px;
       font-weight: bold;
-      padding: 13px 30px;
-      box-shadow: 0 4px 16px 0 #bbdfbb, 0 1.5px 3px #3333;
+      font-size: 18px;
+      padding: 16px 48px;
+      margin: 0 auto;
+      box-shadow: 0 4px 16px 0 #bbdfbb, 0 2px 5px #bbb;
       letter-spacing: 2px;
       cursor: pointer;
-      transition: box-shadow 0.18s, transform 0.1s;>
-      SEARCH
-    </button>
-  </div>
-  <div id="searchResult" style="margin-top:18px;"></div>
+      transition: box-shadow 0.18s, transform 0.1s;
+      display: inline-block;
+    "
+    onmousedown="this.style.boxShadow='0 2px 5px #bbb'; this.style.transform='translateY(2px)'"
+    onmouseup="this.style.boxShadow='0 4px 16px 0 #bbdfbb, 0 2px 5px #bbb'; this.style.transform='none'"
+    onmouseleave="this.style.boxShadow='0 4px 16px 0 #bbdfbb, 0 2px 5px #bbb'; this.style.transform='none'"
+  >SEARCH</button>
   </div>
   
   <div class="top-action">
