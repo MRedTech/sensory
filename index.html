@@ -498,6 +498,10 @@ async function searchOldRecord() {
       autofillForm(result.data);
       // Optional: scroll ke borang utama jika perlu
       document.getElementById('registrationForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Selepas autofillForm(result.data);
+      document.getElementById('searchMykad').value = '';
+      document.getElementById('searchRegnum').value = '';
+      document.getElementById('searchResult').innerHTML = '';
     }
   });
 } else {
