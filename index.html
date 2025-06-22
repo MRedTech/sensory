@@ -462,6 +462,14 @@ async function searchOldRecord() {
   const mykadNorm = normalize(mykad);
   const regnumNorm = normalize(regnum);
 
+  // Fungsi carian rekod
+async function searchRecord(field, value) {
+  const url = `${WORKER_URL}?field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data;
+}
+  
   // Gunakan fungsi carian sedia ada (pastikan searchRecord boleh akses field normalized)
   if (mykad) {
     result = await searchRecord('mykadPassport', mykadNorm);
