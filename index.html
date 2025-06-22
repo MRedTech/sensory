@@ -445,23 +445,17 @@
   return (str || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
 
-  async function searchOldRecord() {
+    async function searchOldRecord() {
   const input = document.getElementById('searchUniversal').value.trim();
   if (!input) return;
 
   const valueNorm = normalize(input);
-  let result = null;
+  let result = await searchRecord('mykadPassport', valueNorm);
 
-  // Cuba cari ikut mykadPassport dahulu
-  result = await searchRecord('mykadPassport', valueNorm);
-
-  // Jika tak jumpa, cuba cari ikut regnum
+  // Jika tak jumpa, cuba regnum
   if (!result || !result.exist) {
     result = await searchRecord('regnum', valueNorm);
   }
-
-  // Jika tak jumpa juga, boleh tambah carian ikut field lain jika ada
-  // result = await searchRecord('passportField', valueNorm);
 
   if (result && result.exist) {
     Swal.fire({
@@ -473,7 +467,7 @@
       cancelButtonText: 'No',
       background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
       color: '#176B39',
-      width: 300,
+      width: 280,
       customClass: {
         popup: 'shadow-2xl px-7 pt-7 pb-6'
       },
@@ -484,7 +478,6 @@
       if (res.isConfirmed) {
         autofillForm(result.data);
         document.getElementById('registrationForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // Kosongkan ruangan search
         document.getElementById('searchUniversal').value = '';
         document.getElementById('searchResult').innerHTML = '';
       }
@@ -497,7 +490,7 @@
       confirmButtonText: 'OK',
       background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
       color: '#176B39',
-      width: 260,
+      width: 280,
       customClass: {
         popup: 'shadow-2xl px-7 pt-7 pb-6'
       },
@@ -508,9 +501,9 @@
       document.getElementById('searchUniversal').value = '';
       document.getElementById('searchResult').innerHTML = '';
     });
-   }
   }
-
+    }
+    
   // Papar hasil carian
   if (result && result.exist) {
     document.getElementById('searchResult').innerHTML =
