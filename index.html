@@ -457,6 +457,47 @@ async function searchOldRecord() {
   } else if (regnum) {
     result = await searchRecord('regnum', regnumNorm);
   }
+  if (result && result.exist) {
+  Swal.fire({
+    title: 'RECORD FOUND',
+    text: 'Autofill this form with record details?',
+    icon: 'success',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, Autofill',
+    cancelButtonText: 'No',
+    background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+    color: '#176B39',
+    width: 280,
+    customClass: {
+      popup: 'shadow-2xl px-7 pt-7 pb-6'
+    },
+    willOpen: (popup) => {
+      popup.style.borderRadius = '14px';
+    }
+  }).then((res) => {
+    if (res.isConfirmed) {
+      autofillForm(result.data);
+      // Optional: scroll ke borang utama jika perlu
+      document.getElementById('registrationForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+} else {
+  Swal.fire({
+    title: 'NOT FOUND',
+    text: 'No record found.',
+    icon: 'warning',
+    confirmButtonText: 'OK',
+    background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
+    color: '#176B39',
+    width: 280,
+    customClass: {
+      popup: 'shadow-2xl px-7 pt-7 pb-6'
+    },
+    willOpen: (popup) => {
+      popup.style.borderRadius = '14px';
+    }
+  });
+  }
 
   // Papar hasil carian
   if (result && result.exist) {
