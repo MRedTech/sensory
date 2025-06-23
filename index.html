@@ -651,22 +651,24 @@ async function searchOldRecord() {
 const WORKER_URL = "https://ext-gs12.edreborn86.workers.dev";
 
 // Fungsi carian rekod
-async function searchRecord(field, value) {
-  const url = `${WORKER_URL}?field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  return data;
-}
-
-// Fungsi search button
-function normalize(str) {
+  function normalize(str) {
   return (str || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
 
+async function searchRecord(field, value) {
+  const WORKER_URL = "https://ext-gs12.edreborn86.workers.dev"; // Ganti ke endpoint anda
+  const url = `${WORKER_URL}?field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`;
+  const res = await fetch(url);
+  return await res.json();
+}
+
 async function searchOldRecord() {
+  // 1. Spinner button START
   const btn = document.querySelector('.search-mini-btn');
   btn.innerHTML = '<span class="loader"></span> SEARCHING...';
   btn.disabled = true;
+
+  // 2. Dapatkan input
   const input = document.getElementById('searchUniversal').value.trim();
   if (!input) {
     btn.innerHTML = 'SEARCH';
@@ -674,14 +676,18 @@ async function searchOldRecord() {
     return;
   }
   const valueNorm = normalize(input);
+
+  // 3. Proses carian dua field
   let result = await searchRecord('mykadPassport', valueNorm);
   if (!result || !result.exist) {
     result = await searchRecord('regnum', valueNorm);
   }
+
+  // 4. Spinner button END (kembali normal)
   btn.innerHTML = 'SEARCH';
   btn.disabled = false;
-}
 
+  // 5. Popup keputusan
   if (result && result.exist) {
     Swal.fire({
       title: 'RECORD FOUND',
@@ -692,7 +698,7 @@ async function searchOldRecord() {
       cancelButtonText: 'No',
       background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
       color: '#176B39',
-      width: 300,
+      width: 280,
       customClass: {
         popup: 'shadow-2xl px-7 pt-7 pb-6'
       },
@@ -714,7 +720,7 @@ async function searchOldRecord() {
       confirmButtonText: 'OK',
       background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
       color: '#176B39',
-      width: 260,
+      width: 280,
       customClass: {
         popup: 'shadow-2xl px-7 pt-7 pb-6'
       },
@@ -726,7 +732,7 @@ async function searchOldRecord() {
     });
   }
 }
-
+  
 // Fungsi autofill form
 function autofillForm(data) {
   if (data.namePassport) document.getElementById('namePassport').value = data.namePassport;
