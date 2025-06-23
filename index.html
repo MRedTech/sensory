@@ -206,8 +206,22 @@
      transform: translateY(2px) scale(0.98);
    }
     @media (max-width: 500px) {
-      .camera-container { max-width: 98vw; }
+   .camera-container { max-width: 98vw; }
     }
+   .loader {
+     display: inline-block;
+     width: 20px;
+     height: 20px;
+     vertical-align: middle;
+     margin-right: 10px;
+     border: 2.8px solid #e1f7e1;
+     border-top: 2.8px solid #2b7a2b;
+     border-radius: 50%;
+     animation: spin 0.85s linear infinite;
+   }
+    @keyframes spin {
+     100% { transform: rotate(360deg); }
+   }
   </style>
 </head>
 <body>
@@ -267,17 +281,6 @@
   background: #e9f7ff;
   box-sizing: border-box;
   transition: border 0.15s;
-  .search-mini-input:focus {
-  border: 1.7px solid #3bd97b;
-  background: #f7fff7;
-  box-shadow: 0 2px 8px #41e67129;
-  transition: border 0.16s, box-shadow 0.18s, background 0.14s;
-  outline: none;
-}
-.search-mini-input:hover {
-  border: 1.7px solid #2b7a2b;
-  background: #f5fff5;
-}
 }
 .search-mini-input:focus {
   border: 1.6px solid #3bd97b;
@@ -594,22 +597,6 @@ async function searchOldRecord() {
   });
   }
 
-  // Papar hasil carian
-  if (result && result.exist) {
-    document.getElementById('searchResult').innerHTML =
-      `<div style="background:#e9f5e9; border-radius:12px; padding:16px 14px;">
-        <b>Name:</b> ${result.data.namePassport}<br>
-        <b>MyKad/Passport:</b> ${result.data.mykadPassport}<br>
-        <b>Reg No:</b> ${result.data.regnum}<br>
-        <b>Contact:</b> ${result.data.contact}<br>
-        <b>Category:</b> ${result.data.remark}<br>
-        ${result.data.imageUrl ? `<img src="${result.data.imageUrl}" alt="Photo" style="margin-top:12px;max-width:260px;border-radius:8px;box-shadow:0 2px 8px #aaa;">` : ''}
-      </div>`;
-  } else {
-    document.getElementById('searchResult').innerHTML = "<i>No record found.</i>";
-  }
-}
-
     // Butang CALL (10 digit, muncul kanan, 3D)
     function updateCallLink() {
       const phone = document.getElementById('contact').value.trim();
@@ -677,16 +664,23 @@ function normalize(str) {
 }
 
 async function searchOldRecord() {
+  const btn = document.querySelector('.search-mini-btn');
+  btn.innerHTML = '<span class="loader"></span> SEARCHING...';
+  btn.disabled = true;
   const input = document.getElementById('searchUniversal').value.trim();
-  if (!input) return;
-
+  if (!input) {
+    btn.innerHTML = 'SEARCH';
+    btn.disabled = false;
+    return;
+  }
   const valueNorm = normalize(input);
-
   let result = await searchRecord('mykadPassport', valueNorm);
-
   if (!result || !result.exist) {
     result = await searchRecord('regnum', valueNorm);
   }
+  btn.innerHTML = 'SEARCH';
+  btn.disabled = false;
+}
 
   if (result && result.exist) {
     Swal.fire({
