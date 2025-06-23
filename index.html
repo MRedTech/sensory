@@ -680,6 +680,68 @@ async function searchRecord(field, value) {
   return data;
 }
 
+// Fungsi search button
+function normalize(str) {
+  return (str || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+async function searchOldRecord() {
+  const input = document.getElementById('searchUniversal').value.trim();
+  if (!input) return;
+
+  const valueNorm = normalize(input);
+
+  let result = await searchRecord('mykadPassport', valueNorm);
+
+  if (!result || !result.exist) {
+    result = await searchRecord('regnum', valueNorm);
+  }
+
+  if (result && result.exist) {
+    Swal.fire({
+      title: 'RECORD FOUND',
+      text: 'Autofill this form with record details?',
+      icon: 'success',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, Autofill',
+      cancelButtonText: 'No',
+      background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+      color: '#176B39',
+      width: 300,
+      customClass: {
+        popup: 'shadow-2xl px-7 pt-7 pb-6'
+      },
+      willOpen: (popup) => {
+        popup.style.borderRadius = '14px';
+      }
+    }).then((res) => {
+      if (res.isConfirmed) {
+        autofillForm(result.data);
+        document.getElementById('registrationForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        document.getElementById('searchUniversal').value = '';
+      }
+    });
+  } else {
+    Swal.fire({
+      title: 'NOT FOUND',
+      text: 'No record found.',
+      icon: 'warning',
+      confirmButtonText: 'OK',
+      background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
+      color: '#176B39',
+      width: 260,
+      customClass: {
+        popup: 'shadow-2xl px-7 pt-7 pb-6'
+      },
+      willOpen: (popup) => {
+        popup.style.borderRadius = '14px';
+      }
+    }).then(() => {
+      document.getElementById('searchUniversal').value = '';
+    });
+  }
+}
+
 // Fungsi autofill form
 function autofillForm(data) {
   if (data.namePassport) document.getElementById('namePassport').value = data.namePassport;
