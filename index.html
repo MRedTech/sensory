@@ -691,10 +691,10 @@ async function searchOldRecord() {
 
   const valueNorm = normalize(input);
 
-  let result = await searchRecord('mykadPassport', valueNorm);
+  let result = await searchRecord('regnum', valueNorm);
 
   if (!result || !result.exist) {
-    result = await searchRecord('regnum', valueNorm);
+    result = await searchRecord('mykadPassport', valueNorm);
   }
 
   if (result && result.exist) {
@@ -707,7 +707,7 @@ async function searchOldRecord() {
       cancelButtonText: 'No',
       background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
       color: '#176B39',
-      width: 300,
+      width: 280,
       customClass: {
         popup: 'shadow-2xl px-7 pt-7 pb-6'
       },
@@ -729,7 +729,7 @@ async function searchOldRecord() {
       confirmButtonText: 'OK',
       background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
       color: '#176B39',
-      width: 260,
+      width: 280,
       customClass: {
         popup: 'shadow-2xl px-7 pt-7 pb-6'
       },
