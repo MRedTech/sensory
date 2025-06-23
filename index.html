@@ -208,6 +208,94 @@
     @media (max-width: 500px) {
       .camera-container { max-width: 98vw; }
     }
+
+    <!-- === MINIMAL SEARCH RECORD === -->
+<div class="search-minicard">
+  <div class="search-mini-title">
+    <span class="search-emoji">🔎</span>
+    <span>SEARCH RECORD</span>
+  </div>
+  <input
+    id="searchUniversal"
+    type="text"
+    placeholder="MYKAD / PASSPORT / REG NO"
+    autocomplete="off"
+    class="search-mini-input"
+  >
+  <button
+    class="btn-3d search-mini-btn"
+    onclick="searchOldRecord()"
+    type="button"
+  >SEARCH</button>
+</div>
+
+<style>
+.search-minicard {
+  max-width: 330px;
+  margin: 18px auto 22px auto;
+  background: #fff;
+  border-radius: 13px;
+  box-shadow: 0 2px 8px #176b3917;
+  padding: 12px 15px 16px 15px;
+}
+.search-mini-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 9px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #176B39;
+  letter-spacing: 1px;
+}
+.search-emoji {
+  margin-right: 7px;
+  font-size: 1.18em;
+}
+.search-mini-input {
+  width: 100%;
+  padding: 6.5px 10px;
+  font-size: 14px;
+  border-radius: 7px;
+  border: 1.5px solid #176B39;
+  margin-bottom: 9px;
+  font-weight: 500;
+  background: #e9f7ff;
+  box-sizing: border-box;
+  transition: border 0.15s;
+}
+.search-mini-input:focus {
+  border: 1.6px solid #3bd97b;
+  background: #f6fff6;
+  outline: none;
+}
+.search-mini-btn {
+  width: 100%;
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+@media (max-width: 500px) {
+  .search-minicard {
+    max-width: 97vw;
+    padding: 9px 4vw 12px 4vw;
+  }
+  .search-mini-title {
+    font-size: 15px;
+  }
+  .search-mini-input {
+    font-size: 13px;
+    padding: 6px 7px;
+  }
+  .search-mini-btn {
+    font-size: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+</style>
   </style>
 </head>
 <body>
