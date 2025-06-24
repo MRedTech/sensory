@@ -254,6 +254,20 @@
   </style>
 </head>
 <body>
+  <div style="display:flex;justify-content:flex-end;align-items:center;margin-bottom:4px;">
+  <span id="liveDateTime"
+    style="
+      background: linear-gradient(90deg, #2b7a2b 60%, #3bd97b 100%);
+      color: white;
+      font-weight: bold;
+      font-size: 15.5px;
+      letter-spacing: 1.1px;
+      border-radius: 10px;
+      padding: 4px 14px 4px 14px;
+      box-shadow: 0 1.5px 6px #2b7a2b13;
+      display:inline-block;">
+  </span>
+  </div>
   <div style="text-align:center;margin-bottom:8px;">
   <h2 class="header-gradient" style="margin-bottom:0.18em;">
   <span style="vertical-align:middle;"></span>
@@ -927,5 +941,21 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
 </script>
  <script 
   src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+function pad(n){return n<10?'0'+n:n}
+function updateDateTime() {
+  const now = new Date();
+  const d = pad(now.getDate());
+  const m = pad(now.getMonth() + 1);
+  const y = now.getFullYear();
+  const h = pad(now.getHours());
+  const min = pad(now.getMinutes());
+  const s = pad(now.getSeconds());
+  document.getElementById("liveDateTime").textContent =
+    `${d}/${m}/${y}  ${h}:${min}:${s}`;
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
+</script>
 </body>
 </html>
