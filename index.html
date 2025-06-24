@@ -63,6 +63,25 @@
       text-align: center;
       margin-bottom: 18px;
     }
+    .clock-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 99vw;
+      width: 97vw;
+      margin: 0 auto 10px auto;
+      padding: 8px 24px;
+      border-radius: 18px;
+      background: linear-gradient(90deg, #2b7a2b 12%, #3bd97b 90%);
+      box-shadow: 0 1.5px 8px #2b7a2b1b;
+      font-weight: bold;
+      font-size: 1.05rem;
+      color: #fff;
+      letter-spacing: 2px;
+    }
+      #liveDateOnly { text-align: left; flex:1; }
+      #liveTimeOnly { text-align: right; flex:1; }
+    }
     .btn-3d {
       background: linear-gradient(145deg, #3bd97b 0%, #2b7a2b 100%);
       color: #fff;
@@ -269,6 +288,11 @@
   </span>
   </div>
   <div style="text-align:center;margin-bottom:8px;">
+  <!-- CLOCK BAR -->
+  <div class="clock-bar">
+    <span id="liveDateOnly"></span>
+    <span id="liveTimeOnly"></span>
+  </div>
   <h2 class="header-gradient" style="margin-bottom:0.18em;">
   <span style="vertical-align:middle;"></span>
   SECURE ENTRY
