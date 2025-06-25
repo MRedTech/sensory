@@ -20,27 +20,24 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 76vw;
-  max-width: 260px;
-  margin: 0 auto 8px auto;
-  padding: 3px 10px 3px 9px;
+  width: 82vw;
+  max-width: 180px;
+  margin: 0 auto 13px auto;
+  padding: 2.5px 12px;
   border-radius: 11px;
-  background: linear-gradient(90deg, #2b7a2b 8%, #3bd97b 92%);
-  box-shadow: 0 2px 5px 0 #bbdfbb;
-  font-weight: bold;
-  font-size: 0.93rem;
+  background: linear-gradient(90deg, #41e671 0%, #176B39 100%);
+  box-shadow: 0 1px 4px 0 #bbdfbb70;
+  font-size: 11px;
   color: #fff;
-  letter-spacing: 1.6px;
-  text-shadow: 0 1.5px 3px #2b7a2b18;
+  letter-spacing: 1.4px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  opacity: 0.90;
+  position: relative;
+  z-index: 10;
 }
-#liveDateOnly { text-align: left; flex:1; }
-#liveTimeOnly { text-align: right; flex:1; }
-@media (max-width: 500px) {
-  .clock-bar {
-    width: 99vw;
-    font-size: 1.04rem;
-    padding: 10px 10vw 10px 5vw;
-  }
+.clock-date, .clock-time {
+  font-size: 11px;
 }
     .header-gradient {
       background: linear-gradient(145deg, #3bd97b 0%, #2b7a2b 100%);
