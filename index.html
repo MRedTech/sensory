@@ -16,6 +16,31 @@
       margin-top: 0.10px;
       margin-bottom: 30px;
     }
+    .clock-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 96vw; max-width: 430px;
+  margin: 0 auto 14px auto;
+  padding: 11px 28px 11px 24px;
+  border-radius: 18px;
+  background: linear-gradient(90deg, #2b7a2b 8%, #3bd97b 92%);
+  box-shadow: 0 4px 18px 0 #bbdfbb, 0 1.5px 3px #3333;
+  font-weight: bold;
+  font-size: 1.19rem;
+  color: #fff;
+  letter-spacing: 2.5px;
+  text-shadow: 0 1.5px 3px #2b7a2b18;
+}
+#liveDateOnly { text-align: left; flex:1; }
+#liveTimeOnly { text-align: right; flex:1; }
+@media (max-width: 500px) {
+  .clock-bar {
+    width: 99vw;
+    font-size: 1.04rem;
+    padding: 10px 10vw 10px 5vw;
+  }
+}
     .header-gradient {
       background: linear-gradient(145deg, #3bd97b 0%, #2b7a2b 100%);
       font-weight: 900;
@@ -254,6 +279,11 @@
   </style>
 </head>
 <body>
+  <!-- TARIKH & MASA -->
+<div class="clock-bar">
+  <span id="liveDateOnly"></span>
+  <span id="liveTimeOnly"></span>
+</div>
   <div style="text-align:center;margin-bottom:8px;">
   <h2 class="header-gradient" style="margin-bottom:0.18em;">
   <span style="vertical-align:middle;"></span>
@@ -927,5 +957,21 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
 </script>
  <script 
   src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+function pad(n){return n<10?'0'+n:n}
+function updateDateTime() {
+  const now = new Date();
+  const d = pad(now.getDate());
+  const m = pad(now.getMonth() + 1);
+  const y = now.getFullYear();
+  const h = pad(now.getHours());
+  const min = pad(now.getMinutes());
+  const s = pad(now.getSeconds());
+  document.getElementById("liveDateOnly").textContent = `${d}/${m}/${y}`;
+  document.getElementById("liveTimeOnly").textContent = `${h}:${min}:${s}`;
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
+  </script>
 </body>
 </html>
