@@ -917,15 +917,17 @@ const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
   setSubmitBtnLoading(true);
 
   const data = {
-    namePassport: document.getElementById('namePassport').value,
-    mykadPassport: document.getElementById('mykadPassport').value,
-    regnum: document.getElementById('regnum').value,
-    contact: document.getElementById('contact').value,
-    remark: document.getElementById('remark').value,
-    unitNumber: document.getElementById('unitNumber').value.trim(),
-    tower: document.getElementById('tower').value,
-    imageUrl: document.getElementById('preview').src
-  };
+  namePassport: document.getElementById('namePassport').value,
+  mykadPassport: document.getElementById('mykadPassport').value,
+  regnum: document.getElementById('regnum').value,
+  contact: document.getElementById('contact').value,
+  remark: document.getElementById('remark').value,
+  unitNumber: document.getElementById('unitNumber').value,
+  tower: document.getElementById('tower').value,
+  reason: document.getElementById('reason') ? document.getElementById('reason').value : '',
+  otherReason: document.getElementById('otherReason') ? document.getElementById('otherReason').value : '',
+  imageUrl: document.getElementById('preview').src
+};
 
   try {
     const res = await fetch(urlCloudflareWorker, {
