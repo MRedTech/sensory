@@ -274,6 +274,21 @@
     @media (max-width: 500px) {
       .camera-container { max-width: 98vw; }
     }
+    .spinner {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  border-top: 3px solid #176b39;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
   </style>
 </head>
 <body>
@@ -307,11 +322,13 @@
   class="search-mini-input"
   style="font-weight:bold;"
   >
-  <button
-    class="btn-3d search-mini-btn"
-    onclick="searchOldRecord()"
-    type="button"
-  >SEARCH</button>
+  <!-- BUTTON SEARCH (dlm section search-minicard) -->
+<button
+  id="searchBtn"
+  class="btn-3d search-mini-btn"
+  onclick="searchOldRecord()"
+  type="button"
+>SEARCH</button>
 </div>
 
 <style>
@@ -438,7 +455,8 @@
     </select>
 
     <input type="file" accept="image/*" capture="environment" id="imageInput" style="display:none;">
-    <button type="submit" class="btn-3d submit-3d">SUBMIT</button>
+    <!-- BUTTON SUBMIT (dlm form utama) -->
+<button type="submit" class="btn-3d submit-3d" id="submitBtn">SUBMIT</button>
   </form>
   <div class="footer">POWERED BY MRED TECH</div>
 
@@ -598,88 +616,6 @@
       reader.readAsDataURL(file);
     });
 
-    // Fungsi search record
-    function normalize(str) {
-  return (str || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-}
-
-async function searchOldRecord() {
-  const mykad = document.getElementById('searchMykad').value.trim();
-  const regnum = document.getElementById('searchRegnum').value.trim();
-  let result = null;
-
-  // Normalize input
-  const mykadNorm = normalize(mykad);
-  const regnumNorm = normalize(regnum);
-
-  // Gunakan fungsi carian sedia ada (pastikan searchRecord boleh akses field normalized)
-  if (mykad) {
-    result = await searchRecord('mykadPassport', mykadNorm);
-  } else if (regnum) {
-    result = await searchRecord('regnum', regnumNorm);
-  }
-  if (result && result.exist) {
-  Swal.fire({
-    title: 'RECORD FOUND',
-    text: 'Autofill this form with record details?',
-    icon: 'success',
-    showCancelButton: true,
-    confirmButtonText: 'Yes, Autofill',
-    cancelButtonText: 'No',
-    background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
-    color: '#176B39',
-    width: 280,
-    customClass: {
-      popup: 'shadow-2xl px-7 pt-7 pb-6'
-    },
-    willOpen: (popup) => {
-      popup.style.borderRadius = '14px';
-    }
-  }).then((res) => {
-    if (res.isConfirmed) {
-      autofillForm(result.data);
-      // Optional: scroll ke borang utama jika perlu
-      document.getElementById('registrationForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Selepas autofillForm(result.data);
-      document.getElementById('searchMykad').value = '';
-      document.getElementById('searchRegnum').value = '';
-      document.getElementById('searchResult').innerHTML = '';
-    }
-  });
-} else {
-  Swal.fire({
-    title: 'NOT FOUND',
-    text: 'No record found.',
-    icon: 'warning',
-    confirmButtonText: 'OK',
-    background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
-    color: '#176B39',
-    width: 280,
-    customClass: {
-      popup: 'shadow-2xl px-7 pt-7 pb-6'
-    },
-    willOpen: (popup) => {
-      popup.style.borderRadius = '14px';
-    }
-  });
-  }
-
-  // Papar hasil carian
-  if (result && result.exist) {
-    document.getElementById('searchResult').innerHTML =
-      `<div style="background:#e9f5e9; border-radius:12px; padding:16px 14px;">
-        <b>Name:</b> ${result.data.namePassport}<br>
-        <b>MyKad/Passport:</b> ${result.data.mykadPassport}<br>
-        <b>Reg No:</b> ${result.data.regnum}<br>
-        <b>Contact:</b> ${result.data.contact}<br>
-        <b>Category:</b> ${result.data.remark}<br>
-        ${result.data.imageUrl ? `<img src="${result.data.imageUrl}" alt="Photo" style="margin-top:12px;max-width:260px;border-radius:8px;box-shadow:0 2px 8px #aaa;">` : ''}
-      </div>`;
-  } else {
-    document.getElementById('searchResult').innerHTML = "<i>No record found.</i>";
-  }
-}
-
     // Butang CALL (10 digit, muncul kanan, 3D)
     function updateCallLink() {
       const phone = document.getElementById('contact').value.trim();
@@ -734,7 +670,7 @@ async function searchOldRecord() {
 const WORKER_URL = "https://ext-gs12.edreborn86.workers.dev";
 
 // Fungsi carian rekod
-async function searchRecord(field, value) {
+async function searchOldRecord(field, value) {
   const url = `${WORKER_URL}?field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`;
   const res = await fetch(url);
   const data = await res.json();
@@ -745,18 +681,23 @@ async function searchRecord(field, value) {
 function normalize(str) {
   return (str || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
+    async function searchOldRecord(field, value) {
+  setSearchBtnLoading(true);
 
-async function searchOldRecord() {
   const input = document.getElementById('searchUniversal').value.trim();
-  if (!input) return;
-
+  if (!input) {
+    setSearchBtnLoading(false);
+    return;
+  }
   const valueNorm = normalize(input);
 
-  let result = await searchRecord('regnum', valueNorm);
+  let result = await searchOldRecord('regnum', valueNorm);
 
   if (!result || !result.exist) {
-    result = await searchRecord('mykadPassport', valueNorm);
+    result = await searchOldRecord('mykadPassport', valueNorm);
   }
+
+  setSearchBtnLoading(false);
 
   if (result && result.exist) {
     Swal.fire({
@@ -801,9 +742,9 @@ async function searchOldRecord() {
       document.getElementById('searchUniversal').value = '';
     });
   }
-}
+    }
 
-// Fungsi autofill form
+    // Fungsi autofill form
 function autofillForm(data) {
   if (data.namePassport) document.getElementById('namePassport').value = data.namePassport;
   if (data.mykadPassport) document.getElementById('mykadPassport').value = data.mykadPassport;
@@ -890,8 +831,9 @@ document.getElementById('regnum').addEventListener('blur', async function() {
    // Letak di atas, sebelum kod submit
 const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
 
-document.getElementById("registrationForm").addEventListener("submit", async function(e){
+    document.getElementById("registrationForm").addEventListener("submit", async function(e){
   e.preventDefault();
+  setSubmitBtnLoading(true);
 
   const data = {
     namePassport: document.getElementById('namePassport').value,
@@ -911,24 +853,25 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
       body: JSON.stringify(data)
     });
     const respData = await res.json();
+    setSubmitBtnLoading(false);
     if (respData.success) {
       Swal.fire({
-     title: 'SUCCESS!',
-     text: 'Data submitted!',
-     icon: 'success',
-     confirmButtonText: 'OK',
-     background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
-     color: '#176B39',
-     width: 280, // <-- tukar ikut citarasa, contoh 280, 300, 340 (unit: px)
-     customClass: {
-       popup: 'shadow-2xl px-7 pt-7 pb-6'
-     },
-     willOpen: (popup) => {
-       popup.style.borderRadius = '14px';
-     },
-     timer: 5000,
-     timerProgressBar: true
-   });
+        title: 'SUCCESS!',
+        text: 'Data submitted!',
+        icon: 'success',
+        confirmButtonText: 'OK',
+        background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+        color: '#176B39',
+        width: 280,
+        customClass: {
+          popup: 'shadow-2xl px-7 pt-7 pb-6'
+        },
+        willOpen: (popup) => {
+          popup.style.borderRadius = '14px';
+        },
+        timer: 5000,
+        timerProgressBar: true
+      });
       document.getElementById("registrationForm").reset();
       document.getElementById('preview').src = "#";
       document.getElementById('imageContainer').style.display = 'none';
@@ -943,6 +886,7 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
       });
     }
   } catch (err) {
+    setSubmitBtnLoading(false);
     Swal.fire({
       title: 'ERROR!',
       text: 'Error submit data: ' + err.message,
@@ -951,6 +895,32 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     });
   }
 });
+
+    // ---- ANIMASI BUTTON SEARCH ----
+function setSearchBtnLoading(isLoading) {
+  const btn = document.getElementById('searchBtn');
+  if (!btn) return;
+  if (isLoading) {
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span>SEARCHING...`;
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = `SEARCH`;
+  }
+}
+
+// ---- ANIMASI BUTTON SUBMIT ----
+function setSubmitBtnLoading(isLoading) {
+  const btn = document.getElementById('submitBtn');
+  if (!btn) return;
+  if (isLoading) {
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span>PLEASE WAIT...`;
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = `SUBMIT`;
+  }
+}
 
 </script>
  <script 
