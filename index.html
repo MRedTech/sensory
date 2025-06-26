@@ -276,8 +276,8 @@
     }
     .spinner {
   display: inline-block;
-  width: 17px;
-  height: 17px;
+  width: 15px;
+  height: 15px;
   border: 3px solid #fff;
   border-radius: 50%;
   border-top: 3px solid #176b39;
@@ -291,8 +291,8 @@
 }
     .loader {
   display: inline-block;
-  width: 17px;
-  height: 17px;
+  width: 15px;
+  height: 15px;
   border: 3px solid #fff;
   border-radius: 50%;
   border-top: 3px solid #176b39;
@@ -687,7 +687,7 @@ async function searchRecord(field, value) {
 
 // Fungsi utama universal search
 async function handleUniversalSearch() {
-  const btn = document.getElementById('searchButton'); // pastikan button ada id="searchButton"
+  const btn = document.getElementById('searchButton'); 
   const input = document.getElementById('searchUniversal').value.trim();
   if (!input) return;
 
@@ -716,11 +716,11 @@ async function handleUniversalSearch() {
         text: 'Autofill this form with record details?',
         icon: 'success',
         showCancelButton: true,
-        confirmButtonText: 'Yes, Autofill',
-        cancelButtonText: 'No',
+        confirmButtonText: 'YES, AUTOFILL',
+        cancelButtonText: 'NO',
         background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
         color: '#176B39',
-        width: 300,
+        width: 280,
         customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
         willOpen: popup => { popup.style.borderRadius = '14px'; }
       }).then((res) => {
@@ -738,7 +738,7 @@ async function handleUniversalSearch() {
         confirmButtonText: 'OK',
         background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
         color: '#176B39',
-        width: 260,
+        width: 280,
         customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
         willOpen: popup => { popup.style.borderRadius = '14px'; }
       }).then(() => {
