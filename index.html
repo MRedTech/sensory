@@ -681,7 +681,7 @@ async function searchOldRecord(field, value) {
 function normalize(str) {
   return (str || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
-    async function searchOldRecord(field, value) {
+    async function searchOldRecord() {
   setSearchBtnLoading(true);
 
   const input = document.getElementById('searchUniversal').value.trim();
