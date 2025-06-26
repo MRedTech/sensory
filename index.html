@@ -463,7 +463,19 @@ if (mykadInput) {
       <option value="OTHER">OTHER</option>
     </select>
     <input type="text" id="unitNumber" name="unitNumber" placeholder="UNIT NUMBER" style="display:none; margin-top:10px;">
-    <input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;">
+    <!-- Reason dropdown (hidden by default) -->
+<div id="reasonSection" style="display:none; margin-top:10px;">
+  <label for="reason">REASON</label>
+  <select id="reason" name="reason">
+    <option value="">-PLEASE SELECT-</option>
+    <option value="BLOCK CARD">BLOCK CARD</option>
+    <option value="LOST CARD">LOST CARD</option>
+    <option value="FORGET CARD">FORGET CARD</option>
+    <option value="OTHER">OTHER</option>
+  </select>
+  <input type="text" id="reasonOther" name="reasonOther" placeholder="PLEASE SPECIFY" style="display:none; margin-top:8px;">
+  <input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;">
+</div>
 
     <label for="tower">TOWER</label>
     <select id="tower" name="tower" required>
@@ -663,6 +675,35 @@ if (mykadInput) {
       if (value !== 'OWNER' && value !== 'TENANT') unitField.value = '';
     });
 
+    // Dapatkan elemen
+const categorySelect = document.getElementById('remark');
+const reasonSection = document.getElementById('reasonSection');
+const reasonSelect = document.getElementById('reason');
+const reasonOther = document.getElementById('reasonOther');
+
+// Tunjuk/hide ruangan Reason ikut kategori
+categorySelect.addEventListener('change', function() {
+  const val = this.value;
+  if (val === 'OWNER' || val === 'TENANT') {
+    reasonSection.style.display = 'block';
+  } else {
+    reasonSection.style.display = 'none';
+    reasonSelect.value = '';
+    reasonOther.style.display = 'none';
+    reasonOther.value = '';
+  }
+});
+
+// Tunjuk/hide text input kalau Reason = OTHER
+reasonSelect.addEventListener('change', function() {
+  if (this.value === 'OTHER') {
+    reasonOther.style.display = 'block';
+  } else {
+    reasonOther.style.display = 'none';
+    reasonOther.value = '';
+  }
+});
+
     // Validasi submit
     document.getElementById('registrationForm').addEventListener('submit', function(e) {
       const remark = remarkSelect.value;
@@ -678,7 +719,26 @@ if (mykadInput) {
         e.preventDefault();
         return;
       }
-    });
+      document.getElementById('registrationForm').addEventListener('submit', function(e) {
+  // === VALIDASI SEBELUM SUBMIT ===
+  const categorySelect = document.getElementById('remark');
+  const reasonSelect = document.getElementById('reason');
+  const reasonOther = document.getElementById('reasonOther');
+
+  // Jika OWNER/TENANT, Reason wajib diisi
+  if ((categorySelect.value === 'OWNER' || categorySelect.value === 'TENANT') && !reasonSelect.value) {
+    alert('PLEASE SELECT REASON.');
+    e.preventDefault();
+    return;
+  }
+  // Jika Reason = OTHER, wajib isi sebab
+  if (reasonSelect.value === 'OTHER' && !reasonOther.value.trim()) {
+    alert('PLEASE SPECIFY THE REASON.');
+    reasonOther.focus();
+    e.preventDefault();
+    return;
+  }
+ });
 
     // Tukar SPACE ke "-" & auto UPPERCASE untuk UNIT NUMBER
     document.getElementById('unitNumber').addEventListener('input', function(e) {
