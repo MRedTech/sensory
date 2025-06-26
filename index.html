@@ -289,6 +289,19 @@
   0% { transform: rotate(0deg);}
   100% { transform: rotate(360deg);}
 }
+    .loader {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  border-top: 3px solid #49b167;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
+  margin-right: 9px;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } 
+}
   </style>
 </head>
 <body>
