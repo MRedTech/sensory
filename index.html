@@ -444,26 +444,41 @@ if (mykadInput) {
     </div>
 
     <label for="remark">CATEGORY</label>
-    <select id="remark" name="remark" required>
-      <option value="-PLEASE SELECT-">-PLEASE SELECT-</option>
-      <option value="DROP OFF/PICK UP">DROP OFF/PICK UP</option>
-      <option value="E-HAILING">E-HAILING</option>
-      <option value="FLASH EXPRESS">FLASH EXPRESS</option>
-      <option value="FOOD PANDA">FOOD PANDA</option>
-      <option value="GDEX">GDEX</option>
-      <option value="GRAB FOOD">GRAB FOOD</option>
-      <option value="J&T EXPRESS">J&T EXPRESS</option>
-      <option value="LALAMOVE">LALAMOVE</option>
-      <option value="LAZADA">LAZADA</option>
-      <option value="MCD FOOD DELIVERY">MCD FOOD DELIVERY</option>
-      <option value="OWNER">OWNER</option>
-      <option value="SHOPEE EXPRESS">SHOPEE EXPRESS</option>
-      <option value="SHOPEE FOOD">SHOPEE FOOD</option>
-      <option value="TENANT">TENANT</option>
-      <option value="OTHER">OTHER</option>
-    </select>
-    <input type="text" id="unitNumber" name="unitNumber" placeholder="UNIT NUMBER" style="display:none; margin-top:10px;">
-    <input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;">
+<select id="remark" name="remark" required>
+  <option value="">-PLEASE SELECT-</option>
+  <option value="DROP OFF/PICK UP">DROP OFF/PICK UP</option>
+  <option value="E-HAILING">E-HAILING</option>
+  <option value="FLASH EXPRESS">FLASH EXPRESS</option>
+  <option value="FOOD PANDA">FOOD PANDA</option>
+  <option value="GDEX">GDEX</option>
+  <option value="GRAB FOOD">GRAB FOOD</option>
+  <option value="J&T EXPRESS">J&T EXPRESS</option>
+  <option value="LALAMOVE">LALAMOVE</option>
+  <option value="LAZADA">LAZADA</option>
+  <option value="MCD FOOD DELIVERY">MCD FOOD DELIVERY</option>
+  <option value="OWNER">OWNER</option>
+  <option value="SHOPEE EXPRESS">SHOPEE EXPRESS</option>
+  <option value="SHOPEE FOOD">SHOPEE FOOD</option>
+  <option value="TENANT">TENANT</option>
+  <option value="OTHER">OTHER</option>
+</select>
+
+<input type="text" id="unitNumber" name="unitNumber" placeholder="UNIT NUMBER" style="display:none; margin-top:10px;">
+
+<!-- Reason section (hidden by default) -->
+<div id="reasonSection" style="display:none; margin-top:10px;">
+  <label for="reasonSelect">REASON</label>
+  <select id="reasonSelect" name="reasonSelect">
+    <option value="">-PLEASE SELECT-</option>
+    <option value="Block card">Block card</option>
+    <option value="Lost card">Lost card</option>
+    <option value="Forget card">Forget card</option>
+    <option value="Other">Other</option>
+  </select>
+  <input type="text" id="reasonOther" name="reasonOther" placeholder="PLEASE SPECIFY" style="display:none; margin-top:7px;">
+</div>
+
+<input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;">
 
     <label for="tower">TOWER</label>
     <select id="tower" name="tower" required>
@@ -651,36 +666,72 @@ if (mykadInput) {
       if (phone.length < 10) e.preventDefault();
     });
 
-    // Logic kategori tambahan
-    const remarkSelect = document.getElementById('remark');
-    const otherField = document.getElementById('otherCategory');
-    const unitField = document.getElementById('unitNumber');
-    remarkSelect.addEventListener('change', function() {
-      const value = this.value;
-      otherField.style.display = (value === 'OTHER') ? 'block' : 'none';
-      unitField.style.display = (value === 'OWNER' || value === 'TENANT') ? 'block' : 'none';
-      if (value !== 'OTHER') otherField.value = '';
-      if (value !== 'OWNER' && value !== 'TENANT') unitField.value = '';
-    });
+    // === CATEGORY, UNIT NUMBER & REASON DROPDOWN ===
+  const remarkSelect = document.getElementById('remark');
+  const otherField = document.getElementById('otherCategory');
+  const unitField = document.getElementById('unitNumber');
+  const reasonSection = document.getElementById('reasonSection');
+  const reasonSelect = document.getElementById('reasonSelect');
+  const reasonOther = document.getElementById('reasonOther');
 
-    // Validasi submit
-    document.getElementById('registrationForm').addEventListener('submit', function(e) {
-      const remark = remarkSelect.value;
-      const other = otherField.value.trim();
-      const unit = unitField.value.trim();
-      if (remark === 'OTHER' && other === '') {
-        alert('PLEASE SPECIFY OTHER CATEGORY.');
-        e.preventDefault();
-        return;
-      }
-      if ((remark === 'OWNER' || remark === 'TENANT') && unit === '') {
-        alert('PLEASE ENTER UNIT NUMBER.');
-        e.preventDefault();
-        return;
-      }
-    });
+  // Tunjuk/hide unit number & reason ikut pilihan category
+  remarkSelect.addEventListener('change', function() {
+    const val = this.value.toUpperCase();
+    // UNIT NUMBER hanya untuk OWNER/TENANT
+    unitField.style.display = (val === 'OWNER' || val === 'TENANT') ? 'block' : 'none';
+    if (val === 'OWNER' || val === 'TENANT') {
+      reasonSection.style.display = 'block';
+    } else {
+      reasonSection.style.display = 'none';
+      reasonSelect.value = '';
+      reasonOther.style.display = 'none';
+      reasonOther.value = '';
+    }
+    // OTHER CATEGORY
+    otherField.style.display = (val === 'OTHER') ? 'block' : 'none';
+    if (val !== 'OTHER') otherField.value = '';
+    if (val !== 'OWNER' && val !== 'TENANT') unitField.value = '';
+  });
 
-    // Tukar SPACE ke "-" & auto UPPERCASE untuk UNIT NUMBER
+  // Reason dropdown - bila pilih Other, show input
+  reasonSelect.addEventListener('change', function() {
+    if (this.value === 'Other') {
+      reasonOther.style.display = 'block';
+    } else {
+      reasonOther.style.display = 'none';
+      reasonOther.value = '';
+    }
+  });
+
+  // === VALIDASI SUBMIT ===
+  document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    const remark = remarkSelect.value.toUpperCase();
+    const other = otherField.value.trim();
+    const unit = unitField.value.trim();
+    const reason = reasonSelect.value;
+    const reasonOtherVal = reasonOther.value.trim();
+
+    // Jika pilih OTHER wajib isi otherCategory
+    if (remark === 'OTHER' && other === '') {
+      alert('PLEASE SPECIFY OTHER CATEGORY.');
+      e.preventDefault();
+      return;
+    }
+    // Jika pilih OWNER/TENANT wajib isi unit number
+    if ((remark === 'OWNER' || remark === 'TENANT') && unit === '') {
+      alert('PLEASE ENTER UNIT NUMBER.');
+      e.preventDefault();
+      return;
+    }
+    // Jika OWNER/TENANT dan reason pilih Other, wajib isi reasonOther
+    if ((remark === 'OWNER' || remark === 'TENANT') && reason === 'Other' && reasonOtherVal === '') {
+      alert('PLEASE SPECIFY OTHER REASON.');
+      e.preventDefault();
+      return;
+    }
+  });
+    
+   // Tukar SPACE ke "-" & auto UPPERCASE untuk UNIT NUMBER
     document.getElementById('unitNumber').addEventListener('input', function(e) {
       this.value = this.value.replace(/ /g, "-").toUpperCase();
     });
