@@ -932,32 +932,41 @@ if (unitInput) {
   unitInput.addEventListener('input', function () {
     let val = this.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
 
-    // Pastikan paling kurang 1 huruf di depan
     if (val.length <= 1) {
       this.value = val;
-    } else {
-      // Ambil huruf pertama (A), tengah 2 atau 3 aksara, akhir 2/3 aksara
-      let prefix = val.slice(0,1); // A
-      let middle = '';
-      let last = '';
-
-      // Jika bahagian tengah adalah 3 karakter DAN karakter ke-3 bukan angka (cth: 03A)
-      if (val.length > 4 && isNaN(val[3])) {
-        middle = val.slice(1,4); // 3 aksara
-        last = val.slice(4,6);   // 2 aksara lepas tu
-      } else {
-        // Biasanya tengah hanya 2 digit (A09/07)
-        middle = val.slice(1,3);
-        last = val.slice(3,5);
-      }
-
-      // Auto format
-      let formatted = prefix;
-      if (middle) formatted += '-' + middle;
-      if (last) formatted += '-' + last;
-
-      this.value = formatted;
+      return;
     }
+
+    let prefix = val.slice(0, 1); // 'A'
+    let middle = '';
+    let end = '';
+
+    // Bahagian tengah: 2 digit (+optional 1 huruf)
+    if (val.length > 3 && isNaN(val[3])) {
+      // Jika aksara ke-4 adalah huruf, tengah ambil 3
+      middle = val.slice(1, 4);
+      end = val.slice(4);
+    } else {
+      // Tengah 2 sahaja, hujung selebihnya
+      middle = val.slice(1, 3);
+      end = val.slice(3);
+    }
+
+    // Bahagian hujung: 2 digit (+optional 1 huruf)
+    let last = '';
+    if (end.length > 3 && isNaN(end[2])) {
+      // Jika ada huruf ketiga di bahagian hujung
+      last = end.slice(0,3);
+    } else {
+      last = end.slice(0,2);
+      if (end.length > 2) last += end.slice(2,3);
+    }
+
+    let formatted = prefix;
+    if (middle) formatted += '-' + middle;
+    if (last) formatted += '-' + last;
+
+    this.value = formatted;
   });
 }
     
