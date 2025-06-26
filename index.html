@@ -418,6 +418,21 @@
 
     <label for="mykadPassport">MYKAD / PASSPORT</label>
     <input type="text" id="mykadPassport" name="mykadPassport" required>
+    <script>
+const mykadInput = document.getElementById('mykadPassport');
+if (mykadInput) {
+  mykadInput.addEventListener('input', function () {
+    let val = this.value.replace(/[^0-9]/g, '');
+    if (val.length > 6 && val.length <= 8) {
+      this.value = val.slice(0,6) + '-' + val.slice(6);
+    } else if (val.length > 8) {
+      this.value = val.slice(0,6) + '-' + val.slice(6,8) + '-' + val.slice(8,12);
+    } else {
+      this.value = val;
+    }
+  });
+}
+    </script>
 
     <label for="regnum">REGISTRATION NUMBER</label>
     <input type="text" id="regnum" name="regnum" required>
