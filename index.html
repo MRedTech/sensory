@@ -323,12 +323,8 @@
   style="font-weight:bold;"
   >
   <!-- BUTTON SEARCH (dlm section search-minicard) -->
-<button
-  id="searchBtn"
-  class="btn-3d search-mini-btn"
-  onclick="searchOldRecord()"
-  type="button"
->SEARCH</button>
+<input id="searchUniversal" type="text" placeholder="MYKAD / PASSPORT / REG NO" autocomplete="off" class="search-mini-input" style="font-weight:bold;">
+<button id="searchButton" class="btn-3d search-mini-btn" type="button" onclick="handleUniversalSearch()">SEARCH</button>
 </div>
 
 <style>
@@ -668,82 +664,93 @@
 
     // Endpoint Cloudflare Worker
 const WORKER_URL = "https://ext-gs12.edreborn86.workers.dev";
+    // --- UNIVERSAL SEARCH RECORD FUNCTION (COPY PASTE SIAP) ---
 
-// Fungsi carian rekod
-async function searchOldRecord(field, value) {
-  const url = `${WORKER_URL}?field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  return data;
-}
-
-// Fungsi search button
 function normalize(str) {
   return (str || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
-    async function searchOldRecord() {
-  setSearchBtnLoading(true);
 
+// Panggil API search rekod
+async function searchRecord(field, value) {
+  const url = `${WORKER_URL}?field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`;
+  const res = await fetch(url);
+  return await res.json();
+}
+
+// Fungsi utama universal search
+async function handleUniversalSearch() {
+  const btn = document.getElementById('searchButton'); // pastikan button ada id="searchButton"
   const input = document.getElementById('searchUniversal').value.trim();
-  if (!input) {
-    setSearchBtnLoading(false);
-    return;
-  }
-  const valueNorm = normalize(input);
+  if (!input) return;
 
-  let result = await searchOldRecord('regnum', valueNorm);
+  // Spinner start
+  btn.disabled = true;
+  btn.innerHTML = `<span class="loader"></span> SEARCHING...`;
 
-  if (!result || !result.exist) {
-    result = await searchOldRecord('mykadPassport', valueNorm);
-  }
+  let found = null;
+  let valueNorm = normalize(input);
 
-  setSearchBtnLoading(false);
+  try {
+    // Cuba cari ikut REGNUM dulu
+    let res = await searchRecord('regnum', valueNorm);
+    if (res.exist) found = res.data;
 
-  if (result && result.exist) {
-    Swal.fire({
-      title: 'RECORD FOUND',
-      text: 'Autofill this form with record details?',
-      icon: 'success',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, Autofill',
-      cancelButtonText: 'No',
-      background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
-      color: '#176B39',
-      width: 280,
-      customClass: {
-        popup: 'shadow-2xl px-7 pt-7 pb-6'
-      },
-      willOpen: (popup) => {
-        popup.style.borderRadius = '14px';
-      }
-    }).then((res) => {
-      if (res.isConfirmed) {
-        autofillForm(result.data);
-        document.getElementById('registrationForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        document.getElementById('searchUniversal').value = '';
-      }
-    });
-  } else {
-    Swal.fire({
-      title: 'NOT FOUND',
-      text: 'No record found.',
-      icon: 'warning',
-      confirmButtonText: 'OK',
-      background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
-      color: '#176B39',
-      width: 280,
-      customClass: {
-        popup: 'shadow-2xl px-7 pt-7 pb-6'
-      },
-      willOpen: (popup) => {
-        popup.style.borderRadius = '14px';
-      }
-    }).then(() => {
-      document.getElementById('searchUniversal').value = '';
-    });
-  }
+    // Jika tak jumpa, cuba cari ikut MYKAD/PASSPORT
+    if (!found) {
+      res = await searchRecord('mykadPassport', valueNorm);
+      if (res.exist) found = res.data;
     }
 
+    // Jika ada result
+    if (found) {
+      Swal.fire({
+        title: 'RECORD FOUND',
+        text: 'Autofill this form with record details?',
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Autofill',
+        cancelButtonText: 'No',
+        background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+        color: '#176B39',
+        width: 300,
+        customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+        willOpen: popup => { popup.style.borderRadius = '14px'; }
+      }).then((res) => {
+        if (res.isConfirmed) {
+          autofillForm(found);
+          document.getElementById('registrationForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        document.getElementById('searchUniversal').value = "";
+      });
+    } else {
+      Swal.fire({
+        title: 'NOT FOUND',
+        text: 'No record found.',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+        background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
+        color: '#176B39',
+        width: 260,
+        customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+        willOpen: popup => { popup.style.borderRadius = '14px'; }
+      }).then(() => {
+        document.getElementById('searchUniversal').value = "";
+      });
+    }
+  } catch (err) {
+    Swal.fire({
+      title: 'ERROR',
+      text: err.message || 'Search failed!',
+      icon: 'error',
+      confirmButtonText: 'OK',
+    });
+  } finally {
+    // Spinner reset
+    btn.disabled = false;
+    btn.innerHTML = 'SEARCH';
+  }
+}
+    
     // Fungsi autofill form
 function autofillForm(data) {
   if (data.namePassport) document.getElementById('namePassport').value = data.namePassport;
