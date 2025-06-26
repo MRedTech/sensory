@@ -932,40 +932,35 @@ if (unitInput) {
   unitInput.addEventListener('input', function () {
     let val = this.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
 
-    // Pattern A-03-07 atau A-03A-03A
-    let newVal = val;
+    // Pastikan paling kurang 1 huruf di depan
+    if (val.length <= 1) {
+      this.value = val;
+    } else {
+      // Ambil huruf pertama (A), tengah 2 atau 3 aksara, akhir 2/3 aksara
+      let prefix = val.slice(0,1); // A
+      let middle = '';
+      let last = '';
 
-    // Jika ada 1 huruf + 2 digit + (1-3 huruf optional) + dash + 2-3 huruf/digit
-    // Contoh: A-03-07, A-03A-03A, A-03A-08
-    if (/^[A-Z]\d{2,3}[A-Z]{0,3}\d{0,2,3}[A-Z]{0,3}$/.test(val)) {
-      if (val.length <= 3) {
-        // A09 -> A-09
-        newVal = val.replace(/^([A-Z])(\d{2,3})$/, "$1-$2");
-      } else if (val.length === 6) {
-        // A0907 -> A-09-07
-        newVal = val.replace(/^([A-Z])(\d{2})(\d{2})$/, "$1-$2-$3");
-      } else if (val.length === 7) {
-        // A03A07A -> A-03A-07A
-        newVal = val.replace(/^([A-Z])(\d{2}[A-Z])(\d{2}[A-Z])$/, "$1-$2-$3");
+      // Jika bahagian tengah adalah 3 karakter DAN karakter ke-3 bukan angka (cth: 03A)
+      if (val.length > 4 && isNaN(val[3])) {
+        middle = val.slice(1,4); // 3 aksara
+        last = val.slice(4,6);   // 2 aksara lepas tu
+      } else {
+        // Biasanya tengah hanya 2 digit (A09/07)
+        middle = val.slice(1,3);
+        last = val.slice(3,5);
       }
-      // Untuk format lain yang lebih kompleks, boleh tambah pattern sini
-    }
 
-    // Untuk generic: 1 huruf + dash + blok2/3 karakter dipisah dash
-    if (/^[A-Z]\d{2,3}[A-Z]?\d{0,3}[A-Z]*$/.test(val)) {
-      // Pisahkan selepas 1 huruf, lepas tu setiap 2-3 aksara
-      newVal = val.replace(/^([A-Z])(\d{2,3}[A-Z]?)(\d{0,3}[A-Z]*)$/, function(_, l1, l2, l3){
-        let out = l1;
-        if (l2) out += '-' + l2;
-        if (l3 && l3.length > 0) out += '-' + l3;
-        return out;
-      });
-    }
+      // Auto format
+      let formatted = prefix;
+      if (middle) formatted += '-' + middle;
+      if (last) formatted += '-' + last;
 
-    this.value = newVal;
+      this.value = formatted;
+    }
   });
 }
-
+    
     // ---- ANIMASI BUTTON SEARCH ----
 function setSearchBtnLoading(isLoading) {
   const btn = document.getElementById('searchBtn');
