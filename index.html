@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SECURE ENTRY SYSTEM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #e9f5e9;
+  padding: 20px;
+  text-transform: uppercase;
+}
+h2 {
+  color: #2b7a2b;
+  text-align: center;
+  margin-top: 0.10px;
+  margin-bottom: 30px;
+}
+.clock-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 180px;
+  margin: 0 auto 13px auto;
+  padding: 2.5px 12px;
+  border-radius: 11px;
+  background: linear-gradient(90deg, #41e671 0%, #176B39 100%);
+  box-shadow: 0 1px 4px 0 #bbdfbb70;
+  font-size: 11px;
+  color: #fff;
+  letter-spacing: 1.4px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  opacity: 0.90;
+  position: relative;
+  z-index: 10;
+}
+.clock-date, .clock-time {
+  font-size: 11px;
+}
+.header-gradient {
+  background: linear-gradient(145deg, #3bd97b 0%, #2b7a2b 100%);
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 2.2rem;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;      
+  color: transparent;
+}
+.swal2-confirm {
+  background: linear-gradient(135deg, #2b7a2b 0%, #3bd97b 100%) !important;
+  color: #fff !important;
+  font-weight: bold !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 3px 16px #bbdfbb9f, 0 1.5px 3px #3332 !important;
+  letter-spacing: 1.5px;
+  padding: 10px 32px;
+  font-size: 1.07rem;
+  transition: box-shadow 0.16s, transform 0.09s;
+}
+.swal2-confirm:active {
+  box-shadow: 0 2px 5px #bbb !important;
+  transform: translateY(2px);
+}
+.swal2-cancel {
+  background: linear-gradient(135deg, #e52d27 0%, #ff5757 100%) !important;
+  color: #fff !important;
+  font-weight: bold !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 3px 12px #ffd2d2b9, 0 1.5px 3px #3332 !important;
+  letter-spacing: 1.2px;
+  padding: 10px 28px;
+  font-size: 1.07rem;
+  margin-left: 12px !important;
+  transition: box-shadow 0.16s, transform 0.09s;
+}
+.swal2-cancel:active {
+  box-shadow: 0 2px 6px #d8b !important;
+  transform: translateY(2px);
+}
+.top-action {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.btn-3d {
+  background: linear-gradient(145deg, #3bd97b 0%, #2b7a2b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 13px 30px;
+  box-shadow: 0 4px 16px 0 #bbdfbb, 0 1.5px 3px #3333;
+  letter-spacing: 2px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  transition: box-shadow 0.18s, transform 0.1s;
+}
+.btn-3d:active {
+  box-shadow: 0 2px 5px #bbb;
+  transform: translateY(2px);
+}
+.submit-3d {
+  margin-top: 18px;
+  width: 100%;
+}
+.photo-label {
+  color: #2b7a2b;
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* ========== PREVIEW GAMBAR RESPONSIVE ========== */
+.image-container {
+  position: relative;
+  display: none; /* Sembunyi pada awal */
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto 20px auto;
+  background: #f0f0f0;
+  border: 1px solid #2b7a2b;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  overflow: hidden;
+  aspect-ratio: 16/10;
+}
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 18px;
+  background: #f5f7f5;
+  display: block;
+}
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-25deg);
+  color: red;
+  opacity: 0.5;
+  font-size: 1.2em;
+  font-weight: bold;
+  pointer-events: none;
+  letter-spacing: 2px;
+  z-index: 5;
+  white-space: nowrap;
+}
+@media (min-width: 700px) {
+  .image-container {
+    max-width: 600px;
+    aspect-ratio: 16/7;
+  }
+  .watermark {
+    font-size: 1.5em;
+  }
+}
+
+/* ========== LAIN-LAIN CSS FORM DAN BUTTON ========== */
+label {
+  display: block;
+  margin-top: 14px;
+  color: #2b7a2b;
+  font-weight: bold;
+}
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #2b7a2b;
+  border-radius: 4px;
+  text-transform: uppercase;
+  background-color: #e9f7ff;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+}
+select:invalid {
+  color: #bcbcbc;
+}
+option[value=""] {
+  color: #bcbcbc;
+}
+.phone-container {
+  position: relative;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+}
+.phone-container input {
+  flex: 1;
+  margin-right: 6px;
+}
+.call-btn-3d {
+  display: none;
+  background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
+  color: #fff;
+  border: none;
+  border-radius: 100%;
+  width: 60px;
+  height: 60px;
+  font-size: 19px;
+  font-weight: bold;
+  box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.1s;
+  position: relative;
+  margin-left: 5px;
+  outline: none;
+  text-decoration: none;
+}
+.call-btn-3d span {
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: #fff;
+}
+.call-btn-3d:active {
+  box-shadow: 0 2px 5px #bbb;
+  transform: translateY(2px) scale(0.98);
+}
+.footer {
+  text-align: center;
+  padding: 5px;
+  font-size: 11px;
+  color: #888888;
+  margin-top: 30px;
+  margin-bottom: 1px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+/* === KAMERA MODAL & GUIDELINE === */
+.camera-modal {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.85); z-index: 99999;
+  display: flex; justify-content: center; align-items: center;
+  flex-direction: column;
+}
+.camera-container {
+  position: relative; width: 94vw; max-width: 400px; aspect-ratio: 4/3;
+  background: #000; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+#camera-video {
+  width: 100%; height: auto; border-radius: 14px;
+  background: #222;
+}
+.guideline {
+  position: absolute; border: 3px solid #28cc6c; border-radius: 8px;
+  left: 4%; top: 4%; width: 92%; height: 92%;
+  pointer-events: none; box-sizing: border-box;
+}
+.close-cam-btn {
+  position: absolute; top: 10px; right: 13px; z-index: 100;
+  background: #fff; color: #1c7e41; border: none; border-radius: 24px;
+  font-size: 21px; padding: 4px 13px; font-weight: bold; cursor: pointer;
+  box-shadow: 0 2px 10px #aaa;
+}
+.capture-btn-3d {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
+  color: #fff;
+  border: none;
+  border-radius: 100%;
+  width: 60px;
+  height: 60px;
+  font-size: 17px;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.1s;
+  margin-top: 16px;
+}
+.capture-btn-3d:active {
+  box-shadow: 0 2px 5px #bbb;
+  transform: translateY(2px) scale(0.98);
+}
+@media (max-width: 500px) {
+  .camera-container { max-width: 98vw; }
+}
+
+/* === SEARCH MINICARD === */
+.search-minicard {
+  max-width: 330px;
+  margin: 18px auto 22px auto;
+  background: #fff;
+  border-radius: 13px;
+  box-shadow: 0 2px 8px #176b3917;
+  padding: 12px 15px 16px 15px;
+}
+.search-mini-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 9px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #176B39;
+  letter-spacing: 1px;
+}
+.search-emoji {
+  margin-right: 7px;
+  font-size: 1.18em;
+}
+.search-mini-input {
+  width: 100%;
+  padding: 6.5px 10px;
+  font-size: 14px;
+  border-radius: 7px;
+  border: 1.5px solid #176B39;
+  margin-bottom: 9px;
+  font-weight: 500;
+  background: #e9f7ff;
+  box-sizing: border-box;
+  transition: border 0.15s;
+}
+.search-mini-input:focus {
+  border: 1.6px solid #3bd97b;
+  background: #f6fff6;
+  outline: none;
+}
+.search-mini-btn {
+  width: 100%;
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+@media (max-width: 500px) {
+  .search-minicard {
+    max-width: 97vw;
+    padding: 9px 4vw 12px 4vw;
+  }
+  .search-mini-title {
+    font-size: 15px;
+  }
+  .search-mini-input {
+    font-size: 13px;
+    padding: 6px 7px;
+  }
+  .search-mini-btn {
+    font-size: 13px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+
+/* === LOADER/SPINNER === */
+.spinner, .loader {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  border-top: 3px solid #176b39;
+  animation: spin 0.8s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+  </style>
+</head>
+<body>
+  <!-- TARIKH & MASA -->
+  <div class="clock-bar">
+    <span id="liveDateOnly"></span>
+    <span id="liveTimeOnly"></span>
+  </div>
+  <div style="text-align:center;margin-bottom:8px;">
+    <h2 class="header-gradient" style="margin-bottom:0.18em;">
+      <span style="vertical-align:middle;"></span>
+      SECURE ENTRY
+    </h2>
+    <div style="color:#489167;font-size:15px;letter-spacing:0.7px;margin-bottom:7px;">
+      REGISTER.ACCESS.SECURE
+    </div>
+    <div style="height:3px;width:60px;margin:0 auto 4px auto;background:linear-gradient(90deg,#3bd97b 20%,#2b7a2b 80%);border-radius:2px;"></div>
+  </div>
+
+  <!-- === MINIMAL SEARCH RECORD === -->
+<div class="search-minicard">
+  <div class="search-mini-title">
+    <span class="search-emoji">🔎</span>
+    <span>SEARCH RECORD</span>
+  </div>
+  <input id="searchUniversal" type="text" placeholder="MYKAD / PASSPORT / REG NO" autocomplete="off" class="search-mini-input" style="font-weight:bold;">
+  <button id="searchButton" class="btn-3d search-mini-btn" type="button" onclick="handleUniversalSearch()">SEARCH</button>
+</div>
+  <div class="top-action">
+    <button type="button" id="takePhotoBtn" class="btn-3d" onclick="openCamera()">TAKE PICTURE</button>
+    <span class="photo-label">Take photo of MyKad/Licence</span>
+  </div>
+
+  <!-- KEMASKINI PREVIEW GAMBAR: Sembunyi pada awal, keluar selepas snap -->
+  <div class="image-container" id="imageContainer" style="display:none;">
+    <img id="preview" src="#" alt="IMAGE PREVIEW" />
+    <div class="watermark">SENSORY USE ONLY</div>
+  </div>
+
+  <form id="registrationForm" autocomplete="off">
+    <label for="namePassport">NAME</label>
+    <input type="text" id="namePassport" name="namePassport" required>
+    <label for="mykadPassport">MYKAD / PASSPORT</label>
+    <input type="text" id="mykadPassport" name="mykadPassport" required>
+    <script>
+      // Kod formatting MyKad kekal...
+      const mykadInput = document.getElementById('mykadPassport');
+      if (mykadInput) {
+        mykadInput.addEventListener('input', function () {
+          let val = this.value.replace(/[^0-9]/g, '');
+          if (val.length > 6 && val.length <= 8) {
+            this.value = val.slice(0,6) + '-' + val.slice(6);
+          } else if (val.length > 8) {
+            this.value = val.slice(0,6) + '-' + val.slice(6,8) + '-' + val.slice(8,12);
+          } else {
+            this.value = val;
+          }
+        });
+      }
+    
+  </script>
+
+  <label for="regnum">REGISTRATION NUMBER</label>
+  <input type="text" id="regnum" name="regnum" required>
+
+  <label for="contact">CONTACT NUMBER</label>
+  <div class="phone-container">
+    <input type="tel" id="contact" name="contact" required oninput="updateCallLink()" maxlength="15" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
+    <a id="callBtn" class="call-btn-3d" title="Call this number" style="display:none;" target="_blank"><span>📞</span></a>
+  </div>
+
+  <label for="remark">CATEGORY</label>
+  <select id="remark" name="remark" required>
+    <option value="" disabled selected style="color:#176B39;">- PLEASE SELECT -</option>
+    <option value="DROP OFF/PICK UP">DROP OFF/PICK UP</option>
+    <option value="E-HAILING">E-HAILING</option>
+    <option value="FLASH EXPRESS">FLASH EXPRESS</option>
+    <option value="FOOD PANDA">FOOD PANDA</option>
+    <option value="GDEX">GDEX</option>
+    <option value="GRAB FOOD">GRAB FOOD</option>
+    <option value="J&T EXPRESS">J&T EXPRESS</option>
+    <option value="LALAMOVE">LALAMOVE</option>
+    <option value="LAZADA">LAZADA</option>
+    <option value="MCD FOOD DELIVERY">MCD FOOD DELIVERY</option>
+    <option value="OWNER">OWNER</option>
+    <option value="SHOPEE EXPRESS">SHOPEE EXPRESS</option>
+    <option value="SHOPEE FOOD">SHOPEE FOOD</option>
+    <option value="TENANT">TENANT</option>
+    <option value="OTHER">OTHER</option>
+  </select>
+
+  <input type="text" id="unitNumber" name="unitNumber" placeholder="UNIT NUMBER" style="display:none; margin-top:10px;">
+
+  <!-- Reason section (hidden by default) -->
+  <div id="reasonSection" style="display:none; margin-top:10px;">
+    <label for="reasonSelect">REASON</label>
+    <select id="reasonSelect" name="reasonSelect">
+      <option value="" disabled selected style="color:#176B39;">- PLEASE SELECT -</option>
+      <option value="Block card">Block card</option>
+      <option value="Lost card">Lost card</option>
+      <option value="Forget card">Forget card</option>
+      <option value="Other">Other</option>
+    </select>
+    <input type="text" id="reasonOther" name="reasonOther" placeholder="PLEASE SPECIFY" style="display:none; margin-top:7px;">
+  </div>
+
+  <input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;">
+
+  <label for="tower">TOWER</label>
+  <select id="tower" name="tower" required>
+    <option value="" disabled selected style="color:#176B39;">- PLEASE SELECT -</option>
+    <option value="TOWER A">TOWER A</option>
+    <option value="TOWER B">TOWER B</option>
+    <option value="TOWER A & B">TOWER A & B</option>
+  </select>
+
+  <input type="file" accept="image/*" capture="environment" id="imageInput" style="display:none;">
+  <!-- BUTTON SUBMIT (dlm form utama) -->
+  <button type="submit" class="btn-3d submit-3d" id="submitBtn">SUBMIT</button>
+</form>
+<div class="footer">POWERED BY MRED TECH</div>
+
+  <!-- === MODAL KAMERA UNTUK GUIDELINE === -->
+  <div id="cameraModal" class="camera-modal" style="display:none;">
+    <div class="camera-container">
+      <video id="camera-video" autoplay playsinline></video>
+      <div class="guideline"></div>
+      <button class="close-cam-btn" type="button" onclick="closeCameraModal()">×</button>
+    </div>
+    <button class="capture-btn-3d" type="button" onclick="captureImage()"></button>
+  </div>
+
+  <script>
+    // --- MODAL CAMERA + GUIDELINE & AUTO-CROP ---
+    let stream = null;
+    let video = null;
+
+    function openCamera() {
+      document.getElementById('cameraModal').style.display = 'flex';
+      startCamera();
+    }
+
+    async function startCamera() {
+      video = document.getElementById('camera-video');
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+        video.srcObject = stream;
+      } catch (e) {
+        alert("Failed to open camera: " + e.message);
+        closeCameraModal();
+      }
+    }
+
+    function closeCameraModal() {
+      document.getElementById('cameraModal').style.display = 'none';
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        stream = null;
+      }
+    }
+
+    // KEMASKINI FUNGSI captureImage()
+  function captureImage() {
+  const video = document.getElementById('camera-video');
+  const cameraContainer = document.querySelector('.camera-container');
+  const guideline = document.querySelector('.guideline');
+
+    // Dapatkan size sebenar video
+  const videoW = video.videoWidth;
+  const videoH = video.videoHeight;
+
+    // Buat canvas untuk tangkap gambar penuh video
+  const canvas = document.createElement('canvas');
+  canvas.width = videoW;
+  canvas.height = videoH;
+  canvas.getContext('2d').drawImage(video, 0, 0, videoW, videoH);
+
+    // Dapatkan ratio guideline dalam container kamera
+  const contRect = cameraContainer.getBoundingClientRect();
+  const guideRect = guideline.getBoundingClientRect();
+
+  const ratioLeft = (guideRect.left - contRect.left) / contRect.width;
+  const ratioTop = (guideRect.top - contRect.top) / contRect.height;
+  const ratioWidth = guideRect.width / contRect.width;
+  const ratioHeight = guideRect.height / contRect.height;
+
+    // Kira saiz dan posisi crop ikut guideline
+  const cropX = Math.round(canvas.width * ratioLeft);
+  const cropY = Math.round(canvas.height * ratioTop);
+  const cropW = Math.round(canvas.width * ratioWidth);
+  const cropH = Math.round(canvas.height * ratioHeight);
+
+    // Buat canvas baru untuk gambar crop
+  const cropCanvas = document.createElement('canvas');
+  cropCanvas.width = cropW;
+  cropCanvas.height = cropH;
+  cropCanvas.getContext('2d').drawImage(
+    canvas, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH
+  );
+
+    // Hasil gambar crop siap compress
+  const croppedImage = cropCanvas.toDataURL('image/jpeg', 0.85);
+
+    // Papar preview gambar yang sudah di-crop
+  document.getElementById('preview').src = croppedImage;
+  document.getElementById('imageContainer').style.display = 'flex';
+
+    // Tutup modal kamera
+  closeCameraModal();
+
+    // === Hantar ke Google Vision untuk autofill + AI VERIFY ===
+  (async () => {
+    try {
+      document.body.style.cursor = 'progress';
+      const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
+      const res = await fetch(proxyUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: croppedImage.split(",")[1] })
+      });
+      const result = await res.json();
+      document.body.style.cursor = 'default';
+
+      // --- AI Smart OCR Verification di sini! ---
+      if (!verifyOcrResult(result)) return;
+      // Autofill jika valid
+      if (result.name) document.getElementById('namePassport').value = result.name.toUpperCase();
+      if (result.idnum) document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
+
+    } catch (err) {
+      document.body.style.cursor = 'default';
+      alert("Autofill GAGAL: " + err.message);
+    }
+    })();
+    }
+  
+    // Compress & preview gambar sebelum submit (fungsi fallback input file asal)
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function() {
+        const img = new window.Image();
+        img.onload = async function() {
+          const canvas = document.createElement('canvas');
+          const scale = Math.min(1, 800 / img.width);
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          const compressed = canvas.toDataURL('image/jpeg', 0.7);
+
+          // --- KEMASKINI SHOW PREVIEW GAMBAR ---
+          const preview = document.getElementById('preview');
+          preview.src = compressed;
+          document.getElementById('imageContainer').style.display = 'flex';
+
+          // === HANTAR KE GOOGLE VISION PROXY (APPS SCRIPT) ===
+          try {
+            const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
+            document.body.style.cursor = 'progress';
+            const res = await fetch(proxyUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ image: compressed.split(",")[1] })
+            });
+            const result = await res.json();
+            document.body.style.cursor = 'default';
+
+            if (result.name) document.getElementById('namePassport').value = result.name.toUpperCase();
+            if (result.idnum) document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
+          } catch (err) {
+            document.body.style.cursor = 'default';
+            alert("Autofill GAGAL: " + err.message);
+          }
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Butang CALL (10 digit, muncul kanan, 3D)
+    function updateCallLink() {
+      const phone = document.getElementById('contact').value.trim();
+      const callBtn = document.getElementById('callBtn');
+      if (phone.length >= 10) {
+        callBtn.href = 'tel:' + phone;
+        callBtn.style.display = 'flex';
+      } else {
+        callBtn.style.display = 'none';
+      }
+    }
+    document.getElementById('callBtn').addEventListener('click', function(e) {
+      const phone = document.getElementById('contact').value.trim();
+      if (phone.length < 10) e.preventDefault();
+    });
+
+    // === CATEGORY, UNIT NUMBER & REASON DROPDOWN ===
+    const remarkSelect = document.getElementById('remark');
+    const otherField = document.getElementById('otherCategory');
+    const unitField = document.getElementById('unitNumber');
+    const reasonSection = document.getElementById('reasonSection');
+    const reasonSelect = document.getElementById('reasonSelect');
+    const reasonOther = document.getElementById('reasonOther');
+
+    // Tunjuk/hide unit number & reason ikut pilihan category
+    remarkSelect.addEventListener('change', function() {
+      const val = this.value.toUpperCase();
+      // UNIT NUMBER hanya untuk OWNER/TENANT
+      unitField.style.display = (val === 'OWNER' || val === 'TENANT') ? 'block' : 'none';
+      if (val === 'OWNER' || val === 'TENANT') {
+        reasonSection.style.display = 'block';
+      } else {
+        reasonSection.style.display = 'none';
+        reasonSelect.value = '';
+        reasonOther.style.display = 'none';
+        reasonOther.value = '';
+      }
+      // OTHER CATEGORY
+      otherField.style.display = (val === 'OTHER') ? 'block' : 'none';
+      if (val !== 'OTHER') otherField.value = '';
+      if (val !== 'OWNER' && val !== 'TENANT') unitField.value = '';
+    });
+
+    // Reason dropdown - bila pilih Other, show input
+    reasonSelect.addEventListener('change', function() {
+      if (this.value === 'Other') {
+        reasonOther.style.display = 'block';
+      } else {
+        reasonOther.style.display = 'none';
+        reasonOther.value = '';
+      }
+    });
+
+    // === VALIDASI SUBMIT ===
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+      const remark = remarkSelect.value.toUpperCase();
+      const other = otherField.value.trim();
+      const unit = unitField.value.trim();
+      const reason = reasonSelect.value;
+      const reasonOtherVal = reasonOther.value.trim();
+
+      // Jika pilih OTHER wajib isi otherCategory
+      if (remark === 'OTHER' && other === '') {
+        alert('PLEASE SPECIFY OTHER CATEGORY.');
+        e.preventDefault();
+        return;
+      }
+      // Jika pilih OWNER/TENANT wajib isi unit number
+      if ((remark === 'OWNER' || remark === 'TENANT') && unit === '') {
+        alert('PLEASE ENTER UNIT NUMBER.');
+        e.preventDefault();
+        return;
+      }
+      // Jika OWNER/TENANT dan reason pilih Other, wajib isi reasonOther
+      if ((remark === 'OWNER' || remark === 'TENANT') && reason === 'Other' && reasonOtherVal === '') {
+        alert('PLEASE SPECIFY OTHER REASON.');
+        e.preventDefault();
+        return;
+      }
+    });
+
+    // Tukar SPACE ke "-" & auto UPPERCASE untuk UNIT NUMBER
+    document.getElementById('unitNumber').addEventListener('input', function(e) {
+      this.value = this.value.replace(/ /g, "-").toUpperCase();
+    });
+
+    // Endpoint Cloudflare Worker
+    const WORKER_URL = "https://ext-gs12.edreborn86.workers.dev";
+
+    // --- UNIVERSAL SEARCH RECORD FUNCTION ---
+    function normalize(str) {
+      return (str || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    }
+
+    async function searchRecord(field, value) {
+      const url = `${WORKER_URL}?field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`;
+      const res = await fetch(url);
+      return await res.json();
+    }
+
+    async function handleUniversalSearch() {
+      const btn = document.getElementById('searchButton'); 
+      const input = document.getElementById('searchUniversal').value.trim();
+      if (!input) return;
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="loader"></span> SEARCHING...`;
+
+      let found = null;
+      let valueNorm = normalize(input);
+
+      try {
+        let res = await searchRecord('regnum', valueNorm);
+        if (res.exist) found = res.data;
+
+        if (!found) {
+          res = await searchRecord('mykadPassport', valueNorm);
+          if (res.exist) found = res.data;
+        }
+
+        if (found) {
+          Swal.fire({
+            title: 'RECORD FOUND',
+            text: 'Autofill this form with record details?',
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonText: 'YES, AUTOFILL',
+            cancelButtonText: 'NO',
+            background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+            color: '#176B39',
+            width: 280,
+            customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+            willOpen: popup => { popup.style.borderRadius = '14px'; }
+          }).then((res) => {
+            if (res.isConfirmed) {
+              autofillForm(found);
+              document.getElementById('registrationForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            document.getElementById('searchUniversal').value = "";
+          });
+        } else {
+          Swal.fire({
+            title: 'NOT FOUND',
+            text: 'No record found.',
+            icon: 'warning',
+            confirmButtonText: 'OK',
+            background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
+            color: '#176B39',
+            width: 280,
+            customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+            willOpen: popup => { popup.style.borderRadius = '14px'; }
+          }).then(() => {
+            document.getElementById('searchUniversal').value = "";
+          });
+        }
+      } catch (err) {
+        Swal.fire({
+          title: 'ERROR',
+          text: err.message || 'Search failed!',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        });
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'SEARCH';
+      }
+    }
+
+    function autofillForm(data) {
+      if (data.namePassport) document.getElementById('namePassport').value = data.namePassport;
+      if (data.mykadPassport) document.getElementById('mykadPassport').value = data.mykadPassport;
+      if (data.regnum) document.getElementById('regnum').value = data.regnum;
+      if (data.contact) document.getElementById('contact').value = data.contact;
+      if (data.remark) {
+        let match = data.remark.match(/^(OWNER|TENANT)/i);
+        if (match) {
+          document.getElementById('remark').value = match[1];
+          document.getElementById('remark').dispatchEvent(new Event('change'));
+          let unitMatch = data.remark.match(/\s*([^)]+)\s*/);
+          if (unitMatch) document.getElementById('unitNumber').value = unitMatch[1];
+        } else {
+          document.getElementById('remark').value = data.remark;
+          document.getElementById('unitNumber').value = "";
+        }
+      }
+      if (data.tower) document.getElementById('tower').value = data.tower;
+    }
+
+    document.getElementById('mykadPassport').addEventListener('blur', async function() {
+      const value = this.value.trim();
+      if (value.length < 6) return;
+      const result = await searchRecord('mykadPassport', value);
+      if (result.exist) {
+        Swal.fire({
+          title: 'PREVIOUS DATA FOUND',
+          text: 'Autofill with existing details?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'YES, AUTOFILL',
+          cancelButtonText: 'NO',
+          background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+          color: '#176B39',
+          width: 280,
+          customClass: {
+            popup: 'shadow-2xl px-7 pt-7 pb-6'
+          },
+          willOpen: (popup) => {
+            popup.style.borderRadius = '14px';
+          }
+        }).then((res) => {
+          if (res.isConfirmed) {
+            autofillForm(result.data);
+          }
+        });
+      }
+    });
+
+    document.getElementById('regnum').addEventListener('blur', async function() {
+      const value = this.value.trim();
+      if (value.length < 3) return;
+      const result = await searchRecord('regnum', value);
+      if (result.exist) {
+        Swal.fire({
+          title: 'PREVIOUS DATA FOUND',
+          text: 'Autofill with existing details?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'YES, AUTOFILL',
+          cancelButtonText: 'NO',
+          background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+          color: '#176B39',
+          width: 280,
+          customClass: {
+            popup: 'shadow-2xl px-7 pt-7 pb-6'
+          },
+          willOpen: (popup) => {
+            popup.style.borderRadius = '14px';
+          }
+        }).then((res) => {
+          if (res.isConfirmed) {
+            autofillForm(result.data);
+          }
+        });
+      }
+    });
+
+    const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
+
+    document.getElementById("registrationForm").addEventListener("submit", async function(e){
+      e.preventDefault();
+      setSubmitBtnLoading(true);
+
+      const data = {
+        namePassport: document.getElementById('namePassport').value,
+        mykadPassport: document.getElementById('mykadPassport').value,
+        regnum: document.getElementById('regnum').value,
+        contact: document.getElementById('contact').value,
+        remark: document.getElementById('remark').value,
+        unitNumber: document.getElementById('unitNumber').value,
+        tower: document.getElementById('tower').value,
+        reason: document.getElementById('reason') ? document.getElementById('reason').value : '',
+        otherReason: document.getElementById('otherReason') ? document.getElementById('otherReason').value : '',
+        imageUrl: document.getElementById('preview').src
+      };
+
+      try {
+        const res = await fetch(urlCloudflareWorker, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data)
+        });
+        const respData = await res.json();
+        setSubmitBtnLoading(false);
+        if (respData.success) {
+          Swal.fire({
+            title: 'SUCCESS!',
+            text: 'Data submitted!',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+            color: '#176B39',
+            width: 280,
+            customClass: {
+              popup: 'shadow-2xl px-7 pt-7 pb-6'
+            },
+            willOpen: (popup) => {
+              popup.style.borderRadius = '14px';
+            },
+            timer: 5000,
+            timerProgressBar: true
+          });
+          document.getElementById("registrationForm").reset();
+          document.getElementById('preview').src = "#";
+          document.getElementById('imageContainer').style.display = 'none';
+          document.getElementById('unitNumber').style.display = 'none';
+          document.getElementById('otherCategory').style.display = 'none';
+        } else {
+          Swal.fire({
+            title: 'ERROR!',
+            text: 'Submit failed: ' + (respData.message || ''),
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      } catch (err) {
+        setSubmitBtnLoading(false);
+        Swal.fire({
+          title: 'ERROR!',
+          text: 'Error submit data: ' + err.message,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
+
+    // Fungsi real time auto format unit number
+    const unitInput = document.getElementById('unitNumber');
+    if (unitInput) {
+      unitInput.addEventListener('input', function () {
+        let val = this.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+
+        if (val.length <= 1) {
+          this.value = val;
+          return;
+        }
+
+        let prefix = val.slice(0, 1); // 'A'
+        let middle = '';
+        let end = '';
+
+        if (val.length > 3 && isNaN(val[3])) {
+          middle = val.slice(1, 4);
+          end = val.slice(4);
+        } else {
+          middle = val.slice(1, 3);
+          end = val.slice(3);
+        }
+
+        let last = '';
+        if (end.length > 3 && isNaN(end[2])) {
+          last = end.slice(0,3);
+        } else {
+          last = end.slice(0,2);
+          if (end.length > 2) last += end.slice(2,3);
+        }
+
+        let formatted = prefix;
+        if (middle) formatted += '-' + middle;
+        if (last) formatted += '-' + last;
+
+        this.value = formatted;
+      });
+    }
+
+    // ---- ANIMASI BUTTON SEARCH ----
+    function setSearchBtnLoading(isLoading) {
+      const btn = document.getElementById('searchBtn');
+      if (!btn) return;
+      if (isLoading) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner"></span>SEARCHING...`;
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = `SEARCH`;
+      }
+    }
+
+    // ---- ANIMASI BUTTON SUBMIT ----
+    function setSubmitBtnLoading(isLoading) {
+      const btn = document.getElementById('submitBtn');
+      if (!btn) return;
+      if (isLoading) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner"></span>PLEASE WAIT...`;
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = `SUBMIT`;
+      }
+    }
+
+    // ==== AI Smart OCR Verification ====
+    function isMyKadPattern(ic) {
+      return /^(\d{6}-?\d{2}-?\d{4})$/.test(ic) || /^(\d{12})$/.test(ic);
+    }
+    function isLesenPattern(lesen) {
+      return /^[A-Z]\d{8,9}$/.test(lesen);
+    }
+    function isPassportPattern(passport) {
+      return /^[A-Z]{1,2}\d{6,9}$/.test(passport);
+    }
+    function isValidName(name) {
+      return (name && name.length >= 5 && /^[A-Z \-']+$/i.test(name));
+    }
+
+    // ==== FUNCTION VERIFY RESULT (Panggil lepas dapat OCR) ====
+    function verifyOcrResult(ocr) {
+      let ic = (ocr.idnum || '').replace(/\s+/g, '');
+      let name = ocr.name || '';
+      let valid =
+        (isMyKadPattern(ic) || isLesenPattern(ic) || isPassportPattern(ic))
+        && isValidName(name);
+
+      if (!valid) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'DOCUMENT INVALID',
+          text: 'The system could not verify your ID or Name. Please retake photo or check your document.',
+          background: 'linear-gradient(135deg, #ffeaea 60%, #ff5353 100%)',
+          confirmButtonColor: '#176B39',
+          width: 280, 
+          customClass: {
+            popup: 'shadow-2xl px-7 pt-7 pb-6' 
+          },
+          willOpen: (popup) => {
+           popup.style.borderRadius = '14px';
+          }
+      });
+      return false;
+    }
+    return true;
+  }
+  </script>
+
+      <!-- SweetAlert2 & Clock (kekal) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+function pad(n){return n<10?'0'+n:n}
+function updateDateTime() {
+  const now = new Date();
+  const d = pad(now.getDate());
+  const m = pad(now.getMonth() + 1);
+  const y = now.getFullYear();
+  const h = pad(now.getHours());
+  const min = pad(now.getMinutes());
+  const s = pad(now.getSeconds());
+  document.getElementById("liveDateOnly").textContent = `${d}/${m}/${y}`;
+  document.getElementById("liveTimeOnly").textContent = `${h}:${min}:${s}`;
+}
+setInterval(updateDateTime, 1000);
+updateDateTime();
+</script>
+</body>
+</html>
+  
