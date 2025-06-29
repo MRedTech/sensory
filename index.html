@@ -438,7 +438,7 @@ if (mykadInput) {
     <input type="text" id="regnum" name="regnum" required>
 
     <label for="contact">CONTACT NUMBER</label>
-    <div class="phone-container">
+    <div class="phone-container" required>
       <input type="tel" id="contact" name="contact" required oninput="updateCallLink()" maxlength="15" autocomplete="off" inputmode="numeric" pattern="[0-9]*">
       <a id="callBtn" class="call-btn-3d" title="Call this number" style="display:none;" target="_blank"><span>📞</span></a>
     </div>
@@ -463,22 +463,22 @@ if (mykadInput) {
   <option value="OTHER">OTHER</option>
 </select>
 
-<input type="text" id="unitNumber" name="unitNumber" placeholder="UNIT NUMBER" style="display:none; margin-top:10px;">
+<input type="text" id="unitNumber" name="unitNumber" placeholder="UNIT NUMBER" style="display:none; margin-top:10px;" required>
 
 <!-- Reason section (hidden by default) -->
-<div id="reasonSection" style="display:none; margin-top:10px;">
+<div id="reasonSection" style="display:none; margin-top:10px;" required>
   <label for="reasonSelect">REASON</label>
-  <select id="reasonSelect" name="reasonSelect">
+  <select id="reasonSelect" name="reasonSelect" required>
     <option value="">-PLEASE SELECT-</option>
     <option value="Block card">Block card</option>
     <option value="Lost card">Lost card</option>
     <option value="Forget card">Forget card</option>
     <option value="Other">Other</option>
   </select>
-  <input type="text" id="reasonOther" name="reasonOther" placeholder="PLEASE SPECIFY" style="display:none; margin-top:7px;">
+  <input type="text" id="reasonOther" name="reasonOther" placeholder="PLEASE SPECIFY" style="display:none; margin-top:7px;" required>
 </div>
 
-<input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;">
+<input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;" required>
 
     <label for="tower">TOWER</label>
     <select id="tower" name="tower" required>
