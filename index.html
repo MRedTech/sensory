@@ -567,7 +567,7 @@ if (mykadInput) {
   // **CLOSE CAMERA MODAL TERUS LEPAS SNAP**
   closeCameraModal();
 
-  // === Hantar ke Google Vision untuk autofill + AI VERIFY ===
+  // === Hantar ke Google Vision untuk autofill ===
   (async () => {
     try {
       document.body.style.cursor = 'progress';
@@ -580,13 +580,14 @@ if (mykadInput) {
       const result = await res.json();
       document.body.style.cursor = 'default';
 
-      // --- AI Smart OCR Verification di sini! ---
-      if (!verifyOcrResult(result)) {
-        // Jika tak valid, popup terus — user nampak!
-        return;
-      }
       // Autofill jika valid
-      if (result.name) document.getElementById('namePassport').value = result.name.toUpperCase();
+      if (result.name) {
+        const rawName = result.name.toUpperCase().trim();
+        const cleanName = filterNonNameWords(rawName);
+        document.getElementById('namePassport').value = cleanName;
+      }
+      if (result.idnum) document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
+
       if (result.idnum) document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
 
     } catch (err) {
@@ -630,7 +631,15 @@ if (mykadInput) {
             document.body.style.cursor = 'default';
 
             // === Autofill nama & MyKad/Passport ===
-            if (result.name) document.getElementById('namePassport').value = result.name.toUpperCase();
+            
+      // Autofill jika valid
+      if (result.name) {
+        const rawName = result.name.toUpperCase().trim();
+        const cleanName = filterNonNameWords(rawName);
+        document.getElementById('namePassport').value = cleanName;
+      }
+      if (result.idnum) document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
+
             if (result.idnum) document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
           } catch (err) {
             document.body.style.cursor = 'default';
@@ -1057,33 +1066,23 @@ function isValidName(name) {
   return (name && name.length >= 5 && /^[A-Z \-']+$/i.test(name));
 }
 
-// ==== FUNCTION VERIFY RESULT (Panggil lepas dapat OCR) ====
-function verifyOcrResult(ocr) {
-  let ic = (ocr.idnum || '').replace(/\s+/g, '');
-  let name = ocr.name || '';
-  // AI pattern check (MyKad/Lesen/Passport)
-  let valid =
-    (isMyKadPattern(ic) || isLesenPattern(ic) || isPassportPattern(ic))
-    && isValidName(name);
 
-  if (!valid) {
-    Swal.fire({
-  icon: 'warning',
-  title: 'DOCUMENT INVALID',
-  text: 'The system could not verify your ID or Name. Please retake photo or check your document.',
-  background: 'linear-gradient(135deg, #ffeaea 60%, #ff5353 100%)',
-  confirmButtonColor: '#176B39',
-  width: 280, 
-  customClass: {
-    popup: 'shadow-2xl px-7 pt-7 pb-6' 
-  },
-  willOpen: (popup) => {
-    popup.style.borderRadius = '14px';
-  }
-});
-    return false;
-  }
-  return true;
+// === Non-nama/keyword yang patut diabaikan ===
+const NON_NAME_WORDS = [
+  "MALAYSIA", "MALAYSIA P", "KAD PENGENALAN", "IDENTITY CARD", "MYKAD", "ID", "PASSPORT",
+  "WARGANEGARA", "LELAKI", "PEREMPUAN", "ISLAM", "CHRISTIAN", "BUDDHA", "HINDU",
+  "AGAMA", "MALE", "FEMALE", "JANTINA", "NATIONALITY", "CITIZENSHIP", "LICENCE",
+  "LESEN MEMANDU", "DRIVING LICENCE", "VOCATIONAL LICENCE", "DIGITAL", "GOVERNMENT", "CLASS",
+  "NO. K/P", "KELAS", "NO. KAD PENGENALAN", "NO. ID", "NO KP", "NO IC", "D.O.B", "TARIKH LAHIR",
+  "SEX", "JANTINA", "EXPIRY", "EXP", "VALID", "VALIDITY", "TARIKH", "ADDRESS", "ALAMAT"
+];
+
+function filterNonNameWords(text) {
+  let words = text.split(/\s+/); // pisahkan ikut ruang
+  let filtered = words.filter(word => {
+    return !NON_NAME_WORDS.includes(word.toUpperCase());
+  });
+  return filtered.join(' ');
 }
 
 </script>
