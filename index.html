@@ -992,10 +992,17 @@ const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
     const unitInput = document.getElementById('unitNumber');
 if (unitInput) {
   unitInput.addEventListener('input', function () {
-    // Hapus semua dash, tukar ke uppercase
-    let val = this.value.replace(/-/g, '').toUpperCase();
+    let raw = this.value.toUpperCase();
+    // Step 1: sentiasa auto dash selepas huruf pertama (A-...)
+    raw = raw.replace(/[^A-Z0-9]/g, ''); // Remove semua selain huruf/nombor
+    if (raw.length > 1 && raw[1] !== '-') {
+      raw = raw[0] + '-' + raw.slice(1);
+    }
 
-    // Pattern 1: AG10, AG09A, AG1, AG09, AG09A01 (A-G-10, A-G-09A, A-G-09A-01)
+    // Buang semua dash lain utk logic berikut
+    let val = raw.replace(/-/g, '');
+
+    // AG10, AG09A → A-G-10 / A-G-09A
     let mG = val.match(/^([A-Z])G(\d{1,2}[A-Z]?)(\d{0,2}[A-Z]?)$/);
     if (mG && val.length > 2) {
       let out = mG[1] + '-G-' + mG[2];
@@ -1004,47 +1011,46 @@ if (unitInput) {
       return;
     }
 
-    // Pattern 2: A03A09A, A03A09, A03A03A → A-03A-09A / A-03A-09 / A-03A-03A
-    let mLong = val.match(/^([A-Z])(\d{2}[A-Z])(\d{2}[A-Z]?)$/);
-    if (mLong) {
-      this.value = mLong[1] + '-' + mLong[2] + '-' + mLong[3];
+    // Selepas huruf "A" pada aksara ke-4, auto tambah dash
+    if (val.length > 4 && val[3] === "A" && val[4] !== "-") {
+      this.value = raw.slice(0, 5) + "-" + raw.slice(5);
       return;
     }
 
-    // Pattern 3: A0309 → A-03-09
-    let mNum = val.match(/^([A-Z])(\d{2})(\d{2})$/);
-    if (mNum) {
-      this.value = mNum[1] + '-' + mNum[2] + '-' + mNum[3];
+    // Pattern standard: A0310 → A-03-10
+    let mStd = val.match(/^([A-Z])(\d{2})(\d{1,2}[A-Z]?)$/);
+    if (mStd) {
+      this.value = mStd[1] + '-' + mStd[2] + '-' + mStd[3];
       return;
     }
 
-    // Pattern 4: A03A → A-03A
+    // A03A → A-03A
     let mShort = val.match(/^([A-Z])(\d{2}[A-Z])$/);
     if (mShort) {
       this.value = mShort[1] + '-' + mShort[2];
       return;
     }
 
-    // Pattern 5: A1 → A-1
+    // A1 → A-1
     let m1 = val.match(/^([A-Z])(\d)$/);
     if (m1) {
       this.value = m1[1] + '-' + m1[2];
       return;
     }
 
-    // Pattern 6: AG → A-G
+    // AG → A-G
     let mAG = val.match(/^([A-Z])G$/);
     if (mAG) {
       this.value = mAG[1] + '-G';
       return;
     }
 
-    // Sudah ada dash, kekalkan susunan asal tanpa ubah (untuk edit/copy paste)
+    // Sudah ada dash, kekalkan
     if (/^[A-Z](-[G]?)?(-?\d{1,2}[A-Z]?)*(-\d{1,2}[A-Z]?)?$/.test(this.value)) {
       return;
     }
 
-    // Fallback: Kalau tiada pattern, hanya auto dash selepas G
+    // Fallback: dash selepas G kalau manual taip AG...
     this.value = val.replace(/^([A-Z])G/, "$1-G");
   });
 }
