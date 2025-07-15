@@ -989,46 +989,63 @@ const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
 });
 
     // Fungsi real time auto format unit number
-const unitInput = document.getElementById('unitNumber');
+    const unitInput = document.getElementById('unitNumber');
 if (unitInput) {
   unitInput.addEventListener('input', function () {
-    let val = this.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+    // Hapus semua dash, tukar ke uppercase
+    let val = this.value.replace(/-/g, '').toUpperCase();
 
-    if (val.length <= 1) {
-      this.value = val;
+    // Pattern 1: AG10, AG09A, AG1, AG09, AG09A01 (A-G-10, A-G-09A, A-G-09A-01)
+    let mG = val.match(/^([A-Z])G(\d{1,2}[A-Z]?)(\d{0,2}[A-Z]?)$/);
+    if (mG && val.length > 2) {
+      let out = mG[1] + '-G-' + mG[2];
+      if (mG[3]) out += '-' + mG[3];
+      this.value = out;
       return;
     }
 
-    let prefix = val.slice(0, 1); // 'A'
-    let middle = '';
-    let end = '';
-
-    // Bahagian tengah: 2 digit (+optional 1 huruf)
-    if (val.length > 3 && isNaN(val[3])) {
-      // Jika aksara ke-4 adalah huruf, tengah ambil 3
-      middle = val.slice(1, 4);
-      end = val.slice(4);
-    } else {
-      // Tengah 2 sahaja, hujung selebihnya
-      middle = val.slice(1, 3);
-      end = val.slice(3);
+    // Pattern 2: A03A09A, A03A09, A03A03A → A-03A-09A / A-03A-09 / A-03A-03A
+    let mLong = val.match(/^([A-Z])(\d{2}[A-Z])(\d{2}[A-Z]?)$/);
+    if (mLong) {
+      this.value = mLong[1] + '-' + mLong[2] + '-' + mLong[3];
+      return;
     }
 
-    // Bahagian hujung: 2 digit (+optional 1 huruf)
-    let last = '';
-    if (end.length > 3 && isNaN(end[2])) {
-      // Jika ada huruf ketiga di bahagian hujung
-      last = end.slice(0,3);
-    } else {
-      last = end.slice(0,2);
-      if (end.length > 2) last += end.slice(2,3);
+    // Pattern 3: A0309 → A-03-09
+    let mNum = val.match(/^([A-Z])(\d{2})(\d{2})$/);
+    if (mNum) {
+      this.value = mNum[1] + '-' + mNum[2] + '-' + mNum[3];
+      return;
     }
 
-    let formatted = prefix;
-    if (middle) formatted += '-' + middle;
-    if (last) formatted += '-' + last;
+    // Pattern 4: A03A → A-03A
+    let mShort = val.match(/^([A-Z])(\d{2}[A-Z])$/);
+    if (mShort) {
+      this.value = mShort[1] + '-' + mShort[2];
+      return;
+    }
 
-    this.value = formatted;
+    // Pattern 5: A1 → A-1
+    let m1 = val.match(/^([A-Z])(\d)$/);
+    if (m1) {
+      this.value = m1[1] + '-' + m1[2];
+      return;
+    }
+
+    // Pattern 6: AG → A-G
+    let mAG = val.match(/^([A-Z])G$/);
+    if (mAG) {
+      this.value = mAG[1] + '-G';
+      return;
+    }
+
+    // Sudah ada dash, kekalkan susunan asal tanpa ubah (untuk edit/copy paste)
+    if (/^[A-Z](-[G]?)?(-?\d{1,2}[A-Z]?)*(-\d{1,2}[A-Z]?)?$/.test(this.value)) {
+      return;
+    }
+
+    // Fallback: Kalau tiada pattern, hanya auto dash selepas G
+    this.value = val.replace(/^([A-Z])G/, "$1-G");
   });
 }
     
