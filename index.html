@@ -579,7 +579,7 @@
   (async () => {
     try {
       document.body.style.cursor = 'progress';
-      const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
+      const proxyUrl = "https://sensory-vision2.edreborn86.workers.dev";
       const res = await fetch(proxyUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -628,7 +628,7 @@
 
           // === HANTAR KE GOOGLE VISION PROXY (APPS SCRIPT) ===
           try {
-            const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
+            const proxyUrl = "https://sensory-vision2.edreborn86.workers.dev";
             document.body.style.cursor = 'progress';
             const res = await fetch(proxyUrl, {
               method: "POST",
@@ -933,8 +933,8 @@ const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
   remark: document.getElementById('remark').value,
   unitNumber: document.getElementById('unitNumber').value,
   tower: document.getElementById('tower').value,
-  reason: document.getElementById('reason') ? document.getElementById('reason').value : '',
-  otherReason: document.getElementById('otherReason') ? document.getElementById('otherReason').value : '',
+  reason: document.getElementById('reasonSelect') ? document.getElementById('reasonSelect').value : '',
+  reasonOther: document.getElementById('reasonOther') ? document.getElementById('reasonOther').value : '',
   imageUrl: document.getElementById('preview').src
 };
 
