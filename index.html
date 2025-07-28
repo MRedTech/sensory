@@ -746,7 +746,7 @@
     });
 
     // Endpoint Cloudflare Worker
-const WORKER_URL = "https://ext-gs12.edreborn86.workers.dev";
+const WORKER_URL = "https://ext-mredtech.edreborn86.workers.dev";
     // --- UNIVERSAL SEARCH RECORD FUNCTION (COPY PASTE SIAP) ---
 
 function normalize(str) {
@@ -762,29 +762,56 @@ async function searchRecord(field, value) {
 
 // Fungsi utama universal search
 async function handleUniversalSearch() {
-  const btn = document.getElementById('searchButton'); 
+  const btn = document.getElementById('searchButton');
   const input = document.getElementById('searchUniversal').value.trim();
   if (!input) return;
 
   // Spinner start
   btn.disabled = true;
-  btn.innerHTML = `<span class="loader"></span> SEARCHING...`;
+  btn.innerHTML = '<span class="loader"></span> SEARCHING...';
 
   let found = null;
+  let hasHyperlink = false;
   let valueNorm = normalize(input);
 
   try {
-    // Cuba cari ikut REGNUM dulu
+    // 1. Cuba cari ikut REGNUM
     let res = await searchRecord('regnum', valueNorm);
-    if (res.exist) found = res.data;
-
-    // Jika tak jumpa, cuba cari ikut MYKAD/PASSPORT
-    if (!found) {
-      res = await searchRecord('mykadPassport', valueNorm);
-      if (res.exist) found = res.data;
+    if (res.exist) {
+      found = res.data;
+      hasHyperlink = res.hasHyperlink ?? false; // ✅ ambil nilai betul dari Apps Script
     }
 
-    // Jika ada result
+    // 2. Jika tak jumpa, cuba MYKAD/PASSPORT
+    if (!found) {
+      res = await searchRecord('mykadPassport', valueNorm);
+      if (res.exist) {
+        found = res.data;
+        hasHyperlink = res.hasHyperlink ?? false; // ✅ ulang lagi
+      }
+    }
+
+    // ❗Jika tiada link gambar walaupun rekod wujud
+    if (found && !hasHyperlink) {
+      Swal.fire({
+        title: "PLEASE RETAKE ID PHOTO",
+        text: "Previous record expired.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: 'YES, RETAKE ID',
+        cancelButtonText: 'NO',
+        background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+        color: '#176B39',
+        width: 300,
+        customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+        willOpen: popup => { popup.style.borderRadius = "14px"; }
+      });
+      btn.disabled = false;
+      btn.innerHTML = 'SEARCH';
+      return;
+    }
+
+    // ✅ Kalau jumpa data, autofill
     if (found) {
       Swal.fire({
         title: 'RECORD FOUND',
@@ -795,9 +822,9 @@ async function handleUniversalSearch() {
         cancelButtonText: 'NO',
         background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
         color: '#176B39',
-        width: 280,
+        width: 300,
         customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
-        willOpen: popup => { popup.style.borderRadius = '14px'; }
+        willOpen: popup => { popup.style.borderRadius = "14px"; }
       }).then((res) => {
         if (res.isConfirmed) {
           autofillForm(found);
@@ -811,15 +838,16 @@ async function handleUniversalSearch() {
         text: 'No record found.',
         icon: 'warning',
         confirmButtonText: 'OK',
-        background: 'linear-gradient(135deg,#fffbe9,#ffe9e9,#fff)',
+        background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
         color: '#176B39',
-        width: 280,
+        width: 300,
         customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
-        willOpen: popup => { popup.style.borderRadius = '14px'; }
+        willOpen: popup => { popup.style.borderRadius = "14px"; }
       }).then(() => {
         document.getElementById('searchUniversal').value = "";
       });
     }
+
   } catch (err) {
     Swal.fire({
       title: 'ERROR',
@@ -828,7 +856,6 @@ async function handleUniversalSearch() {
       confirmButtonText: 'OK',
     });
   } finally {
-    // Spinner reset
     btn.disabled = false;
     btn.innerHTML = 'SEARCH';
   }
@@ -919,7 +946,7 @@ document.getElementById('regnum').addEventListener('blur', async function() {
 });
     
    // Letak di atas, sebelum kod submit
-const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
+const urlCloudflareWorker = "https://ext-mredtech.edreborn86.workers.dev";
 
     document.getElementById("registrationForm").addEventListener("submit", async function(e){
   e.preventDefault();
