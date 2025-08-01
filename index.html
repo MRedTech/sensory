@@ -794,13 +794,13 @@ async function handleUniversalSearch() {
     // ❗Jika tiada link gambar walaupun rekod wujud
     if (found && !hasHyperlink) {
       Swal.fire({
-        title: "PLEASE RETAKE ID PHOTO",
-        text: "Previous record expired.",
+        title: "PREVIOUS RECORD EXPIRED",
+        text: "Please retake id photo.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: 'YES, RETAKE ID',
         cancelButtonText: 'NO',
-        background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+        background: 'linear-gradient(135deg, #fff9c4, #ffeb3b, #fbc02d)',
         color: '#176B39',
         width: 300,
         customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
