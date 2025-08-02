@@ -804,8 +804,16 @@ async function handleUniversalSearch() {
         color: '#176B39',
         width: 300,
         customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
-        willOpen: popup => { popup.style.borderRadius = "14px"; }
+        willOpen: (popup) => {
+          popup.style.borderRadius = "14px";
+        }
+      }).then((res) => {
+        if (res.isConfirmed) {
+      // ✅ Buka kamera automatik bila user pilih YES
+          openCamera();
+        }
       });
+
       btn.disabled = false;
       btn.innerHTML = 'SEARCH';
       return;
