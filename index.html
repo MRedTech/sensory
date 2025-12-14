@@ -133,36 +133,33 @@
     margin-top: 10px;
     margin-bottom: 12px;
 
-    /* responsive */
+    /* bagi tengah & lebar tetap */
     width: 100%;
-    max-width: 420px;          /* cantik untuk phone & tab */
+    max-width: 420px;
     margin-left: auto;
     margin-right: auto;
 
+    /* kunci bentuk kotak (lebar macam lesen) */
+    aspect-ratio: 3 / 2;   /* boleh tukar 16/9 kalau nak lagi lebar */
+
+    overflow: hidden;
     background-color: #f0f0f0;
     border: 1px solid #2b7a2b;
     border-radius: 6px;
     box-sizing: border-box;
-    padding: 4px;
-    /* tak perlu paksa max-height & overflow hidden */
   }
 
   .image-container img {
-    display: block;
     width: 100%;
-    height: auto;
-    max-height: 280px;         /* had lembut, tak paksa zoom pelik */
-    object-fit: contain;       /* gambar maintain ratio, tak crop */
+    height: 100%;        /* ikut tinggi kotak, bukan auto lagi */
+    object-fit: cover;   /* zoom elok macam gambar pertama */
     transform-origin: center;
   }
 
   /* Untuk tablet & skrin besar */
   @media (min-width: 768px) {
     .image-container {
-      max-width: 520px;        /* lebih lebar di tablet */
-    }
-    .image-container img {
-      max-height: 340px;
+      max-width: 520px;  /* kotak lebih lebar sikit di tablet */
     }
   }
   .watermark {
