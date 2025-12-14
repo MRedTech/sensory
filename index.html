@@ -127,23 +127,43 @@
     display: block;
   }
 
-  .image-container {
+    .image-container {
     position: relative;
     display: none;
     margin-top: 10px;
     margin-bottom: 12px;
+
+    /* responsive */
     width: 100%;
-    max-height: 220px;
-    overflow: hidden;
+    max-width: 420px;          /* cantik untuk phone & tab */
+    margin-left: auto;
+    margin-right: auto;
+
     background-color: #f0f0f0;
     border: 1px solid #2b7a2b;
     border-radius: 6px;
+    box-sizing: border-box;
+    padding: 4px;
+    /* tak perlu paksa max-height & overflow hidden */
   }
+
   .image-container img {
+    display: block;
     width: 100%;
     height: auto;
-    object-fit: cover;
+    max-height: 280px;         /* had lembut, tak paksa zoom pelik */
+    object-fit: contain;       /* gambar maintain ratio, tak crop */
     transform-origin: center;
+  }
+
+  /* Untuk tablet & skrin besar */
+  @media (min-width: 768px) {
+    .image-container {
+      max-width: 520px;        /* lebih lebar di tablet */
+    }
+    .image-container img {
+      max-height: 340px;
+    }
   }
   .watermark {
     position: absolute;
