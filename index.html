@@ -295,9 +295,10 @@
   }
   #camera-video {
     width: 100%;
-    height: auto;
+    height: 100%;       /* isi penuh .camera-container */
     border-radius: 14px;
     background: #222;
+    object-fit: cover;  /* elak bar hitam, ikut frame hijau */
   }
   .guideline {
     position: absolute;
