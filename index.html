@@ -822,8 +822,8 @@ function adjustPreviewSize() {
     window.innerWidth ||
     document.documentElement.clientWidth;
 
-  // Anggaran nisbah tinggi:lebar untuk kad (lebih kurang 0.65)
-  const targetRatio = 0.65;
+  // Anggaran nisbah tinggi:lebar untuk kad
+  const targetRatio = 0.85;
   const maxHeightPx = Math.round(width * targetRatio);
 
   // Set max-height ikut lebar (auto scale phone / tablet / iPad)
@@ -1035,7 +1035,7 @@ reasonSelect.addEventListener('change', function() {
       if (!btn) return;
       if (isLoading) {
         btn.disabled = true;
-        btn.innerHTML = `<span class="spinner"></span>PLEASE WAIT...`;
+        btn.innerHTML = `<span class="spinner"></span>SUBMITTING...`;
       } else {
         btn.disabled = false;
         btn.innerHTML = `SUBMIT`;
