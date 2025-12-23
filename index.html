@@ -1081,11 +1081,17 @@ reasonSelect.addEventListener('change', function() {
     }
 
     // ---- UNIVERSAL SEARCH ----
-    const WORKER_URL = "https://ext-mredtech.edreborn86.workers.dev";
+    const WORKER_URL = "https://ext-gs12.edreborn86.workers.dev";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // 🔥 Auto-warm backend (silent)
-  fetch(WORKER_URL + "?debug=1").catch(() => {});
+  const KEY = "SE_WARM_TS";
+  const now = Date.now();
+  const last = parseInt(localStorage.getItem(KEY) || "0", 10);
+
+  if (!last || (now - last) > 10 * 60 * 1000) { // 10 min
+    fetch(WORKER_URL + "?debug=1", { cache: "no-store" }).catch(() => {});
+    localStorage.setItem(KEY, String(now));
+  }
 });
 
     // === STANDARD FIELD NAME (API CONTRACT) ===
@@ -1353,7 +1359,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Endpoint Cloudflare Worker
-    const urlCloudflareWorker = "https://ext-mredtech.edreborn86.workers.dev";
+    const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
 
     // Submit ke Worker
     document.getElementById("registrationForm").addEventListener("submit", async function(e){
