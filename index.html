@@ -1083,6 +1083,11 @@ reasonSelect.addEventListener('change', function() {
     // ---- UNIVERSAL SEARCH ----
     const WORKER_URL = "https://ext-mredtech.edreborn86.workers.dev";
 
+document.addEventListener("DOMContentLoaded", () => {
+  // 🔥 Auto-warm backend (silent)
+  fetch(WORKER_URL + "?debug=1").catch(() => {});
+});
+
     // === STANDARD FIELD NAME (API CONTRACT) ===
     const FIELD = {
      REG: "REGNUM",
