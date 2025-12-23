@@ -1081,16 +1081,12 @@ reasonSelect.addEventListener('change', function() {
     }
 
     // ---- UNIVERSAL SEARCH ----
-    const WORKER_URL = "https://ext-gs12.edreborn86.workers.dev";
-
+    const WORKER_URL = "https://ext-mredtech.edreborn86.workers.dev";
+    
 document.addEventListener("DOMContentLoaded", () => {
-  const KEY = "SE_WARM_TS";
-  const now = Date.now();
-  const last = parseInt(localStorage.getItem(KEY) || "0", 10);
-
-  if (!last || (now - last) > 10 * 60 * 1000) { // 10 min
+  if (!sessionStorage.getItem("SE_WARMED")) {
     fetch(WORKER_URL + "?debug=1", { cache: "no-store" }).catch(() => {});
-    localStorage.setItem(KEY, String(now));
+    sessionStorage.setItem("SE_WARMED", "1");
   }
 });
 
@@ -1359,7 +1355,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Endpoint Cloudflare Worker
-    const urlCloudflareWorker = "https://ext-gs12.edreborn86.workers.dev";
+    const urlCloudflareWorker = "https://ext-mredtech.edreborn86.workers.dev";
 
     // Submit ke Worker
     document.getElementById("registrationForm").addEventListener("submit", async function(e){
