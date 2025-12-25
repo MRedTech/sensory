@@ -1069,15 +1069,71 @@ reasonSelect.addEventListener('change', function() {
       "AGAMA", "MALE", "FEMALE", "JANTINA", "NATIONALITY", "CITIZENSHIP", "LICENCE",
       "LESEN MEMANDU", "DRIVING LICENCE", "VOCATIONAL LICENCE", "DIGITAL", "GOVERNMENT", "CLASS",
       "NO. K/P", "KELAS", "NO. KAD PENGENALAN", "NO. ID", "NO KP", "NO IC", "D.O.B", "TARIKH LAHIR",
-      "SEX", "JANTINA", "EXPIRY", "EXP", "VALID", "VALIDITY", "TARIKH", "ADDRESS", "ALAMAT"
-    ];
+      "SEX", "JANTINA", "EXPIRY", "EXP", "VALID", "VALIDITY", "TARIKH", "ADDRESS", "ALAMAT",
+
+  // === MALAYSIA STATES & FEDERAL TERRITORIES ===
+  "JOHOR", "KEDAH", "KELANTAN", "MELAKA", "MELAKA TENGAH", "NEGERI SEMBILAN", "PAHANG", "PERAK",
+  "PERLIS", "PULAU PINANG", "PENANG", "SABAH", "SARAWAK", "SELANGOR", "TERENGGANU", "WILAYAH PERSEKUTUAN",
+  "KUALA LUMPUR", "PUTRAJAYA", "LABUAN"
+  ];
 
     function filterNonNameWords(text) {
-      let words    = text.split(/\s+/);
-      let filtered = words.filter(word => {
-        return !NON_NAME_WORDS.includes(word.toUpperCase());
-      });
-      return filtered.join(' ');
+      if (!text) return "";
+
+      // Build cache once (supports single words + multi-word phrases)
+      if (!window.__SE_NONNAME_CACHE) {
+        const normalizeForFilter = (s) => {
+          return (s || "")
+            .toString()
+            .toUpperCase()
+            // keep letters, numbers, space, / - and apostrophe
+            .replace(/[^A-Z0-9\s\/'-]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+        };
+
+        const singles = new Set();
+        const phrases = [];
+
+        (NON_NAME_WORDS || []).forEach((w) => {
+          const nw = normalizeForFilter(w);
+          if (!nw) return;
+
+          if (nw.includes(" ")) {
+            // phrase: match whole phrase with flexible spacing
+            const re = new RegExp("(^|\\s)" + nw.replace(/\s+/g, "\\s+") + "(?=\\s|$)", "g");
+            phrases.push(re);
+          } else {
+            singles.add(nw);
+          }
+        });
+
+        // longer phrases first (better removal)
+        phrases.sort((a, b) => (b.source.length - a.source.length));
+
+        window.__SE_NONNAME_CACHE = { normalizeForFilter, singles, phrases };
+      }
+
+      const { normalizeForFilter, singles, phrases } = window.__SE_NONNAME_CACHE;
+
+      // 1) Normalize OCR text (remove punctuation noise)
+      let t = normalizeForFilter(text);
+
+      // 2) Remove multi-word phrases first
+      for (const re of phrases) {
+        t = t.replace(re, " ");
+      }
+
+      // 3) Remove single-word tokens
+      const cleaned = t
+        .split(/\s+/)
+        .filter(Boolean)
+        .filter((w) => !singles.has(w))
+        .join(" ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      return cleaned;
     }
 
     // ---- UNIVERSAL SEARCH ----
