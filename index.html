@@ -1119,12 +1119,21 @@ reasonSelect.addEventListener('change', function() {
       // 1) Normalize OCR text (remove punctuation noise)
       let t = normalizeForFilter(text);
 
-      // 2) Remove multi-word phrases first
+      // 2)potong bila jumpa keyword alamat (termasuk ALAMAT/ADDRESS)
+      const ADDRESS_CUTOFF_REGEX =
+      /\b(ALAMAT|ADDRESS|NO\.?|JALAN|LORONG|TAMAN|KAMPUNG|BANDAR|SEKSYEN|PERSIARAN|APARTMENT|APARTMEN|FLAT|RESIDENSI|HEIGHTS?|HEIGHT)\b/;
+
+      const addrIdx = t.search(ADDRESS_CUTOFF_REGEX);
+      if (addrIdx !== -1) {
+      t = t.slice(0, addrIdx).trim();
+      }
+
+      // 3) Remove multi-word phrases first
       for (const re of phrases) {
         t = t.replace(re, " ");
       }
 
-      // 3) Remove single-word tokens
+      // 4) Remove single-word tokens
       const cleaned = t
         .split(/\s+/)
         .filter(Boolean)
