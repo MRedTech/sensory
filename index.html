@@ -1423,116 +1423,124 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     });
-
-    // Endpoint Cloudflare Worker
-    const urlCloudflareWorker = "https://ext-mredtech.edreborn86.workers.dev";
-
-    // Submit ke Worker
-    document.getElementById("registrationForm").addEventListener("submit", async function(e){
-  e.preventDefault();
-      
-    setSubmitBtnLoading(true);  
-
-  // ambil gambar yang sudah di-crop ikut apa yang nampak dalam preview
-  const croppedImage = getVisibleCroppedImageData();
-
-  // --- Format data sebelum submit ---
-let remarkValue = document.getElementById('remark').value;
-let otherCategoryVal = document.getElementById('otherCategory').value.trim();
-let unitNumberVal = document.getElementById('unitNumber').value.trim();
-let reasonVal = document.getElementById('reasonSelect').value;
-let reasonOtherVal = document.getElementById('reasonOther').value.trim();
-
-// === FORMAT CATEGORY ===
-if (remarkValue === "OTHER" && otherCategoryVal) {
-  remarkValue = `OTHER ( ${otherCategoryVal} )`;
-} else if ((remarkValue === "OWNER" || remarkValue === "TENANT") && unitNumberVal) {
-  remarkValue = `${remarkValue} ( ${unitNumberVal} )`;
-}
-
-// === FORMAT REASON ===
-let reasonFinal = "";
-if ((remarkValue.includes("OWNER") || remarkValue.includes("TENANT")) && reasonVal) {
-  if (reasonVal === "Other" && reasonOtherVal) {
-    reasonFinal = `OTHER ( ${reasonOtherVal} )`;
-  } else {
-    reasonFinal = reasonVal.toUpperCase();
-  }
-}
-
-const data = {
-  namePassport: document.getElementById('namePassport').value,
-  mykadPassport: document.getElementById('mykadPassport').value,
-  regnum: document.getElementById('regnum').value,
-  contact: document.getElementById('contact').value,
-  remark: remarkValue,      // kategori siap format
-  reason: reasonFinal,      // sebab siap format
-  tower: document.getElementById('tower').value,
-  imageUrl: croppedImage    // gambar base64
-};
-
-const controller = new AbortController();
-const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s
-      
-      try {
-        const res = await fetch(urlCloudflareWorker, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(data),
-  signal: controller.signal
-});
-        
-        const respData = await res.json();
-        clearTimeout(timeoutId);
     
-        setSubmitBtnLoading(false);
+  // Endpoint Cloudflare Worker
+  const urlCloudflareWorker = "https://ext-mredtech.edreborn86.workers.dev";
 
-        if (respData.success) {
-          safeSwalFire({
-            title: 'SUCCESS!',
-            text: 'Data submitted!',
-            icon: 'success',
-            confirmButtonText: 'OK',
-            background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
-            color: '#176B39',
-            width: 300,
-            customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
-            willOpen: (popup) => { popup.style.borderRadius = '14px'; },
-            timer: 5000,
-            timerProgressBar: true
-          });
+  // === SUBMIT LOCK (ANTI DOUBLE SUBMIT) ===
+  let __SE_isSubmitting = false;
 
-          document.getElementById("registrationForm").reset();
-          document.getElementById('preview').src = "#";
-          document.getElementById('imageContainer').style.display = 'none';
-          document.getElementById('unitNumber').style.display = 'none';
-          document.getElementById('otherCategory').style.display = 'none';
-          document.getElementById('reasonSection').style.display = 'none';
+  // Submit ke Worker
+  document.getElementById("registrationForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-          if (reasonSelect) {
-            reasonSelect.style.color      = '#888888';
-            reasonSelect.style.fontWeight = 'bold';
-          }
-        } else {
-          safeSwalFire({
-            title: 'ERROR!',
-            text: 'Submit failed: ' + (respData.message || ''),
-            icon: 'error',
-            confirmButtonText: 'OK'
-          });
+    // ✅ Kunci terus (anti double tap / lag / accidental repeat)
+    if (__SE_isSubmitting) return;
+    __SE_isSubmitting = true;
+
+    setSubmitBtnLoading(true);
+
+    // ambil gambar yang sudah di-crop ikut apa yang nampak dalam preview
+    const croppedImage = getVisibleCroppedImageData();
+
+    // --- Format data sebelum submit ---
+    let remarkValue = document.getElementById('remark').value;
+    let otherCategoryVal = document.getElementById('otherCategory').value.trim();
+    let unitNumberVal = document.getElementById('unitNumber').value.trim();
+    let reasonVal = document.getElementById('reasonSelect').value;
+    let reasonOtherVal = document.getElementById('reasonOther').value.trim();
+
+    // === FORMAT CATEGORY ===
+    if (remarkValue === "OTHER" && otherCategoryVal) {
+      remarkValue = `OTHER ( ${otherCategoryVal} )`;
+    } else if ((remarkValue === "OWNER" || remarkValue === "TENANT") && unitNumberVal) {
+      remarkValue = `${remarkValue} ( ${unitNumberVal} )`;
+    }
+
+    // === FORMAT REASON ===
+    let reasonFinal = "";
+    if ((remarkValue.includes("OWNER") || remarkValue.includes("TENANT")) && reasonVal) {
+      if (reasonVal === "Other" && reasonOtherVal) {
+        reasonFinal = `OTHER ( ${reasonOtherVal} )`;
+      } else {
+        reasonFinal = reasonVal.toUpperCase();
+      }
+    }
+
+    const data = {
+      namePassport: document.getElementById('namePassport').value,
+      mykadPassport: document.getElementById('mykadPassport').value,
+      regnum: document.getElementById('regnum').value,
+      contact: document.getElementById('contact').value,
+      remark: remarkValue,
+      reason: reasonFinal,
+      tower: document.getElementById('tower').value,
+      imageUrl: croppedImage
+    };
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000); // 20s
+
+    try {
+      const res = await fetch(urlCloudflareWorker, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        signal: controller.signal
+      });
+
+      const respData = await res.json();
+
+      if (respData.success) {
+        safeSwalFire({
+          title: 'SUCCESS!',
+          text: 'Data submitted!',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+          color: '#176B39',
+          width: 300,
+          customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+          willOpen: (popup) => { popup.style.borderRadius = '14px'; },
+          timer: 5000,
+          timerProgressBar: true
+        });
+
+        document.getElementById("registrationForm").reset();
+        document.getElementById('preview').src = "#";
+        document.getElementById('imageContainer').style.display = 'none';
+        document.getElementById('unitNumber').style.display = 'none';
+        document.getElementById('otherCategory').style.display = 'none';
+        document.getElementById('reasonSection').style.display = 'none';
+
+        if (reasonSelect) {
+          reasonSelect.style.color = '#888888';
+          reasonSelect.style.fontWeight = 'bold';
         }
-      } catch (err) {
-        clearTimeout(timeoutId);
-        setSubmitBtnLoading(false);
+      } else {
         safeSwalFire({
           title: 'ERROR!',
-          text: 'Error submit data: ' + err.message,
+          text: 'Submit failed: ' + (respData.message || ''),
           icon: 'error',
           confirmButtonText: 'OK'
         });
       }
-    });
-  </script>
+    } catch (err) {
+      safeSwalFire({
+        title: 'ERROR!',
+        text: 'Error submit data: ' + err.message,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    } finally {
+      clearTimeout(timeoutId);
+
+      // ✅ buka semula button + buka lock
+      setSubmitBtnLoading(false);
+      __SE_isSubmitting = false;
+    }
+  });
+</script>
   
   <script>
     function pad(n){return n<10?'0'+n:n;}
