@@ -660,7 +660,7 @@
       );
 
       applyGrayscaleContrast(cropCanvas);
-      const compressed = cropCanvas.toDataURL('image/jpeg', 0.85);
+      const compressed = cropCanvas.toDataURL('image/jpeg', 0.75);
 
       document.getElementById('preview').src = compressed;
       document.getElementById('imageContainer').style.display = 'block';
@@ -734,7 +734,7 @@ document.getElementById('imageInput').addEventListener('change', function(event)
       applyGrayscaleContrast(cropCanvas);
 
       // 4. Jadikan JPEG base64 & preview
-      const compressed = cropCanvas.toDataURL('image/jpeg', 0.85);
+      const compressed = cropCanvas.toDataURL('image/jpeg', 0.75);
       const preview    = document.getElementById('preview');
       preview.src      = compressed;
       document.getElementById('imageContainer').style.display = 'block';
@@ -808,7 +808,7 @@ document.getElementById('imageInput').addEventListener('change', function(event)
       0, 0, naturalWidth, srcVisibleHeight
     );
 
-    return canvas.toDataURL('image/jpeg', 0.9);
+    return canvas.toDataURL('image/jpeg', 0.75);
   }
 
   // === AUTO DETECT DEVICE & SET PREVIEW HEIGHT (A) ===
