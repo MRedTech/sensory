@@ -1069,7 +1069,7 @@ reasonSelect.addEventListener('change', function() {
       "AGAMA", "MALE", "FEMALE", "JANTINA", "NATIONALITY", "CITIZENSHIP", "LICENCE",
       "LESEN MEMANDU", "DRIVING LICENCE", "VOCATIONAL LICENCE", "DIGITAL", "GOVERNMENT", "CLASS",
       "NO. K/P", "KELAS", "NO. KAD PENGENALAN", "NO. ID", "NO KP", "NO IC", "D.O.B", "TARIKH LAHIR",
-      "SEX", "JANTINA", "EXPIRY", "EXP", "VALID", "VALIDITY", "TARIKH", "ADDRESS", "ALAMAT",
+      "SEX", "JANTINA", "EXPIRY", "EXP", "VALID", "VALIDITY", "TARIKH", "ADDRESS", "ALAMAT", "NAMA", "NAME",
 
   // === MALAYSIA STATES & FEDERAL TERRITORIES ===
   "JOHOR", "KEDAH", "KELANTAN", "MELAKA", "MELAKA TENGAH", "NEGERI SEMBILAN", "PAHANG", "PERAK",
@@ -1141,6 +1141,11 @@ reasonSelect.addEventListener('change', function() {
         .join(" ")
         .replace(/\s+/g, " ")
         .trim();
+
+      // STRICT: jika output sama dengan mana-mana NON_NAME_WORDS, reject
+      if (NON_NAME_WORDS.includes(cleaned.trim().toUpperCase())) {
+  return "";
+      }
 
       return cleaned;
     }
