@@ -1540,7 +1540,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error(err);
     safeSwalFire({
       title: 'ERROR',
-      text: err?.message || 'Search failed!',
+      text: err?.message || 'Please try again',
       icon: 'error',
       confirmButtonText: 'OK'
     });
@@ -1581,7 +1581,7 @@ document.addEventListener("DOMContentLoaded", () => {
           text: 'Autofill with existing details?',
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonText: 'YES, AUTOFILL',
+          confirmButtonText: 'YES',
           cancelButtonText: 'NO',
           background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
           color: '#176B39',
