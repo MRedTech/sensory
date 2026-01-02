@@ -1,0 +1,1826 @@
+<html>
+  <head><title>SECURE ENTRY SYSTEM</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="dns-prefetch" href="//cdn.jsdelivr.net"><link rel="preconnect" href="https://ext-mredtech.edreborn86.workers.dev" crossorigin><link rel="dns-prefetch" href="//ext-mredtech.edreborn86.workers.dev"><link rel="preconnect" href="https://sensory-vision.edreborn86.workers.dev" crossorigin><link rel="dns-prefetch" href="//sensory-vision.edreborn86.workers.dev">
+    <style>
+
+.fixed-header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #e9f5e9;
+  z-index: 9999;
+  padding: 14px 0 10px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+.header-inner{
+  max-width: 420px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 0 20px;
+}
+.header-line{
+  height:3px;
+  width:60px;
+  margin:0 auto 4px auto;
+  background:linear-gradient(90deg,#3bd97b 20%,#2b7a2b 80%);
+  border-radius:2px;
+}
+
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#e9f5e9;
+  text-transform: uppercase;
+  padding: 0 20px 20px 20px;
+}
+
+h2 {
+    color: #2b7a2b;
+    text-align: center;
+    margin-top: 0.10px;
+    margin-bottom: 30px;
+  }
+  .clock-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 180px;
+    margin: 0 auto 10px auto;
+    padding: 2.5px 12px;
+    border-radius: 11px;
+    background: linear-gradient(90deg, #41e671 0%, #176B39 100%);
+    box-shadow: 0 1px 4px 0 #bbdfbb70;
+    font-size: 11px;
+    color: #fff;
+    letter-spacing: 1.4px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    opacity: 0.90;
+    position: relative;
+    z-index: 10;
+  }
+  .clock-date, .clock-time {
+    font-size: 11px;
+  }
+  .header-gradient {
+    background: linear-gradient(145deg, #54e087 0%, #2b7a2b 100%);
+    font-weight: 900;
+    font-size: 1.8rem;
+    letter-spacing: 1.3px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .swal2-popup {
+    width: 300px !important;
+    max-width: 300px !important;
+    padding: 14px 16px !important;
+    border-radius: 14px !important;
+  }
+  .swal2-title {
+    margin: 0 0 6px 0 !important;
+    font-size: 16px !important;
+    font-weight: 900 !important;
+    letter-spacing: 1.2px !important;
+  }
+  .swal2-html-container {
+    margin: 0 !important;
+    font-size: 13px !important;
+    font-weight: bold !important;
+    line-height: 1.35 !important;
+    letter-spacing: 0.7px !important;
+  }
+  .swal2-actions {
+    margin: 12px 0 0 0 !important;
+    gap: 10px;
+  }
+  .swal2-confirm {
+    background: linear-gradient(135deg, #2b7a2b 0%, #3bd97b 100%) !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    border: none !important;
+    border-radius: 10px !important;
+    box-shadow: 0 3px 12px 0 #bbdfbb, 0 1.5px 3px #3333 !important;
+    letter-spacing: 1.6px;
+    padding: 10px 22px !important;
+    font-size: 14px !important;
+    transition: box-shadow 0.16s, transform 0.09s;
+  }
+  .swal2-confirm:active {
+    box-shadow: 0 2px 5px #bbb !important;
+    transform: translateY(2px);
+  }
+  .swal2-cancel {
+    background: linear-gradient(135deg, #e52d27 0%, #ff5757 100%) !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    border: none !important;
+    border-radius: 10px !important;
+    box-shadow: 0 3px 10px #ffd2d2b9, 0 1.5px 3px #3333 !important;
+    letter-spacing: 1.6px;
+    padding: 10px 22px !important;
+    font-size: 14px !important;
+    margin-left: 0 !important;
+    transition: box-shadow 0.16s, transform 0.09s;
+  }
+  .swal2-cancel:active {
+    box-shadow: 0 2px 6px #d8b !important;
+    transform: translateY(2px);
+  }
+
+.top-action {
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .btn-3d {
+    background: linear-gradient(145deg, #3bd97b 0%, #2b7a2b 100%);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 22px;
+    box-shadow: 0 3px 12px 0 #bbdfbb, 0 1.5px 3px #3333;
+    letter-spacing: 1.6px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    transition: box-shadow 0.18s, transform 0.1s;
+  }
+  .btn-3d:active {
+    box-shadow: 0 2px 5px #bbb;
+    transform: translateY(2px);
+  }
+  .submit-3d {
+    margin-top: 14px;
+    width: 100%;
+  }
+
+  .photo-label {
+    color: #2b7a2b;
+    font-weight: bold;
+    font-size: 13px;
+    margin-top: 4px;
+    margin-bottom: 3px;
+    display: block;
+  }
+
+  .image-container {
+    position: relative;
+    display: none;
+    margin-top: 10px;
+    margin-bottom: 12px;
+    width: 100%;
+    max-height: 220px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    border: 1px solid #2b7a2b;
+    border-radius: 6px;
+  }
+  .image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transform-origin: center;
+  }
+  .watermark {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-40deg);
+    color: red;
+    background: none;
+    padding: 4px 20px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    border-radius: 4px;
+    pointer-events: none;
+    letter-spacing: 4px;
+    opacity: 0.75;
+    text-shadow: none;
+    z-index: 9;
+    white-space: nowrap;
+  }
+
+  label {
+    display: block;
+    margin-top: 10px;
+    color: #2b7a2b;
+    font-weight: bold;
+    font-size: 13px;
+  }
+  input,
+  select {
+    width: 100%;
+    padding: 7px 9px;
+    margin-top: 4px;
+    border: 1px solid #2b7a2b;
+    border-radius: 8px;
+    text-transform: uppercase;
+    background-color: #e9f7ff;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  select:invalid,
+  select option[value=""] {
+    color: #888888 !important;
+  }
+
+  .reason-placeholder {
+  color: #888888 !important;
+  }
+  #reasonSelect {
+  color: #888888;
+  }
+
+  .phone-container {
+    position: relative;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+  }
+  .phone-container input {
+    flex: 1;
+    margin-right: 6px;
+  }
+  .call-btn-3d {
+    display: none;
+    background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
+    color: #fff;
+    border: none;
+    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    font-size: 17px;
+    font-weight: bold;
+    box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.18s, transform 0.1s;
+    position: relative;
+    margin-left: 5px;
+    outline: none;
+    text-decoration: none;
+  }
+  .call-btn-3d span {
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    letter-spacing: 1.5px;
+    color: #fff;
+  }
+  .call-btn-3d:active {
+    box-shadow: 0 2px 5px #bbb;
+    transform: translateY(2px) scale(0.98);
+  }
+
+  .footer {
+  position: fixed;
+  bottom: 8px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 10px;
+  color: #9aa9a0;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+  .camera-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.85);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .camera-container {
+    position: relative;
+    width: 94vw;
+    max-width: 400px;
+    aspect-ratio: 4/3;
+    background: #000;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  #camera-video {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    background: #222;
+  }
+  .guideline {
+    position: absolute;
+    border: 3px solid #28cc6c;
+    border-radius: 8px;
+    left: 4%;
+    top: 4%;
+    width: 92%;
+    height: 92%;
+    pointer-events: none;
+    box-sizing: border-box;
+  }
+  .close-cam-btn {
+    position: absolute;
+    top: 10px;
+    right: 13px;
+    z-index: 100;
+    background: #fff;
+    color: #1c7e41;
+    border: none;
+    border-radius: 24px;
+    font-size: 21px;
+    padding: 4px 13px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 10px #aaa;
+  }
+  .capture-btn-3d {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(145deg, #41e671 0%, #176B39 100%);
+    color: #fff;
+    border: none;
+    border-radius: 100%;
+    width: 60px;
+    height: 60px;
+    font-size: 17px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    box-shadow: 0 3px 10px #8ed5a3, 0 1.5px 3px #3333;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: box-shadow 0.18s, transform 0.1s;
+    margin-top: 16px;
+  }
+  .capture-btn-3d:active {
+    box-shadow: 0 2px 5px #bbb;
+    transform: translateY(2px) scale(0.98);
+  }
+  @media (max-width: 500px) {
+    .camera-container { max-width: 98vw; }
+  }
+  .spinner,
+  .loader {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    box-sizing: border-box;
+
+    border: 3px solid rgba(255, 255, 255, 0.25);
+    border-top-color: #ffffff;
+    border-right-color: #ffffff;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+    border-left-color: rgba(255, 255, 255, 0.1);
+    animation: google-spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  @keyframes google-spin {
+    0%   { transform: rotate(0deg); }
+    50%  { transform: rotate(180deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+.ocr-panel{
+  position:absolute;
+  left:10px;
+  bottom:10px;
+  z-index:60;
+  pointer-events:none;
+  user-select:none;
+}
+
+.ocr-item{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:5px 0;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+}
+
+.ocr-item .dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  display:inline-block;
+}
+
+.ocr-item.bad{ color:#ff3b3b; }
+.ocr-item.bad .dot{ background:#ff3b3b; box-shadow:0 0 12px rgba(255,59,59,.65); }
+
+.ocr-item.good{ color:#16c172; }
+.ocr-item.good .dot{ background:#16c172; box-shadow:0 0 12px rgba(22,193,114,.85); }
+
+.guideline.ocr-ready{
+  animation: ocrGoogleBorder 1.4s linear infinite, ocrGlow 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes ocrGoogleBorder{
+  0%   { border-color:#34A853; }
+  25%  { border-color:#FBBC05; }
+  50%  { border-color:#4285F4; }
+  75%  { border-color:#EA4335; }
+  100% { border-color:#34A853; }
+}
+@keyframes ocrGlow{
+  0%   { box-shadow: 0 0 0 rgba(0,0,0,0); }
+  100% { box-shadow: 0 0 26px rgba(255,255,255,.35); }
+}
+
+.camera-wrap{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#ocrLivePanel.ocr-panel{
+  position: absolute !important;
+  left: 12px !important;
+  top: calc(100% - 60px) !important;
+  z-index: 9999;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ocr-title{
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  color: #ffffff;
+  text-shadow: 0 1px 6px rgba(0,0,0,.55);
+}
+
+.camera-wrap .capture-btn-3d{
+  position: static !important;
+  margin-top: 14px;
+  z-index: 999999;
+}
+
+#cameraModal .capture-btn-3d{
+  position: static !important;
+  left: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+}
+</style>
+    <style>
+.search-minicard {
+    max-width: 330px;
+    margin: 18px auto 22px auto;
+    background: #fff;
+    border-radius: 13px;
+    box-shadow: 0 2px 8px #176b3917;
+    padding: 12px 15px 16px 15px;
+  }
+  .search-mini-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 9px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #176B39;
+    letter-spacing: 1px;
+  }
+  .search-emoji {
+    margin-right: 7px;
+    font-size: 1.18em;
+  }
+  .search-mini-input {
+    width: 100%;
+    padding: 6.5px 10px;
+    font-size: 14px;
+    border-radius: 7px;
+    border: 1.5px solid #176B39;
+    margin-bottom: 9px;
+    font-weight: 500;
+    background: #e9f7ff;
+    box-sizing: border-box;
+    transition: border 0.15s;
+  }
+  .search-mini-input:focus {
+    border: 1.6px solid #3bd97b;
+    background: #f6fff6;
+    outline: none;
+  }
+  .search-mini-btn {
+    width: 100%;
+    font-size: 16px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  @media (max-width: 500px) {
+    .search-minicard {
+      max-width: 97vw;
+      padding: 9px 4vw 12px 4vw;
+    }
+    .search-mini-title {
+      font-size: 15px;
+    }
+    .search-mini-input {
+      font-size: 13px;
+      padding: 6px 7px;
+    }
+    .search-mini-btn {
+      font-size: 13px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+  }
+</style>
+  </head>
+  <body>
+    
+<div class="fixed-header">
+  <div class="header-inner">
+    <div class="clock-bar"><span id="liveDateOnly"></span><span id="liveTimeOnly"></span>
+    </div>
+    <div style="text-align:center;margin-bottom:8px;">
+      <h2 class="header-gradient" style="margin-bottom:0.18em;"><span style="vertical-align:middle;"></span>SECURE ENTRY
+      </h2>
+      <div style="color:#489167;font-size:13px;letter-spacing:0.6px;margin-bottom:6px;">REGISTER.ACCESS.SECURE
+      </div>
+</div>
+    <div class="header-line"></div>
+  </div>
+</div>
+    <div class="search-minicard">
+      <div class="search-mini-title"><span class="search-emoji">🔎</span><span>SEARCH RECORD</span>
+      </div><input id="searchUniversal" type="text" placeholder="MYKAD / PASSPORT / REG NO" autocomplete="off" class="search-mini-input" style="font-weight:bold;">
+      <button id="searchButton" class="btn-3d search-mini-btn" type="button" onclick="handleUniversalSearch()">SEARCH
+      </button>
+    </div>
+    <div class="top-action">
+      <button type="button" id="takePhotoBtn" class="btn-3d" onclick="openCamera()">TAKE PICTURE
+      </button><span class="photo-label">Take photo of MyKad/Licence</span>
+    </div>
+    <div class="image-container" id="imageContainer">
+      <img id="preview" src="#" alt="IMAGE PREVIEW">
+      <div class="watermark">SENSORY USE ONLY
+      </div>
+    </div>
+    <form id="registrationForm" autocomplete="off"><label for="namePassport">NAME</label><input type="text" id="namePassport" name="namePassport" required><label for="mykadPassport">MYKAD / PASSPORT</label><input type="text" id="mykadPassport" name="mykadPassport" required><label for="regnum">REGISTRATION NUMBER</label><input type="text" id="regnum" name="regnum" required><label for="contact">CONTACT NUMBER</label>
+      <div class="phone-container"><input type="tel" id="contact" name="contact" required oninput="updateCallLink()" minlength="10" maxlength="15" autocomplete="off" inputmode="numeric" pattern="[0-9]{10,15}"><a id="callBtn" class="call-btn-3d" title="Call this number" style="display:none;" target="_blank"><span>📞</span></a>
+      </div><label for="remark">CATEGORY</label>
+      <select id="remark" name="remark" required><option value="" disabled selected>-PLEASE SELECT-</option><option value="DROP OFF/PICK UP">DROP OFF/PICK UP</option><option value="DHL">DHL</option><option value="E-HAILING">E-HAILING</option><option value="FLASH EXPRESS">FLASH EXPRESS</option><option value="FOOD PANDA">FOOD PANDA</option><option value="GDEX">GDEX</option><option value="GRAB FOOD">GRAB FOOD</option><option value="J&T EXPRESS">J&T EXPRESS</option><option value="LALAMOVE">LALAMOVE</option><option value="LAZADA">LAZADA</option><option value="MCD FOOD DELIVERY">MCD FOOD DELIVERY</option><option value="NINJA VAN">NINJA VAN</option><option value="OWNER">OWNER</option><option value="POS LAJU">POS LAJU</option><option value="SHOPEE EXPRESS">SHOPEE EXPRESS</option><option value="SHOPEE FOOD">SHOPEE FOOD</option><option value="TENANT">TENANT</option><option value="OTHER">OTHER</option>
+      </select><input type="text" id="unitNumber" name="unitNumber" placeholder="UNIT NUMBER" style="display:none; margin-top:10px;" required><input type="text" id="otherCategory" name="otherCategory" placeholder="PLEASE SPECIFY" style="display:none; margin-top:10px;" required>
+      <div id="reasonSection" style="display:none; margin-top:10px;"><label for="reasonSelect">REASON</label>
+        <select id="reasonSelect" name="reasonSelect"><option value="" disabled selected>-PLEASE SELECT-</option><option value="Block card">Block card</option><option value="Lost card">Lost card</option><option value="Forget card">Forget card</option><option value="Damaged card">Damaged card</option><option value="Under management process">Under management process</option><option value="Insufficient card">Insufficient card</option><option value="Clone card">Clone card</option><option value="Other">Other</option>
+        </select><input type="text" id="reasonOther" name="reasonOther" placeholder="PLEASE SPECIFY" style="display:none; margin-top:7px;" required>
+      </div><label for="tower">TOWER</label>
+      <select id="tower" name="tower" required><option value="" disabled selected>-PLEASE SELECT-</option><option value="TOWER A">TOWER A</option><option value="TOWER B">TOWER B</option><option value="TOWER A & B">TOWER A & B</option>
+      </select><input type="file" accept="image/*" capture="environment" id="imageInput" style="display:none;">
+      <button type="submit" class="btn-3d submit-3d" id="submitBtn">SUBMIT
+      </button>
+    </form>
+    <div class="footer">POWERED BY MRED TECH
+    </div>
+    <div id="cameraModal" class="camera-modal" style="display:none;">
+      <div class="camera-wrap">
+        <div class="camera-container">
+          <video id="camera-video" autoplay playsinline>
+          </video>
+          <div class="guideline" id="ocrGuideline">
+          </div>
+          <canvas id="ocrProbe" width="320" height="240" style="display:none;">
+          </canvas>
+          <button class="close-cam-btn" type="button" onclick="closeCameraModal()">×
+          </button>
+        </div>
+        <div id="ocrLivePanel" class="ocr-panel">
+          <div class="ocr-title">OCR QUALITY
+          </div>
+          <div class="ocr-item bad" data-key="sharp"><span class="dot"></span><span>SHARPNESS</span>
+          </div>
+          <div class="ocr-item bad" data-key="stable"><span class="dot"></span><span>STABILITY</span>
+          </div>
+          <div class="ocr-item bad" data-key="light"><span class="dot"></span><span>LIGHTING</span>
+          </div>
+          <div class="ocr-item bad" data-key="contrast"><span class="dot"></span><span>CONTRAST</span>
+          </div>
+          <div class="ocr-item bad" data-key="glare"><span class="dot"></span><span>GLARE / SHADOW</span>
+          </div>
+          <div class="ocr-item bad" data-key="clarity"><span class="dot"></span><span>CLARITY</span>
+          </div>
+        </div>
+        <button type="button" class="capture-btn-3d" onclick="captureImage()">
+        </button>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+
+</script>
+    <script>
+let stream = null;
+    let video  = null;
+
+    (function attachMykadAutoDash(){
+      const mykadInput = document.getElementById('mykadPassport');
+      if (!mykadInput) return;
+      mykadInput.addEventListener('input', function () {
+        let val = (this.value || '').toUpperCase();
+
+        if (/^\d{12}$/.test(val)) {
+          this.value = val.replace(/(\d{6})(\d{2})(\d{4})/, "$1-$2-$3");
+        } else {
+          this.value = val.replace(/[^A-Z0-9]/g, '');
+        }
+
+        validateMykadPassport();
+      });
+    })();
+
+    function openCamera() {
+      document.getElementById('cameraModal').style.display = 'flex';
+      startCamera();
+    }
+
+    async function startCamera() {
+  video = document.getElementById('camera-video');
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    video.srcObject = stream;
+
+    await video.play().catch(() => {});
+    startOcrLive();
+
+  } catch (e) {
+    alert("Failed to open camera: " + e.message);
+    closeCameraModal();
+  }
+    }
+
+    function closeCameraModal() {
+  document.getElementById('cameraModal').style.display = 'none';
+
+  stopOcrLive();
+
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+    }
+
+const OCR_LIVE = {
+  running: false,
+  rafId: null,
+  lastTick: 0,
+  TH: {
+  sharpness: 90,
+  contrast: 30,
+  brightnessMin: 70,
+  brightnessMax: 210,
+  stabilityAvgDiff: 7.5,
+  stabilityDelta: 10,
+  glareWhitePct: 0.04,
+  shadowBlackPct: 0.14
+  }
+};
+
+function setOcrItem(key, ok){
+  const el = document.querySelector(`#ocrLivePanel .ocr-item[data-key="${key}"]`);
+  if (!el) return;
+  el.classList.toggle("good", !!ok);
+  el.classList.toggle("bad", !ok);
+}
+
+function calcStats(gray){
+  let sum = 0, sum2 = 0;
+  const n = gray.length;
+  for (let i=0;i<n;i++){
+    const v = gray[i];
+    sum += v; sum2 += v*v;
+  }
+  const mean = sum / n;
+  const variance = (sum2 / n) - (mean*mean);
+  const std = Math.sqrt(Math.max(0, variance));
+  return { mean, std };
+}
+
+function calcSharpness(gray, w, h){
+  let sum = 0, sum2 = 0, n = 0;
+  for (let y = 1; y < h-1; y++){
+    const row = y*w;
+    for (let x = 1; x < w-1; x++){
+      const i = row + x;
+      const lap = (4*gray[i] - gray[i-1] - gray[i+1] - gray[i-w] - gray[i+w]);
+      sum += lap;
+      sum2 += lap*lap;
+      n++;
+    }
+  }
+  const mean = sum / n;
+  const variance = (sum2 / n) - (mean*mean);
+  return variance;
+}
+
+function getGrayFrame(videoEl, canvasEl){
+  const ctx = canvasEl.getContext("2d", { willReadFrequently: true });
+  const w = canvasEl.width, h = canvasEl.height;
+  ctx.drawImage(videoEl, 0, 0, w, h);
+
+  const data = ctx.getImageData(0, 0, w, h).data;
+  const gray = new Uint8Array(w*h);
+
+  for (let i=0, p=0; i<data.length; i+=4, p++){
+    const r = data[i], g = data[i+1], b = data[i+2];
+    gray[p] = (0.2126*r + 0.7152*g + 0.0722*b) | 0;
+  }
+  return { gray, w, h };
+}
+
+  function pctExtreme(gray, mode){
+  let c = 0;
+  const n = gray.length;
+
+  const WHITE_T = 220;
+  const BLACK_T = 18;
+
+  for (let i=0;i<n;i++){
+    const v = gray[i];
+    if (mode === "white" && v >= WHITE_T) c++;
+    if (mode === "black" && v <= BLACK_T) c++;
+  }
+  return c / n;
+    }
+
+  function hasWhiteCluster(gray, w, h){
+    
+  const WHITE_T = 215; 
+  const MIN_CLUSTER = Math.floor(w * h * 0.008);
+
+  let run = 0;
+  for (let i = 0; i < gray.length; i += 2){
+    if (gray[i] >= WHITE_T){
+      run++;
+      if (run >= MIN_CLUSTER) return true;
+    } else {
+      run = 0;
+    }
+  }
+  return false;
+}
+
+let lastFrameGray = null;
+
+function calcStability(gray){
+  if (!lastFrameGray){
+    lastFrameGray = gray.slice();
+    return false;
+  }
+
+  let diff = 0;
+  let samples = 0;
+
+  for (let i = 0; i < gray.length; i += 30){
+    diff += Math.abs(gray[i] - lastFrameGray[i]);
+    samples++;
+  }
+
+  lastFrameGray = gray.slice();
+
+  const avgDiff = diff / Math.max(1, samples);
+
+  return avgDiff <= OCR_LIVE.TH.stabilityAvgDiff;
+}
+
+function startOcrLive(){
+  const videoEl = document.getElementById("camera-video");
+  const canvasEl = document.getElementById("ocrProbe");
+  const guidelineEl = document.getElementById("ocrGuideline");
+  if (!videoEl || !canvasEl) return;
+
+  OCR_LIVE.running = true;
+  OCR_LIVE.lastTick = 0;
+
+  setOcrItem("sharp", false);
+  setOcrItem("stable", false);
+  setOcrItem("light", false);
+  setOcrItem("contrast", false);
+  setOcrItem("glare", false);
+  setOcrItem("clarity", false);
+
+  lastFrameGray = null;
+
+  if (guidelineEl) guidelineEl.classList.remove("ocr-ready");
+
+  const loop = () => {
+    if (!OCR_LIVE.running) return;
+
+    const now = performance.now();
+    if (now - OCR_LIVE.lastTick < 90) {
+      OCR_LIVE.rafId = requestAnimationFrame(loop);
+      return;
+    }
+    OCR_LIVE.lastTick = now;
+
+    if (videoEl.readyState >= 2 && !videoEl.paused && !videoEl.ended) {
+      const { gray, w, h } = getGrayFrame(videoEl, canvasEl);
+      const sharp = calcSharpness(gray, w, h);
+      const { mean, std } = calcStats(gray);
+
+      const okSharp = sharp >= OCR_LIVE.TH.sharpness;
+
+      const okStable = calcStability(gray);
+
+      const okLight = (mean >= OCR_LIVE.TH.brightnessMin) && (mean <= OCR_LIVE.TH.brightnessMax);
+
+      const okContrast = std >= OCR_LIVE.TH.contrast;
+
+      const glarePct  = pctExtreme(gray, "white");
+      const shadowPct = pctExtreme(gray, "black");
+      const hasCluster = hasWhiteCluster(gray, w, h);
+
+      const okGlare = (glarePct < OCR_LIVE.TH.glareWhitePct) &&
+                      (shadowPct < OCR_LIVE.TH.shadowBlackPct) &&
+                      !hasCluster;
+
+      const okClarity = okSharp && okStable && okLight && okContrast && okGlare;
+
+      setOcrItem("sharp", okSharp);
+      setOcrItem("stable", okStable);
+      setOcrItem("light", okLight);
+      setOcrItem("contrast", okContrast);
+      setOcrItem("glare", okGlare);
+      setOcrItem("clarity", okClarity);
+
+      const allGreen = okSharp && okStable && okLight && okContrast && okGlare && okClarity;
+      if (guidelineEl) guidelineEl.classList.toggle("ocr-ready", allGreen);
+    }
+
+    OCR_LIVE.rafId = requestAnimationFrame(loop);
+  };
+
+  if (OCR_LIVE.rafId) cancelAnimationFrame(OCR_LIVE.rafId);
+  OCR_LIVE.rafId = requestAnimationFrame(loop);
+  }
+
+function stopOcrLive(){
+  OCR_LIVE.running = false;
+  if (OCR_LIVE.rafId) cancelAnimationFrame(OCR_LIVE.rafId);
+  OCR_LIVE.rafId = null;
+
+  const guidelineEl = document.getElementById("ocrGuideline");
+  if (guidelineEl) guidelineEl.classList.remove("ocr-ready");
+
+  setOcrItem("sharp", false);
+  setOcrItem("stable", false);
+  setOcrItem("light", false);
+  setOcrItem("contrast", false);
+  setOcrItem("glare", false);
+  setOcrItem("clarity", false);
+}
+
+    function applyGrayscaleContrast(canvas) {
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+      const imageData = ctx.getImageData(0, 0, width, height);
+      const data = imageData.data;
+
+      let minL = 255;
+      let maxL = 0;
+
+      for (let i = 0; i < data.length; i += 4) {
+        const r   = data[i];
+        const g   = data[i + 1];
+        const b   = data[i + 2];
+        const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        if (lum < minL) minL = lum;
+        if (lum > maxL) maxL = lum;
+
+        data[i] = data[i + 1] = data[i + 2] = lum;
+      }
+
+      const range = Math.max(1, maxL - minL);
+
+      for (let i = 0; i < data.length; i += 4) {
+        let lum       = data[i];
+        let stretched = ((lum - minL) * 255) / range;
+        stretched     = Math.max(0, Math.min(255, stretched));
+        data[i] = data[i + 1] = data[i + 2] = stretched;
+      }
+
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    function captureImage() {
+      if (!video) return;
+
+      const container = document.querySelector('.camera-container');
+      const guideline = document.querySelector('.guideline');
+      const rect      = guideline.getBoundingClientRect();
+      const contRect  = container.getBoundingClientRect();
+
+      const ratioLeft   = (rect.left - contRect.left) / contRect.width;
+      const ratioTop    = (rect.top - contRect.top) / contRect.height;
+      const ratioWidth  = rect.width  / contRect.width;
+      const ratioHeight = rect.height / contRect.height;
+
+      const canvas = document.createElement('canvas');
+      canvas.width  = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const cropX = canvas.width  * ratioLeft;
+      const cropY = canvas.height * ratioTop;
+      const cropW = canvas.width  * ratioWidth;
+      const cropH = canvas.height * ratioHeight;
+
+      const cropCanvas = document.createElement('canvas');
+      cropCanvas.width  = cropW;
+      cropCanvas.height = cropH;
+      cropCanvas.getContext('2d').drawImage(
+        canvas, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH
+      );
+
+      applyGrayscaleContrast(cropCanvas);
+      const compressed = cropCanvas.toDataURL('image/jpeg', 0.75);
+
+      document.getElementById('preview').src = compressed;
+      document.getElementById('imageContainer').style.display = 'block';
+
+      closeCameraModal();
+
+      (async () => {
+        try {
+          document.body.style.cursor = 'progress';
+          const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
+          const res      = await fetch(proxyUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ image: compressed.split(",")[1] })
+          });
+          const result = await res.json();
+          document.body.style.cursor = 'default';
+
+          if (result.name) {
+            const rawName   = result.name.toUpperCase().trim();
+            const cleanName = filterNonNameWords(rawName);
+            document.getElementById('namePassport').value = cleanName;
+          }
+          if (result.idnum) {
+            document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
+          }
+
+        } catch (err) {
+          document.body.style.cursor = 'default';
+          alert("Autofill GAGAL: " + err.message);
+        }
+      })();
+    }
+
+document.getElementById('imageInput').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function() {
+    const img = new window.Image();
+    img.onload = async function() {
+
+      const baseCanvas = document.createElement('canvas');
+      const scale      = Math.min(1, 800 / img.width);
+      baseCanvas.width  = img.width  * scale;
+      baseCanvas.height = img.height * scale;
+      const bctx = baseCanvas.getContext('2d');
+      bctx.drawImage(img, 0, 0, baseCanvas.width, baseCanvas.height);
+
+      const cropCanvas = document.createElement('canvas');
+      const cropW = baseCanvas.width;
+      const cropH = baseCanvas.height * 0.6;
+      const cropX = 0;
+      const cropY = (baseCanvas.height - cropH) / 2;
+
+      cropCanvas.width  = cropW;
+      cropCanvas.height = cropH;
+      const cctx = cropCanvas.getContext('2d');
+      cctx.drawImage(
+        baseCanvas,
+        cropX, cropY, cropW, cropH,
+        0, 0, cropW, cropH
+      );
+
+      applyGrayscaleContrast(cropCanvas);
+
+      const compressed = cropCanvas.toDataURL('image/jpeg', 0.75);
+      const preview    = document.getElementById('preview');
+      preview.src      = compressed;
+      document.getElementById('imageContainer').style.display = 'block';
+
+      try {
+        const proxyUrl = "https://sensory-vision.edreborn86.workers.dev";
+        document.body.style.cursor = 'progress';
+        const res = await fetch(proxyUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ image: compressed.split(",")[1] })
+        });
+        const result = await res.json();
+        document.body.style.cursor = 'default';
+
+        if (result.name) {
+          const rawName   = result.name.toUpperCase().trim();
+          const cleanName = filterNonNameWords(rawName);
+          document.getElementById('namePassport').value = cleanName;
+        }
+        if (result.idnum) {
+          document.getElementById('mykadPassport').value = result.idnum.toUpperCase();
+        }
+      } catch (err) {
+        document.body.style.cursor = 'default';
+        alert("Autofill GAGAL: " + err.message);
+      }
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+  function getVisibleCroppedImageData() {
+    const img = document.getElementById('preview');
+    const container = document.getElementById('imageContainer');
+
+    if (!img || !img.src || img.src === "#" || !img.src.startsWith("data:image")) {
+      return img ? img.src : "";
+    }
+
+    const naturalWidth  = img.naturalWidth;
+    const naturalHeight = img.naturalHeight;
+    const visibleWidth  = container.clientWidth;
+    const visibleHeight = container.clientHeight;
+
+    if (!naturalWidth || !naturalHeight || !visibleWidth || !visibleHeight) {
+      return img.src;
+    }
+
+    const scale = visibleWidth / naturalWidth;
+    const scaledHeight = naturalHeight * scale;
+
+    const displayHeight = Math.min(visibleHeight, scaledHeight);
+
+    const srcVisibleHeight = displayHeight / scale;
+
+    const canvas = document.createElement('canvas');
+    canvas.width  = naturalWidth;
+    canvas.height = srcVisibleHeight;
+    const ctx = canvas.getContext('2d');
+
+    ctx.drawImage(
+      img,
+      0, 0, naturalWidth, srcVisibleHeight,
+      0, 0, naturalWidth, srcVisibleHeight
+    );
+
+    return canvas.toDataURL('image/jpeg', 0.75);
+  }
+
+function adjustPreviewSize() {
+  const container = document.getElementById('imageContainer');
+  if (!container) return;
+
+  const width =
+    container.clientWidth ||
+    window.innerWidth ||
+    document.documentElement.clientWidth;
+
+  const targetRatio = 0.7;
+  const maxHeightPx = Math.round(width * targetRatio);
+
+  container.style.maxHeight = maxHeightPx + "px";
+}
+
+window.addEventListener('load', adjustPreviewSize);
+window.addEventListener('resize', adjustPreviewSize);
+
+
+    function updateCallLink() {
+      const contactEl = document.getElementById('contact');
+      const callBtn   = document.getElementById('callBtn');
+      if (!contactEl || !callBtn) return;
+
+      const raw    = (contactEl.value || '').trim();
+      const digits = raw.replace(/[^0-9]/g, '');
+
+      if (digits && digits.length < 10) {
+        contactEl.setCustomValidity('Minimum 10 digit required');
+      } else {
+        contactEl.setCustomValidity('');
+      }
+
+      if (digits.length >= 10) {
+        callBtn.href = 'tel:' + digits;
+        callBtn.style.display = 'flex';
+      } else {
+        callBtn.style.display = 'none';
+      }
+    }
+    document.getElementById('callBtn').addEventListener('click', function(e) {
+      const digits = (document.getElementById('contact').value || '').replace(/[^0-9]/g, '');
+      if (digits.length < 10) e.preventDefault();
+    });
+
+const remarkSelect  = document.getElementById('remark');
+const otherField    = document.getElementById('otherCategory');
+const unitField     = document.getElementById('unitNumber');
+const reasonSection = document.getElementById('reasonSection');
+const reasonSelect  = document.getElementById('reasonSelect');
+const reasonOther   = document.getElementById('reasonOther');
+
+unitField.required = false;
+otherField.required = false;
+reasonSelect.required = false;
+reasonOther.required = false;
+
+remarkSelect.addEventListener('change', function() {
+  const val = this.value.toUpperCase();
+  const isResident = (val === 'OWNER' || val === 'TENANT');
+
+  unitField.style.display     = isResident ? 'block' : 'none';
+  reasonSection.style.display = isResident ? 'block' : 'none';
+
+  unitField.required    = isResident;
+  reasonSelect.required = isResident;
+
+  if (!isResident) {
+    unitField.value = "";
+    reasonSelect.value = "";
+    reasonSelect.style.color = '#888';
+    reasonOther.style.display = 'none';
+    reasonOther.required = false;
+    reasonOther.value = "";
+  }
+
+  const isOtherCat = (val === 'OTHER');
+  otherField.style.display = isOtherCat ? 'block' : 'none';
+  otherField.required = isOtherCat;
+
+  if (!isOtherCat) {
+    otherField.value = "";
+    otherField.required = false;
+  }
+});
+
+reasonSelect.addEventListener('change', function() {
+  const val = this.value;
+
+  if (val === 'Other') {
+    reasonOther.style.display = 'block';
+    reasonOther.required = true;
+  } else {
+    reasonOther.style.display = 'none';
+    reasonOther.value = '';
+    reasonOther.required = false;
+  }
+
+  if (val.toUpperCase() === 'CLONE CARD') {
+    this.style.color = 'red';
+    this.style.fontWeight = 'bold';
+  } else if (val === '') {
+    this.style.color = '#888888';
+    this.style.fontWeight = 'bold';
+  } else {
+    this.style.color = '#000';
+    this.style.fontWeight = 'bold';
+  }
+});
+
+
+    document.getElementById('unitNumber').addEventListener('input', function() {
+      let raw = this.value.toUpperCase();
+      raw = raw.replace(/[^A-Z0-9]/g, '');
+      if (raw.length > 1 && raw[1] !== '-') {
+        raw = raw[0] + '-' + raw.slice(1);
+      }
+      let val = raw.replace(/-/g, '');
+
+      let mG = val.match(/^([A-Z])G(\d{1,2}[A-Z]?)(\d{0,2}[A-Z]?)$/);
+      if (mG && val.length > 2) {
+        let out = mG[1] + '-G-' + mG[2];
+        if (mG[3]) out += '-' + mG[3];
+        this.value = out;
+        return;
+      }
+      if (val.length > 4 && val[3] === "A" && val[4] !== "-") {
+        this.value = raw.slice(0, 5) + "-" + raw.slice(5);
+        return;
+      }
+      let mStd = val.match(/^([A-Z])(\d{2})(\d{1,2}[A-Z]?)$/);
+      if (mStd) {
+        this.value = mStd[1] + '-' + mStd[2] + '-' + mStd[3];
+        return;
+      }
+      let mShort = val.match(/^([A-Z])(\d{2}[A-Z])$/);
+      if (mShort) {
+        this.value = mShort[1] + '-' + mShort[2];
+        return;
+      }
+      let m1 = val.match(/^([A-Z])(\d)$/);
+      if (m1) {
+        this.value = m1[1] + '-' + m1[2];
+        return;
+      }
+      let mAG = val.match(/^([A-Z])G$/);
+      if (mAG) {
+        this.value = mAG[1] + '-G';
+        return;
+      }
+      if (/^[A-Z](-[G]?)?(-?\d{1,2}[A-Z]?)*(-\d{1,2}[A-Z]?)?$/.test(this.value)) {
+        return;
+      }
+      this.value = val.replace(/^([A-Z])G/, "$1-G");
+    });
+
+    function setSubmitBtnLoading(isLoading) {
+      const btn = document.getElementById('submitBtn');
+      if (!btn) return;
+      if (isLoading) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner"></span>SUBMITTING...`;
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = `SUBMIT`;
+      }
+    }
+
+    function safeSwalFire(options) {
+      if (typeof Swal !== "undefined") return Swal.fire(options);
+      alert((options.title || "NOTICE") + "\n\n" + (options.text || ""));
+      return Promise.resolve({ isConfirmed: true });
+    }
+
+    function validateMykadPassport() {
+      const el = document.getElementById('mykadPassport');
+      if (!el) return true;
+
+      const raw = (el.value || '').toUpperCase().trim();
+
+      if (!raw) {
+        el.setCustomValidity('');
+        return true;
+      }
+
+      const alnum = raw.replace(/[^A-Z0-9]/g, '');
+      const hasLetter = /[A-Z]/.test(alnum);
+
+      if (hasLetter) {
+        el.setCustomValidity('');
+        return true;
+      }
+
+      const digits = alnum.replace(/[^0-9]/g, '');
+
+      if (digits.length !== 12) {
+        el.setCustomValidity('Mykad 12 digit required');
+        return false;
+      }
+
+      el.setCustomValidity('');
+      return true;
+    }
+
+
+    function isMyKadPattern(ic) {
+      return /^(\d{6}-?\d{2}-?\d{4})$/.test(ic) || /^(\d{12})$/.test(ic);
+    }
+    function isLesenPattern(lesen) {
+      return /^[A-Z]\d{8,9}$/.test(lesen);
+    }
+    function isPassportPattern(passport) {
+      return /^[A-Z]{1,2}\d{6,9}$/.test(passport);
+    }
+    function isValidName(name) {
+      return (name && name.length >= 5 && /^[A-Z \-']+$/i.test(name));
+    }
+
+    const NON_NAME_WORDS = [
+      "MALAYSIA", "MALAYSIA P", "KAD PENGENALAN", "IDENTITY CARD", "MYKAD", "ID", "PASSPORT",
+      "WARGANEGARA", "LELAKI", "PEREMPUAN", "ISLAM", "CHRISTIAN", "BUDDHA", "HINDU",
+      "AGAMA", "MALE", "FEMALE", "JANTINA", "NATIONALITY", "CITIZENSHIP", "LICENCE",
+      "LESEN MEMANDU", "DRIVING LICENCE", "VOCATIONAL LICENCE", "DIGITAL", "GOVERNMENT", "CLASS",
+      "NO. K/P", "KELAS", "NO. KAD PENGENALAN", "NO. ID", "NO KP", "NO IC", "D.O.B", "TARIKH LAHIR",
+      "SEX", "JANTINA", "EXPIRY", "EXP", "VALID", "VALIDITY", "TARIKH", "ADDRESS", "ALAMAT", "NAMA", "NAME",
+
+  "JOHOR", "KEDAH", "KELANTAN", "MELAKA", "MELAKA TENGAH", "NEGERI SEMBILAN", "PAHANG", "PERAK",
+  "PERLIS", "PULAU PINANG", "PENANG", "SABAH", "SARAWAK", "SELANGOR", "TERENGGANU", "WILAYAH PERSEKUTUAN",
+  "KUALA LUMPUR", "PUTRAJAYA", "LABUAN"
+  ];
+
+    function filterNonNameWords(text) {
+      if (!text) return "";
+
+      if (!window.__SE_NONNAME_CACHE) {
+        const normalizeForFilter = (s) => {
+          return (s || "")
+            .toString()
+            .toUpperCase()
+
+            .replace(/[^A-Z0-9\s\/'-]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+        };
+
+        const singles = new Set();
+        const phrases = [];
+
+        (NON_NAME_WORDS || []).forEach((w) => {
+          const nw = normalizeForFilter(w);
+          if (!nw) return;
+
+          if (nw.includes(" ")) {
+
+            const re = new RegExp("(^|\\s)" + nw.replace(/\s+/g, "\\s+") + "(?=\\s|$)", "g");
+            phrases.push(re);
+          } else {
+            singles.add(nw);
+          }
+        });
+
+        phrases.sort((a, b) => (b.source.length - a.source.length));
+
+        window.__SE_NONNAME_CACHE = { normalizeForFilter, singles, phrases };
+      }
+
+      const { normalizeForFilter, singles, phrases } = window.__SE_NONNAME_CACHE;
+
+      let t = normalizeForFilter(text);
+
+      const ADDRESS_CUTOFF_REGEX =
+      /\b(ALAMAT|ADDRESS|NO\.?|JALAN|LORONG|TAMAN|KAMPUNG|BANDAR|SEKSYEN|PERSIARAN|APARTMENT|APARTMEN|FLAT|RESIDENSI|HEIGHTS?|HEIGHT)\b/;
+
+      const addrIdx = t.search(ADDRESS_CUTOFF_REGEX);
+      if (addrIdx !== -1) {
+      t = t.slice(0, addrIdx).trim();
+      }
+
+      for (const re of phrases) {
+        t = t.replace(re, " ");
+      }
+
+      const cleaned = t
+        .split(/\s+/)
+        .filter(Boolean)
+        .filter((w) => !singles.has(w))
+        .join(" ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      if (NON_NAME_WORDS.includes(cleaned.trim().toUpperCase())) {
+  return "";
+      }
+
+      return cleaned;
+    }
+
+    const WORKER_URL = "https://ext-mredtech.edreborn86.workers.dev";
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (!sessionStorage.getItem("SE_WARMED")) {
+    fetch(WORKER_URL + "?debug=1", { cache: "no-store" }).catch(() => {});
+    sessionStorage.setItem("SE_WARMED", "1");
+  }
+});
+
+    const FIELD = {
+     REG: "REGNUM",
+     ID: "MYKADPASSPORT"
+  };
+
+    function normalize(str) {
+      return (str || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    }
+
+    function detectSearchField(raw) {
+  const s = (raw || "").trim().toUpperCase();
+
+  const digitsOnly = s.replace(/[^0-9]/g, "");
+  const alnumOnly  = s.replace(/[^A-Z0-9]/g, "");
+
+  if (digitsOnly.length === 12) return FIELD.ID;
+  if (/^\d{6}-\d{2}-\d{4}$/.test(s)) return FIELD.ID;
+
+  if (/^[A-Z]{1,3}\d{5,}$/.test(alnumOnly)) return FIELD.ID;
+
+  if (/^[A-Z]{1,3}\d/.test(alnumOnly)) return FIELD.REG;
+
+  return "";
+    }
+
+    async function searchRecord(field, value) {
+      const url = `${WORKER_URL}?field=${encodeURIComponent(field)}&value=${encodeURIComponent(value)}`;
+      const res = await fetch(url);
+      return await res.json();
+    }
+
+    function applySearchInputToForm(originalInput, detectedField) {
+      const raw = (originalInput || "").trim();
+      if (!raw) return;
+
+      const idEl  = document.getElementById('mykadPassport');
+      const regEl = document.getElementById('regnum');
+
+      const which = detectedField || detectSearchField(raw) || "";
+
+      if (which === FIELD.ID) {
+        if (idEl && !idEl.value) {
+          idEl.value = raw.toUpperCase();
+          idEl.dispatchEvent(new Event('input'));
+        }
+      } else {
+        if (regEl && !regEl.value) {
+          regEl.value = raw.toUpperCase();
+        }
+      }
+    }
+
+
+
+    async function handleUniversalSearch() {
+  const btn = document.getElementById('searchButton');
+  const inputEl = document.getElementById('searchUniversal');
+
+  const input = (inputEl?.value || '').trim();
+  if (!input) return;
+
+  const originalInput = input;
+
+  const valueNorm = normalize(input);
+
+  const detectedField = detectSearchField(input);
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="loader"></span> SEARCHING...';
+
+  try {
+    let found = null;
+    let hasHyperlink = false;
+    let res;
+
+
+
+    if (detectedField) {
+      res = await searchRecord(detectedField, valueNorm);
+
+      if (res && res.exist) {
+        found = res.data || null;
+        hasHyperlink = res.hasHyperlink ?? false;
+      }
+    }
+
+
+
+    if (!found && !detectedField) {
+      res = await searchRecord(FIELD.REG, valueNorm);
+      if (res && res.exist) {
+        found = res.data || null;
+        hasHyperlink = res.hasHyperlink ?? false;
+      }
+
+      if (!found) {
+        res = await searchRecord(FIELD.ID, valueNorm);
+        if (res && res.exist) {
+          found = res.data || null;
+          hasHyperlink = res.hasHyperlink ?? false;
+        }
+      }
+    }
+
+
+
+    if (found && !hasHyperlink) {
+      safeSwalFire({
+        title: 'PREVIOUS RECORD EXPIRED',
+        text: 'Please retake id photo',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'OK',
+        cancelButtonText: 'NO',
+        background: 'linear-gradient(135deg, #fff9e6 0%, #ffecb3 45%, #ffd54f 100%)',
+        color: '#176B39',
+        width: 300,
+        customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+        willOpen: popup => { popup.style.borderRadius = "14px"; }
+      }).then((r) => {
+
+        inputEl.value = "";
+
+        if (r.isConfirmed) {
+
+          applySearchInputToForm(originalInput, detectedField);
+
+          const formEl = document.getElementById('registrationForm');
+          if (formEl) {
+            formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+
+          openCamera();
+        }
+      });
+
+      return;
+    }
+
+
+
+    if (found) {
+      safeSwalFire({
+        title: 'RECORD FOUND',
+        text: 'Autofill this form with record details?',
+        icon: 'success',
+        showCancelButton: true,
+        confirmButtonText: 'YES',
+        cancelButtonText: 'NO',
+        background: 'linear-gradient(135deg, #e9f7ef 0%, #c8efd9 45%, #9fdfbf 100%)',
+        color: '#176B39',
+        width: 300,
+        customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+        willOpen: popup => { popup.style.borderRadius = "14px"; }
+      }).then((r) => {
+        if (r.isConfirmed) {
+          try {
+            autofillForm(found);
+          } catch (e) {
+            console.error("autofillForm error:", e);
+          }
+
+          const formEl = document.getElementById('registrationForm');
+          if (formEl) {
+            formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }
+
+        inputEl.value = "";
+      });
+
+      return;
+    }
+
+
+
+    safeSwalFire({
+      title: 'NO PREVIOUS RECORD',
+      text: 'Please proceed to register',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'OK',
+      cancelButtonText: 'NO',
+      background: 'linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 45%, #81d4fa 100%)',
+      color: '#176B39',
+      width: 300,
+      customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+      willOpen: popup => { popup.style.borderRadius = "14px"; }
+    }).then((r) => {
+
+      inputEl.value = "";
+
+      if (r.isConfirmed) {
+        applySearchInputToForm(originalInput, detectedField);
+
+        const formEl = document.getElementById('registrationForm');
+        if (formEl) {
+          formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        openCamera();
+      }
+    });
+
+  } catch (err) {
+    console.error(err);
+    safeSwalFire({
+      title: 'ERROR',
+      text: err?.message || 'Please try again',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'SEARCH';
+  }
+    }
+
+    function autofillForm(data) {
+      if (data.namePassport)   document.getElementById('namePassport').value   = data.namePassport;
+      if (data.mykadPassport)  document.getElementById('mykadPassport').value  = data.mykadPassport;
+      if (data.regnum)         document.getElementById('regnum').value         = data.regnum;
+      if (data.contact)        document.getElementById('contact').value        = data.contact;
+
+      if (data.remark) {
+        let match = data.remark.match(/^(OWNER|TENANT)/i);
+        if (match) {
+          document.getElementById('remark').value = match[1];
+          document.getElementById('remark').dispatchEvent(new Event('change'));
+          let unitMatch = data.remark.match(/\(\s*([^)]+)\s*\)/);
+          if (unitMatch) document.getElementById('unitNumber').value = unitMatch[1];
+        } else {
+          document.getElementById('remark').value = data.remark;
+          document.getElementById('unitNumber').value = "";
+        }
+      }
+
+    }
+
+    document.getElementById('mykadPassport').addEventListener('blur', async function() {
+      
+      validateMykadPassport();
+      if (!this.checkValidity()) {
+        this.reportValidity();
+        return;
+      }
+      const value = this.value.trim();
+      if (value.length < 6) return;
+      const result = await searchRecord(FIELD.ID, normalize(value));
+      if (result.exist) {
+        safeSwalFire({
+          title: 'PREVIOUS DATA FOUND',
+          text: 'Autofill with existing details?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'YES',
+          cancelButtonText: 'NO',
+          background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+          color: '#176B39',
+          width: 300,
+          customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+          willOpen: (popup) => { popup.style.borderRadius = '14px'; }
+        }).then((res) => {
+          if (res.isConfirmed) {
+            autofillForm(result.data);
+          }
+        });
+      }
+    });
+
+  const urlCloudflareWorker = "https://ext-mredtech.edreborn86.workers.dev";
+
+  let __SE_isSubmitting = false;
+
+  document.getElementById("registrationForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    try { validateMykadPassport(); } catch (e) {}
+    try { updateCallLink(); } catch (e) {}
+    if (!this.checkValidity()) {
+      this.reportValidity();
+      return;
+    }
+
+    if (__SE_isSubmitting) return;
+    __SE_isSubmitting = true;
+
+    setSubmitBtnLoading(true);
+
+    const croppedImage = getVisibleCroppedImageData();
+
+    let remarkValue = document.getElementById('remark').value;
+    let otherCategoryVal = document.getElementById('otherCategory').value.trim();
+    let unitNumberVal = document.getElementById('unitNumber').value.trim();
+    let reasonVal = document.getElementById('reasonSelect').value;
+    let reasonOtherVal = document.getElementById('reasonOther').value.trim();
+
+    if (remarkValue === "OTHER" && otherCategoryVal) {
+      remarkValue = `OTHER ( ${otherCategoryVal} )`;
+    } else if ((remarkValue === "OWNER" || remarkValue === "TENANT") && unitNumberVal) {
+      remarkValue = `${remarkValue} ( ${unitNumberVal} )`;
+    }
+
+    let reasonFinal = "";
+    if ((remarkValue.includes("OWNER") || remarkValue.includes("TENANT")) && reasonVal) {
+      if (reasonVal === "Other" && reasonOtherVal) {
+        reasonFinal = `OTHER ( ${reasonOtherVal} )`;
+      } else {
+        reasonFinal = reasonVal.toUpperCase();
+      }
+    }
+
+    const data = {
+      namePassport: document.getElementById('namePassport').value,
+      mykadPassport: document.getElementById('mykadPassport').value,
+      regnum: document.getElementById('regnum').value,
+      contact: document.getElementById('contact').value,
+      remark: remarkValue,
+      reason: reasonFinal,
+      tower: document.getElementById('tower').value,
+      imageUrl: croppedImage
+    };
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 20000);
+
+    try {
+      const res = await fetch(urlCloudflareWorker, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        signal: controller.signal
+      });
+
+      const respData = await res.json();
+
+      if (respData.success) {
+        safeSwalFire({
+          title: 'SUCCESS!',
+          text: 'Data submitted!',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          background: 'linear-gradient(135deg,#e9f5e9,#fff,#d5ffe0)',
+          color: '#176B39',
+          width: 300,
+          customClass: { popup: 'shadow-2xl px-7 pt-7 pb-6' },
+          willOpen: (popup) => { popup.style.borderRadius = '14px'; },
+          timer: 5000,
+          timerProgressBar: true
+        });
+
+        document.getElementById("registrationForm").reset();
+        document.getElementById('preview').src = "#";
+        document.getElementById('imageContainer').style.display = 'none';
+        document.getElementById('unitNumber').style.display = 'none';
+        document.getElementById('otherCategory').style.display = 'none';
+        document.getElementById('reasonSection').style.display = 'none';
+
+        if (reasonSelect) {
+          reasonSelect.style.color = '#888888';
+          reasonSelect.style.fontWeight = 'bold';
+        }
+      } else {
+        safeSwalFire({
+          title: 'ERROR!',
+          text: 'Submit failed: ' + (respData.message || ''),
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    } catch (err) {
+      safeSwalFire({
+        title: 'ERROR!',
+        text: 'Error submit data: ' + err.message,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    } finally {
+      clearTimeout(timeoutId);
+
+      setSubmitBtnLoading(false);
+      __SE_isSubmitting = false;
+    }
+  });
+</script>
+    <script>
+function pad(n){return n<10?'0'+n:n;}
+    function updateDateTime() {
+      const now = new Date();
+      const d   = pad(now.getDate());
+      const m   = pad(now.getMonth() + 1);
+      const y   = now.getFullYear();
+      const h   = pad(now.getHours());
+      const min = pad(now.getMinutes());
+      const s   = pad(now.getSeconds());
+      document.getElementById("liveDateOnly").textContent = `${d}/${m}/${y}`;
+      document.getElementById("liveTimeOnly").textContent = `${h}:${min}:${s}`;
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+</script>
+  <script>
+function syncHeaderOffset() {
+  const header = document.querySelector('.fixed-header');
+  if (!header) return;
+
+  const height = header.offsetHeight;
+  document.body.style.paddingTop = (height + 0) + 'px';
+}
+
+window.addEventListener('load', syncHeaderOffset);
+window.addEventListener('resize', syncHeaderOffset);
+</script>
+
+</body>
+</html>
