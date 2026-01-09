@@ -1286,17 +1286,13 @@ let stream = null;
 
       mykadInput.addEventListener('input', function () {
         const raw = (this.value || '').toUpperCase().trim();
-
-        // Normalize first (so pasted/auto-filled values like 860923-49-6973 will still format)
         const alnum = raw.replace(/[^A-Z0-9]/g, '');
         const hasLetter = /[A-Z]/.test(alnum);
         const digits = alnum.replace(/[^0-9]/g, '');
 
         if (!hasLetter && digits.length === 12) {
-          // MyKad: 12 digits -> auto dash
           this.value = digits.replace(/(\d{6})(\d{2})(\d{4})/, "$1-$2-$3");
         } else {
-          // Passport / Licence / mixed -> keep alnum only
           this.value = alnum;
         }
 
@@ -1617,7 +1613,6 @@ function stopOcrLive(){
       document.getElementById('preview').src = compressed;
       document.getElementById('imageContainer').style.display = 'block';
 
-      // Cache FINAL image exactly as visible in preview (performance lock)
       const __pv = document.getElementById('preview');
       if (__pv) {
         __pv.onload = () => { try { cacheFinalPreviewImage(); } catch(e) {} };
@@ -1696,7 +1691,6 @@ document.getElementById('imageInput').addEventListener('change', function(event)
       preview.src      = compressed;
       document.getElementById('imageContainer').style.display = 'block';
 
-      // Cache FINAL image exactly as visible in preview (performance lock)
       if (preview) {
         preview.onload = () => { try { cacheFinalPreviewImage(); } catch(e) {} };
       }
@@ -1780,7 +1774,6 @@ document.getElementById('imageInput').addEventListener('change', function(event)
   }
 
 
-  // Cache FINAL preview image so submit is instant AND matches what user sees
   function cacheFinalPreviewImage() {
     try {
       const data = getVisibleCroppedImageData();
@@ -2041,7 +2034,7 @@ reasonSelect.addEventListener('change', function() {
         const looksNameish = (s) => {
           const u = String(s || "").toUpperCase().trim();
           if (!u) return false;
-          if (/\d/.test(u)) return false; // digits usually not a name line
+          if (/\d/.test(u)) return false; 
           if (/\b(ALAMAT|ADDRESS|NO\.?|LOT|KG\.?|KAMPUNG|JALAN|LORONG|TAMAN|BANDAR|SEKSYEN|PERSIARAN|POSKOD|POSTCODE|\d{5})\b/.test(u)) return false;
           return u.length >= 2;
         };
@@ -2155,7 +2148,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!sessionStorage.getItem("SE_WARMED")) {
     fetch(WORKER_URL + "?debug=1", { cache: "no-store" }).catch(() => {});
     fetch(WORKER_URL + "?ping=1", { cache: "no-store" }).catch(() => {});
-    // Extra warm-up (safe): reduces cold-start latency on some networks/devices
+  
     setTimeout(() => {
       fetch(WORKER_URL + "?ping=2", { cache: "no-store" }).catch(() => {});
     }, 800);
@@ -2192,7 +2185,6 @@ document.addEventListener("DOMContentLoaded", () => {
     async function searchRecord(field, value) {
       const cacheKey = `SE_SRCH_${field}|${value}`;
 
-      // In-flight dedupe (avoid double fetch if user taps SEARCH twice)
       if (!window.__SE_SEARCH_INFLIGHT) window.__SE_SEARCH_INFLIGHT = new Map();
       if (window.__SE_SEARCH_INFLIGHT.has(cacheKey)) {
         return await window.__SE_SEARCH_INFLIGHT.get(cacheKey);
@@ -2454,7 +2446,6 @@ document.addEventListener("DOMContentLoaded", () => {
           document.getElementById('remark').value = "OTHER";
           document.getElementById('remark').dispatchEvent(new Event('change'));
 
-          // IMPORTANT: do NOT reuse previous "OTHER ( ... )" value from old record
           const otherEl = document.getElementById('otherCategory');
           if (otherEl) {
             otherEl.value = "";
@@ -2573,14 +2564,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.getElementById("registrationForm").reset();
 
-        // Hide CALL button after reset
         (function hideCallBtnAfterReset(){
           const callBtn = document.getElementById('callBtn');
           if (callBtn) {
             callBtn.style.display = 'none';
             callBtn.removeAttribute('href');
           }
-          // Ensure contact validity cleared and UI consistent
           try { updateCallLink(); } catch(e) {}
         })();
         document.getElementById('preview').src = "#";
