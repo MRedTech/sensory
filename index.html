@@ -2342,7 +2342,7 @@ function filterNonNameWords(text) {
       const u = String(s || "").toUpperCase().trim();
       if (!u) return false;
       if (/\d/.test(u)) return false; 
-      if (/\b(ALAMAT|ADDRESS|NO\.?|LOT|KG\.?|KAMPUNG|JALAN|PANGSAPURI|PEKAN|LORONG|TAMAN|BANDAR|SEKSYEN|PERSIARAN|POSKOD|POSTCODE|\d{5})\b/.test(u)) return false;
+      if (/\b(ALAMAT|ADDRESS|NO\.?|LOT|KG\.?|KAMPUNG|JALAN|PANGSAPURI|PEKAN|LORONG|TAMAN|TMN|BANDAR|SEKSYEN|PERSIARAN|POSKOD|POSTCODE|\d{5})\b/.test(u)) return false;
       return u.length >= 2;
     };
 
@@ -2404,7 +2404,7 @@ function filterNonNameWords(text) {
   let t = normalizeForFilter(text);
 
   const ADDRESS_CUTOFF_REGEX =
-    /\b(ALAMAT|ADDRESS|NO\.?|JALAN|PANGSAPURI|PEKAN|LORONG|TAMAN|KAMPUNG|BANDAR|SEKSYEN|PERSIARAN|APARTMENT|APARTMEN|FLAT|RESIDENSI|HEIGHTS?|HEIGHT)\b/;
+    /\b(ALAMAT|ADDRESS|NO\.?|JALAN|PANGSAPURI|PEKAN|LORONG|TAMAN|TMN|KAMPUNG|BANDAR|SEKSYEN|PERSIARAN|APARTMENT|APARTMEN|FLAT|RESIDENSI|HEIGHTS?|HEIGHT)\b/;
 
   const addrIdx = t.search(ADDRESS_CUTOFF_REGEX);
   if (addrIdx !== -1) {
@@ -2431,7 +2431,7 @@ function filterNonNameWords(text) {
   if (/\d/.test(finalName)) return "";
 
   const LOCATION_ANYWHERE =
-    /\b(KG\.?|KAMPUNG|TAMAN|BANDAR|JALAN|PANGSAPURI|PEKAN|LORONG|PERSIARAN|SEKSYEN|LOT|POSKOD|POSTCODE|DAERAH|MUKIM|NEGERI|WILAYAH|HEIGHTS?|HEIGHT|APARTMENT|APARTMEN|FLAT|RESIDENSI)\b/;
+    /\b(KG\.?|KAMPUNG|TAMAN|TMN|BANDAR|JALAN|PANGSAPURI|PEKAN|LORONG|PERSIARAN|SEKSYEN|LOT|POSKOD|POSTCODE|DAERAH|MUKIM|NEGERI|WILAYAH|HEIGHTS?|HEIGHT|APARTMENT|APARTMEN|FLAT|RESIDENSI)\b/;
   if (LOCATION_ANYWHERE.test(finalName)) return "";
 
   const HAS_CONNECTOR = /\b(BIN|BINTI|A\/L|A\/P)\b/.test(finalName);
@@ -2444,7 +2444,7 @@ function filterNonNameWords(text) {
 
   if (!/[AEIOU]/.test(finalName)) return "";
 
-  if (/^(KG\.?|KAMPUNG|TAMAN|BANDAR|JALAN|PANGSAPURI|PEKAN|LORONG|PERSIARAN|SEKSYEN|LOT|NO)\b/.test(finalName)) return "";
+  if (/^(KG\.?|KAMPUNG|TAMAN|TMN|BANDAR|JALAN|PANGSAPURI|PEKAN|LORONG|PERSIARAN|SEKSYEN|LOT|NO)\b/.test(finalName)) return "";
 
   return finalName;
 }
