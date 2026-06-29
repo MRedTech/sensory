@@ -1123,10 +1123,181 @@
     }
 
     function safeSwalFire(options) {
-      if (typeof Swal !== "undefined") return Swal.fire(options);
-      alert((options.title || "NOTICE") + "\n\n" + (options.text || ""));
-      return Promise.resolve({ isConfirmed: true });
+  options = options || {};
+
+  // Normal mode: use SweetAlert2 when it is loaded.
+  if (typeof Swal !== "undefined" && Swal && typeof Swal.fire === "function") {
+    return Swal.fire(options);
+  }
+
+  // Fallback mode: custom Secure Entry modal when SweetAlert2/CDN fails.
+  return new Promise((resolve) => {
+    const oldModal = document.getElementById('__seFallbackSwal');
+    if (oldModal) oldModal.remove();
+
+    const escapeHtml = (str) => String(str || '').replace(/[&<>'"]/g, (ch) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[ch]));
+
+    const title = options.title || 'NOTICE';
+    const text = options.text || '';
+    const html = options.html || '';
+    const icon = String(options.icon || 'info').toLowerCase();
+    const showCancel = !!options.showCancelButton;
+    const confirmText = options.confirmButtonText || 'OK';
+    const cancelText = options.cancelButtonText || 'NO';
+    const bg = options.background || 'linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 45%, #81d4fa 100%)';
+    const color = options.color || '#176B39';
+    const width = Math.max(260, Math.min(parseInt(options.width, 10) || 300, 340));
+
+    const iconSymbol = {
+      success: '✓',
+      error: '×',
+      warning: '!',
+      info: 'i',
+      question: '?'
+    }[icon] || '!';
+
+    const iconColor = {
+      success: '#2bbf6a',
+      error: '#ff3b3b',
+      warning: '#f5b77a',
+      info: '#4aa3df',
+      question: '#4aa3df'
+    }[icon] || '#f5b77a';
+
+    const overlay = document.createElement('div');
+    overlay.id = '__seFallbackSwal';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.style.cssText = [
+      'position:fixed',
+      'inset:0',
+      'z-index:100000',
+      'display:flex',
+      'align-items:center',
+      'justify-content:center',
+      'padding:20px',
+      'background:rgba(0,0,0,.45)',
+      'box-sizing:border-box',
+      'font-family:Google Sans, Google Sans Text, Roboto, Arial, sans-serif',
+      'text-transform:uppercase'
+    ].join(';');
+
+    const messageHtml = html
+      ? `<div style="margin-top:14px;font-size:13px;font-weight:800;line-height:1.45;letter-spacing:.7px;">${html}</div>`
+      : `<div style="margin-top:14px;font-size:13px;font-weight:800;line-height:1.45;letter-spacing:.7px;">${escapeHtml(text)}</div>`;
+
+    overlay.innerHTML = `
+      <div style="
+        width:${width}px;
+        max-width:calc(100vw - 40px);
+        box-sizing:border-box;
+        border-radius:14px;
+        padding:26px 20px 22px 20px;
+        background:${bg};
+        color:${color};
+        text-align:center;
+        box-shadow:0 14px 34px rgba(0,0,0,.28), 0 2px 0 rgba(23,107,57,.45);
+        border:1px solid rgba(23,107,57,.12);
+      ">
+        <div style="
+          width:78px;
+          height:78px;
+          border:5px solid ${iconColor};
+          border-radius:50%;
+          margin:0 auto 18px auto;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          color:${iconColor};
+          font-size:48px;
+          line-height:1;
+          font-weight:300;
+          box-sizing:border-box;
+        ">${iconSymbol}</div>
+
+        <div style="font-size:17px;font-weight:900;letter-spacing:1.4px;line-height:1.25;">
+          ${escapeHtml(title)}
+        </div>
+
+        ${messageHtml}
+
+        <div style="display:flex;gap:14px;justify-content:center;margin-top:24px;">
+          <button type="button" data-se-confirm="1" style="
+            min-width:92px;
+            border:none;
+            border-radius:12px;
+            padding:11px 22px;
+            background:linear-gradient(135deg,#3bd97b 0%,#176B39 100%);
+            color:#fff;
+            font-size:14px;
+            font-weight:900;
+            letter-spacing:1.8px;
+            box-shadow:0 5px 13px rgba(23,107,57,.28),0 1.5px 3px rgba(0,0,0,.20);
+          ">${escapeHtml(confirmText)}</button>
+
+          ${showCancel ? `<button type="button" data-se-cancel="1" style="
+            min-width:92px;
+            border:none;
+            border-radius:12px;
+            padding:11px 22px;
+            background:linear-gradient(135deg,#e52d27 0%,#ff5757 100%);
+            color:#fff;
+            font-size:14px;
+            font-weight:900;
+            letter-spacing:1.8px;
+            box-shadow:0 5px 13px rgba(255,87,87,.28),0 1.5px 3px rgba(0,0,0,.20);
+          ">${escapeHtml(cancelText)}</button>` : ''}
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    let done = false;
+    let escHandler = null;
+
+    const finish = (isConfirmed, isDismissed) => {
+      if (done) return;
+      done = true;
+
+      try { overlay.remove(); } catch (e) {}
+      try {
+        if (escHandler) document.removeEventListener('keydown', escHandler);
+      } catch (e) {}
+
+      resolve({
+        isConfirmed: !!isConfirmed,
+        isDenied: false,
+        isDismissed: !!isDismissed
+      });
+    };
+
+    const confirmBtn = overlay.querySelector('[data-se-confirm]');
+    const cancelBtn = overlay.querySelector('[data-se-cancel]');
+
+    if (confirmBtn) confirmBtn.addEventListener('click', () => finish(true, false));
+    if (cancelBtn) cancelBtn.addEventListener('click', () => finish(false, true));
+
+    overlay.addEventListener('click', (ev) => {
+      if (ev.target === overlay) finish(false, true);
+    });
+
+    escHandler = function (ev) {
+      if (ev.key === 'Escape') finish(false, true);
+    };
+    document.addEventListener('keydown', escHandler);
+
+    if (options.timer && !showCancel) {
+      setTimeout(() => finish(true, false), Number(options.timer));
     }
+  });
+}
 
     function setSubmitBtnLoading(isLoading) {
       const btn = document.getElementById('submitBtn');
