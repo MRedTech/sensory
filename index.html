@@ -1312,7 +1312,7 @@
 
       // threshold tuned for phone camera + ID text
       const preset = DOC_MODE.presets[DOC_MODE.current] || DOC_MODE.presets.CARD;
-      const th = (DOC_MODE.current === 'PASSPORT') ? 85 : 95;
+      const th = (DOC_MODE.current === 'PASSPORT') ? 180 : 220;
       return varr < th;
     }
 
